@@ -1,0 +1,1153 @@
+<!DOCTYPE html>
+<html lang="es" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="theme-color" content="#080c15">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <title>Kinetix Med & Booking Suite | Expedientes, Consultas, Citas y Recordatorios</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #070b13; color: #f1f5f9; }
+    .mono { font-family: 'JetBrains Mono', monospace; }
+    .glass { background: rgba(15, 23, 42, 0.85); backdrop-filter: blur(14px); border: 1px solid rgba(255,255,255,0.08); }
+    /* Soporte Modo Claro */
+    html.light body { background-color: #f8fafc !important; color: #0f172a !important; }
+    html.light .glass { background: #ffffff !important; border-color: #e2e8f0 !important; box-shadow: 0 4px 14px rgba(0,0,0,0.05) !important; }
+    html.light aside { background-color: #ffffff !important; border-color: #e2e8f0 !important; }
+    html.light .bg-slate-950 { background-color: #ffffff !important; }
+    html.light .bg-slate-900 { background-color: #f1f5f9 !important; }
+    html.light .bg-slate-900\/70, html.light .bg-slate-900\/90 { background-color: #f8fafc !important; }
+    html.light .border-slate-800, html.light .border-slate-700, html.light .border-slate-800\/80, html.light .border-slate-800\/90 { border-color: #e2e8f0 !important; }
+    html.light .text-white { color: #0f172a !important; }
+    html.light .text-slate-200 { color: #1e293b !important; }
+    html.light .text-slate-300, html.light .text-slate-400 { color: #475569 !important; }
+    html.light input, html.light select, html.light textarea { background-color: #ffffff !important; color: #0f172a !important; border-color: #cbd5e1 !important; }
+    html.light .bg-\[\#060911\], html.light .bg-\[\#070b13\] { background-color: #f8fafc !important; }
+    html.light tr:hover { background-color: #f1f5f9 !important; }
+    @media print {
+      body * { visibility: hidden !important; }
+      #print-rx-area, #print-rx-area * { visibility: visible !important; }
+      #print-rx-area {
+        position: fixed !important;
+        left: 0 !important;
+        top: 0 !important;
+        width: 100% !important;
+        background: white !important;
+        color: black !important;
+        padding: 24px !important;
+        box-shadow: none !important;
+      }
+      .no-print { display: none !important; }
+    }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col selection:bg-cyan-500 selection:text-black">
+
+  <!-- PANTALLA DE LOGIN MULTI-USUARIO (MÁX 4 USUARIOS) -->
+  <div id="login-screen" class="fixed inset-0 z-50 bg-[#060911] flex items-center justify-center p-4">
+    <div class="max-w-md w-full glass rounded-3xl p-8 border border-cyan-500/30 shadow-2xl space-y-6">
+      <div class="text-center space-y-2">
+        <div id="login-logo-box" class="w-16 h-16 mx-auto rounded-2xl bg-cyan-500/20 border border-cyan-500/40 flex items-center justify-center overflow-hidden">
+          <span class="text-2xl font-black text-cyan-400 mono">MED</span>
+        </div>
+        <h1 id="login-clinic-name" class="text-2xl font-extrabold text-white">Kinetix Med & Booking Suite</h1>
+        <p id="login-clinic-spec" class="text-xs uppercase tracking-widest text-cyan-400 font-semibold">Expedientes, Consultas & Agenda · Máx. 4 Usuarios</p>
+      </div>
+
+      <div class="space-y-4">
+        <div>
+          <label class="text-xs font-bold uppercase text-slate-400 block mb-2">Selecciona tu Usuario (1 Principal + 3 Roles)</label>
+          <select id="login-user-select" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-3 text-white font-semibold focus:outline-none focus:border-cyan-400"></select>
+        </div>
+        <div>
+          <label class="text-xs font-bold uppercase text-slate-400 block mb-2">PIN de Acceso</label>
+          <input id="login-pin-input" type="password" placeholder="Ingresa tu PIN (Ej: 1234)" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-3 text-white mono text-center text-lg tracking-widest focus:outline-none focus:border-cyan-400" onkeydown="if(event.key==='Enter') handleLogin()">
+          <p class="text-[11px] text-slate-400 mt-1.5 text-center">Demo / Inicial: PIN del Director Principal es <strong class="text-cyan-400 mono">1234</strong></p>
+        </div>
+        <p id="login-error" class="text-xs text-red-400 text-center font-semibold hidden">PIN incorrecto. Verifica tus credenciales.</p>
+        <button onclick="handleLogin()" class="w-full py-3.5 rounded-xl bg-gradient-to-r from-cyan-400 to-emerald-400 text-slate-950 font-extrabold text-sm hover:opacity-95 transition shadow-lg shadow-cyan-500/20">
+          Acceder a la Suite &rarr;
+        </button>
+      </div>
+
+      <div class="pt-4 border-t border-slate-800/80 flex items-center justify-between text-[11px] text-slate-500">
+        <span>Kinetix Med & Booking v3.0</span>
+        <a href="../index.html" class="text-cyan-400 hover:underline">&larr; Volver al Catálogo</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- APLICACIÓN PRINCIPAL -->
+  <div id="app-container" class="flex-1 flex flex-col lg:flex-row hidden">
+
+    <!-- SIDEBAR -->
+    <aside class="w-full lg:w-64 bg-slate-950 border-b lg:border-b-0 lg:border-r border-slate-800/90 flex flex-col justify-between shrink-0 no-print">
+      <div>
+        <div class="p-5 border-b border-slate-800/80 flex items-center gap-3">
+          <div id="sidebar-logo" class="w-11 h-11 rounded-xl bg-cyan-500/20 border border-cyan-500/40 flex items-center justify-center overflow-hidden shrink-0">
+            <span class="font-black text-cyan-400 mono text-sm">MED</span>
+          </div>
+          <div class="truncate">
+            <h2 id="sidebar-clinic-name" class="font-extrabold text-white text-base truncate">Clínica Kinetix</h2>
+            <span id="sidebar-specialty" class="text-[11px] text-cyan-400 font-semibold block truncate">Multiespecialidad</span>
+          </div>
+        </div>
+
+        <div class="px-4 py-3 bg-slate-900/70 border-b border-slate-800/80 flex items-center justify-between text-xs">
+          <div class="truncate">
+            <span class="text-slate-400 block text-[10px]">PROFESIONAL ACTIVO:</span>
+            <strong id="active-user-name" class="text-white truncate">Director Médico</strong>
+            <span id="active-user-role" class="ml-1 px-1.5 py-0.5 rounded bg-cyan-500/20 text-cyan-300 text-[10px] font-bold">ADMIN</span>
+          </div>
+          <div class="flex items-center gap-1.5 shrink-0">
+            <button onclick="toggleAppTheme()" id="btn-theme-toggle" title="Alternar Modo Oscuro / Claro" class="px-2 py-1 rounded-lg bg-slate-800 hover:bg-slate-700 text-amber-300 text-xs font-bold transition flex items-center gap-1 cursor-pointer">
+              <span id="theme-icon">☀️</span>
+            </button>
+            <button onclick="logout()" class="px-2.5 py-1 rounded-lg bg-slate-800 hover:bg-red-500/20 hover:text-red-300 text-slate-300 text-[11px] font-semibold transition cursor-pointer">Salir</button>
+          </div>
+        </div>
+
+        <nav class="p-3 flex lg:flex-col gap-1.5 overflow-x-auto">
+          <button id="nav-agenda" onclick="switchTab('agenda')" class="nav-btn flex items-center gap-3 px-4 py-3 rounded-xl text-xs sm:text-sm font-bold transition whitespace-nowrap bg-cyan-400 text-slate-950">
+            <span>📅</span> <span>Agenda, Citas & Reservas</span>
+          </button>
+          <button id="nav-patients" onclick="switchTab('patients')" class="nav-btn flex items-center gap-3 px-4 py-3 rounded-xl text-xs sm:text-sm font-semibold text-slate-300 hover:bg-slate-900 transition whitespace-nowrap">
+            <span>🗂️</span> <span>Expedientes & Clientes</span>
+          </button>
+          <button id="nav-consult" onclick="switchTab('consult')" class="nav-btn flex items-center gap-3 px-4 py-3 rounded-xl text-xs sm:text-sm font-semibold text-slate-300 hover:bg-slate-900 transition whitespace-nowrap">
+            <span>🩺</span> <span>Nueva Consulta & Receta</span>
+          </button>
+          <button id="nav-reminders" onclick="switchTab('reminders')" class="nav-btn flex items-center gap-3 px-4 py-3 rounded-xl text-xs sm:text-sm font-semibold text-slate-300 hover:bg-slate-900 transition whitespace-nowrap">
+            <span>📲</span> <span>Recordatorios (WA/SMS/Mail)</span>
+          </button>
+          <button id="nav-users" onclick="switchTab('users')" class="nav-btn flex items-center gap-3 px-4 py-3 rounded-xl text-xs sm:text-sm font-semibold text-slate-300 hover:bg-slate-900 transition whitespace-nowrap">
+            <span>👥</span> <span>4 Usuarios & Roles</span>
+          </button>
+          <button id="nav-settings" onclick="switchTab('settings')" class="nav-btn flex items-center gap-3 px-4 py-3 rounded-xl text-xs sm:text-sm font-semibold text-slate-300 hover:bg-slate-900 transition whitespace-nowrap">
+            <span>⚙️</span> <span>Personalizar Marca</span>
+          </button>
+        </nav>
+      </div>
+
+      <div class="hidden lg:block p-4 border-t border-slate-800/80 space-y-2">
+        <div class="p-3 rounded-xl bg-slate-900/90 border border-slate-800 text-[11px] space-y-1">
+          <div class="flex justify-between text-slate-400">
+            <span>Licencia Activa:</span>
+            <span id="sidebar-user-count" class="text-cyan-400 font-bold mono">4/4 Usuarios</span>
+          </div>
+          <div class="w-full h-1.5 bg-slate-800 rounded-full overflow-hidden">
+            <div class="h-full bg-cyan-400 w-full"></div>
+          </div>
+        </div>
+        <button onclick="installAppPrompt()" class="w-full py-2.5 px-3 rounded-xl bg-emerald-500/15 border border-emerald-500/30 text-emerald-300 hover:bg-emerald-500/25 text-xs font-bold transition">
+          📲 Instalar en PC / Tablet / Móvil
+        </button>
+      </div>
+    </aside>
+
+    <!-- MAIN CONTENT -->
+    <main class="flex-1 p-4 md:p-6 overflow-y-auto no-print">
+
+      <!-- TAB 1: AGENDA, CITAS & RESERVAS -->
+      <section id="tab-agenda" class="space-y-6">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+          <div>
+            <span class="text-xs font-mono uppercase text-cyan-400 font-bold">SISTEMA ANTI-AUSENTISMO & AGENDAMIENTO</span>
+            <h2 class="text-2xl font-extrabold text-white">Agenda de Citas, Consultas y Reservas</h2>
+          </div>
+          <div class="flex flex-wrap gap-2">
+            <button onclick="openAppointmentModal()" class="px-4 py-2.5 rounded-xl bg-cyan-400 hover:bg-cyan-300 text-slate-950 font-extrabold text-xs transition shadow-lg">
+              + Agendar Nueva Cita / Reserva
+            </button>
+            <button onclick="switchTab('reminders')" class="px-4 py-2.5 rounded-xl bg-emerald-500/20 border border-emerald-500/40 text-emerald-300 font-bold text-xs transition">
+              📲 Enviar Recordatorios del Día
+            </button>
+          </div>
+        </div>
+
+        <!-- KPIs Agenda -->
+        <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
+          <div class="glass p-4 rounded-2xl border-l-4 border-cyan-400">
+            <span class="text-xs text-slate-400">Total Citas Programadas</span>
+            <p id="kpi-app-total" class="text-2xl font-black text-white mono mt-1">0</p>
+          </div>
+          <div class="glass p-4 rounded-2xl border-l-4 border-emerald-400">
+            <span class="text-xs text-slate-400">Citas Confirmadas</span>
+            <p id="kpi-app-confirmed" class="text-2xl font-black text-emerald-400 mono mt-1">0</p>
+          </div>
+          <div class="glass p-4 rounded-2xl border-l-4 border-amber-400">
+            <span class="text-xs text-slate-400">En Sala / Pendientes</span>
+            <p id="kpi-app-waiting" class="text-2xl font-black text-amber-400 mono mt-1">0</p>
+          </div>
+          <div class="glass p-4 rounded-2xl border-l-4 border-teal-400">
+            <span class="text-xs text-slate-400">Recordatorios Enviados</span>
+            <p id="kpi-app-reminded" class="text-2xl font-black text-teal-400 mono mt-1">0</p>
+          </div>
+        </div>
+
+        <!-- Lista de Citas -->
+        <div class="glass rounded-3xl overflow-hidden">
+          <div class="overflow-x-auto">
+            <table class="w-full text-left text-xs sm:text-sm">
+              <thead class="bg-slate-900/90 text-slate-400 uppercase text-[11px] font-bold border-b border-slate-800">
+                <tr>
+                  <th class="py-3.5 px-4">Fecha y Hora</th>
+                  <th class="py-3.5 px-4">Paciente / Cliente</th>
+                  <th class="py-3.5 px-4">Especialidad / Servicio</th>
+                  <th class="py-3.5 px-4">Profesional</th>
+                  <th class="py-3.5 px-4">Estado Cita</th>
+                  <th class="py-3.5 px-4">Recordatorio</th>
+                  <th class="py-3.5 px-4 text-right">Acciones Rápidas</th>
+                </tr>
+              </thead>
+              <tbody id="agenda-table-body" class="divide-y divide-slate-800/70"></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- TAB 2: EXPEDIENTES CLÍNICOS / DIRECTORIO DE PACIENTES Y CLIENTES -->
+      <section id="tab-patients" class="space-y-6 hidden">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+          <div>
+            <span class="text-xs font-mono uppercase text-emerald-400 font-bold">EXPEDIENTE DIGITAL INTEGRAL</span>
+            <h2 class="text-2xl font-extrabold text-white">Directorio de Expedientes e Historial Clínico</h2>
+          </div>
+          <div class="flex gap-2">
+            <input id="pat-search" type="text" oninput="renderPatients()" placeholder="🔍 Buscar expediente por nombre, DNI o teléfono..." class="bg-slate-900 border border-slate-700 rounded-xl px-4 py-2 text-xs text-white w-64">
+            <button onclick="openPatientModal()" class="px-4 py-2.5 rounded-xl bg-emerald-400 text-slate-950 font-extrabold text-xs">
+              + Nuevo Expediente
+            </button>
+          </div>
+        </div>
+
+        <div id="patients-grid" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4"></div>
+      </section>
+
+      <!-- TAB 3: NUEVA CONSULTA POR ESPECIALIDAD & RECETARIO IMPRIMIBLE -->
+      <section id="tab-consult" class="space-y-6 hidden">
+        <div class="glass rounded-3xl p-6 sm:p-8 border border-cyan-500/30 space-y-6">
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-800 pb-4">
+            <div>
+              <span class="text-xs font-mono uppercase text-cyan-400 font-bold">ATENCIÓN DE CONSULTA & ÓRDENES</span>
+              <h2 class="text-2xl font-extrabold text-white">Registro de Consulta Multi-Especialidad y Receta</h2>
+            </div>
+            <div class="flex items-center gap-2">
+              <label class="text-xs font-bold text-slate-400">Especialidad / Giro:</label>
+              <select id="consult-specialty" onchange="renderSpecialtyFields()" class="bg-slate-900 border border-cyan-500/50 rounded-xl px-3 py-2 text-xs font-bold text-cyan-300">
+                <option value="Pediatría">👶 Pediatría</option>
+                <option value="Ginecología y Obstetricia">🤰 Ginecología y Obstetricia</option>
+                <option value="Medicina Interna">🩺 Medicina Interna / General</option>
+                <option value="Oncología">🎗️ Oncología</option>
+                <option value="Clínica Dental / Odontología">🦷 Clínica Dental / Odontología</option>
+                <option value="Salón / Taller / Consultoría">✨ Salón / Taller / Consultoría</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Selección de Paciente y Signos Vitales -->
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs">
+            <div>
+              <label class="text-slate-300 font-bold block mb-1">Seleccionar Paciente / Expediente</label>
+              <select id="consult-patient-id" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2.5 text-white font-semibold"></select>
+            </div>
+            <div>
+              <label class="text-slate-300 font-bold block mb-1">Presión Arterial / FC / Temp</label>
+              <input id="consult-vitals" type="text" placeholder="Ej: PA 120/80 · FC 74 lpm · T 36.7°C" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2.5 text-white mono">
+            </div>
+            <div>
+              <label id="spec-field-label" class="text-cyan-400 font-bold block mb-1">Datos Específicos de Especialidad</label>
+              <input id="consult-spec-data" type="text" placeholder="Peso: 18kg · Talla: 105cm · Percentil 50" class="w-full bg-slate-900 border border-cyan-500/40 rounded-xl px-3 py-2.5 text-white">
+            </div>
+          </div>
+
+          <!-- Notas SOAP y Receta -->
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
+            <div>
+              <label class="text-slate-300 font-bold block mb-1">Motivo de Consulta, Evolución y Examen Físico</label>
+              <textarea id="consult-notes" rows="4" placeholder="Describa los hallazgos clínicos, síntomas o detalles del servicio..." class="w-full bg-slate-900 border border-slate-700 rounded-xl p-3 text-white"></textarea>
+            </div>
+            <div>
+              <label class="text-slate-300 font-bold block mb-1">Diagnóstico (CIE-10) / Evaluación Técnica</label>
+              <textarea id="consult-diagnosis" rows="4" placeholder="Ej: J00 Rinofaringitis aguda / Control sano / Tratamiento conducto pieza 24..." class="w-full bg-slate-900 border border-slate-700 rounded-xl p-3 text-white"></textarea>
+            </div>
+            <div class="md:col-span-2">
+              <label class="text-emerald-400 font-bold block mb-1">Rp / Receta Médica, Indicaciones y Tratamiento (Aparecerá en la Receta Imprimible)</label>
+              <textarea id="consult-rx" rows="4" placeholder="1. Paracetamol 500mg cada 8 horas por 3 días.&#10;2. Abundantes líquidos.&#10;3. Próximo control en 7 días." class="w-full bg-slate-950 border border-emerald-500/40 rounded-xl p-3 text-white font-mono"></textarea>
+            </div>
+          </div>
+
+          <div class="flex flex-wrap justify-end gap-3 pt-4 border-t border-slate-800">
+            <button onclick="saveConsultation(true)" class="px-6 py-3.5 rounded-xl bg-gradient-to-r from-cyan-400 to-emerald-400 text-slate-950 font-black text-xs shadow-lg hover:scale-[1.01] transition">
+              🖨️ Guardar en Expediente y Generar Receta Imprimible
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <!-- TAB 4: CENTRO DE RECORDATORIOS AUTOMÁTICOS (WHATSAPP, SMS, CORREO) -->
+      <section id="tab-reminders" class="space-y-6 hidden">
+        <div class="glass rounded-3xl p-6 sm:p-8 border border-emerald-500/30 space-y-6">
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-800 pb-4">
+            <div>
+              <span class="text-xs font-mono uppercase text-emerald-400 font-bold">REDUCCIÓN DEL 90% DE AUSENTISMO</span>
+              <h2 class="text-2xl font-extrabold text-white">Centro de Recordatorios Automáticos (WhatsApp, SMS y Correo)</h2>
+              <p class="text-xs text-slate-400 mt-1">Personaliza la plantilla y dispara recordatorios automáticos con 1 clic a todos tus pacientes/clientes citados.</p>
+            </div>
+          </div>
+
+          <div class="bg-slate-900/80 p-5 rounded-2xl border border-slate-800 space-y-3">
+            <div class="flex items-center justify-between">
+              <label class="text-xs font-bold text-emerald-400 uppercase">Plantilla Inteligente de Recordatorio</label>
+              <span class="text-[11px] text-slate-400 mono">Variables: {paciente}, {fecha}, {hora}, {especialidad}, {clinica}</span>
+            </div>
+            <textarea id="rem-template" rows="3" onchange="saveReminderTemplate()" class="w-full bg-slate-950 border border-slate-700 rounded-xl p-3 text-xs text-white leading-relaxed"></textarea>
+          </div>
+
+          <div class="space-y-3" id="reminders-list"></div>
+        </div>
+      </section>
+
+      <!-- TAB 5: 4 USUARIOS Y ROLES -->
+      <section id="tab-users" class="space-y-6 hidden">
+        <div class="glass rounded-3xl p-6 border border-cyan-500/30 flex items-center justify-between">
+          <div>
+            <span class="text-xs font-mono uppercase text-cyan-400 font-bold">LICENCIA PARA 4 USUARIOS CON ROLES</span>
+            <h2 class="text-2xl font-extrabold text-white">Control de Accesos (1 Principal + 3 Secundarios)</h2>
+          </div>
+          <span id="med-users-badge" class="px-4 py-2 rounded-xl bg-cyan-500/15 border border-cyan-500/40 text-cyan-300 font-mono font-bold text-sm">4 / 4 Usuarios</span>
+        </div>
+        <div id="med-users-grid" class="grid grid-cols-1 md:grid-cols-2 gap-6"></div>
+      </section>
+
+      <!-- TAB 6: PERSONALIZAR MARCA WHITE-LABEL -->
+      <section id="tab-settings" class="space-y-6 hidden">
+        <div class="glass rounded-3xl p-6 sm:p-8 space-y-6 max-w-4xl">
+          <div class="flex items-center justify-between border-b border-slate-800 pb-4">
+            <div>
+              <span class="text-xs font-mono uppercase text-cyan-400 font-bold">WHITE-LABEL CONFIG</span>
+              <h2 class="text-2xl font-extrabold text-white">Personalizar Logo, Nombre y Especialidad</h2>
+            </div>
+            <button onclick="saveClinicSettings()" class="px-6 py-3 rounded-xl bg-cyan-400 text-slate-950 font-extrabold text-xs">
+              💾 Guardar Configuración
+            </button>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-6 items-center bg-slate-900/70 p-5 rounded-2xl border border-slate-800">
+            <div class="flex items-center gap-4">
+              <div id="set-logo-preview" class="w-20 h-20 rounded-2xl bg-slate-950 border-2 border-cyan-500/40 flex items-center justify-center overflow-hidden shrink-0"></div>
+              <div class="space-y-2">
+                <label class="block text-xs font-bold text-white">Subir Logo de tu Clínica / Negocio</label>
+                <input type="file" accept="image/*" onchange="uploadClinicLogo(event)" class="text-xs text-slate-400 file:mr-2 file:py-1.5 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-bold file:bg-cyan-400 file:text-slate-950 cursor-pointer">
+                <button onclick="clearClinicLogo()" class="text-[11px] text-red-400 hover:underline block">Quitar logo</button>
+              </div>
+            </div>
+            <div class="md:col-span-2 grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs">
+              <div>
+                <label class="text-slate-300 font-bold block mb-1">Nombre de la Clínica / Salón / Taller</label>
+                <input id="set-clinic-name" type="text" class="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2.5 text-white">
+              </div>
+              <div>
+                <label class="text-slate-300 font-bold block mb-1">Especialidad o Giro Principal</label>
+                <select id="set-clinic-spec" class="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2.5 text-white">
+                  <option value="Centro Médico Multiespecialidad">🏥 Centro Médico Multiespecialidad</option>
+                  <option value="Clínica Pediátrica">👶 Clínica Pediátrica</option>
+                  <option value="Ginecología y Obstetricia">🤰 Ginecología y Obstetricia</option>
+                  <option value="Medicina Interna & Oncología">🩺 Medicina Interna & Oncología</option>
+                  <option value="Clínica Dental Avanzada">🦷 Clínica Dental / Odontología</option>
+                  <option value="Salón de Belleza & Spa">💇‍♀️ Salón de Belleza & Estética</option>
+                  <option value="Taller Mecánico & Servicio">🔧 Taller Mecánico Automotriz</option>
+                  <option value="Firma de Consultoría">💼 Firma de Consultoría & Reservas</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 text-xs">
+            <div>
+              <label class="text-slate-400 font-bold block mb-1">Registro Sanitario / Colegiado / NIT</label>
+              <input id="set-clinic-reg" type="text" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2.5 text-white">
+            </div>
+            <div>
+              <label class="text-slate-400 font-bold block mb-1">Teléfono / WhatsApp de Citas</label>
+              <input id="set-clinic-phone" type="text" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2.5 text-white">
+            </div>
+            <div>
+              <label class="text-slate-400 font-bold block mb-1">Correo de Notificaciones</label>
+              <input id="set-clinic-email" type="text" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2.5 text-white">
+            </div>
+            <div class="sm:col-span-3">
+              <label class="text-slate-400 font-bold block mb-1">Dirección del Consultorio / Negocio</label>
+              <input id="set-clinic-address" type="text" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2.5 text-white">
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <!-- MODAL NUEVA CITA / RESERVA -->
+  <div id="app-modal" class="fixed inset-0 z-50 bg-black/80 hidden items-center justify-center p-4 no-print">
+    <div class="glass max-w-md w-full rounded-3xl p-6 border border-cyan-500/40 space-y-4 text-xs">
+      <div class="flex items-center justify-between border-b border-slate-800 pb-3">
+        <h3 class="text-lg font-extrabold text-white">Agendar Nueva Cita / Reserva</h3>
+        <button onclick="closeAppointmentModal()" class="text-slate-400 hover:text-white text-xl">&times;</button>
+      </div>
+      <div class="space-y-3">
+        <div>
+          <label class="text-slate-400 font-bold block mb-1">Paciente / Cliente</label>
+          <select id="app-patient-id" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2.5 text-white"></select>
+        </div>
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="text-slate-400 font-bold block mb-1">Fecha</label>
+            <input id="app-date" type="date" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-white mono">
+          </div>
+          <div>
+            <label class="text-slate-400 font-bold block mb-1">Hora</label>
+            <input id="app-time" type="time" value="09:30" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-white mono">
+          </div>
+        </div>
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="text-slate-400 font-bold block mb-1">Especialidad / Servicio</label>
+            <select id="app-spec" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-white">
+              <option value="Pediatría">Pediatría</option>
+              <option value="Ginecología">Ginecología</option>
+              <option value="Medicina Interna">Medicina Interna</option>
+              <option value="Oncología">Oncología</option>
+              <option value="Clínica Dental">Clínica Dental</option>
+              <option value="Servicio / Cita General">Servicio / Cita General</option>
+            </select>
+          </div>
+          <div>
+            <label class="text-slate-400 font-bold block mb-1">Profesional Asignado</label>
+            <input id="app-doc" type="text" value="Dr. Principal" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-white">
+          </div>
+        </div>
+        <div>
+          <label class="text-slate-400 font-bold block mb-1">Motivo de la Cita / Observación</label>
+          <input id="app-reason" type="text" placeholder="Control mensual / Limpieza dental / Consulta..." class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-white">
+        </div>
+      </div>
+      <div class="flex justify-end gap-2 pt-3 border-t border-slate-800">
+        <button onclick="closeAppointmentModal()" class="px-4 py-2 rounded-xl bg-slate-800 text-slate-300 font-bold">Cancelar</button>
+        <button onclick="saveAppointment()" class="px-6 py-2 rounded-xl bg-cyan-400 text-slate-950 font-extrabold">Confirmar y Agendar</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL NUEVO EXPEDIENTE -->
+  <div id="pat-modal" class="fixed inset-0 z-50 bg-black/80 hidden items-center justify-center p-4 no-print">
+    <div class="glass max-w-md w-full rounded-3xl p-6 border border-emerald-500/40 space-y-4 text-xs">
+      <div class="flex items-center justify-between border-b border-slate-800 pb-3">
+        <h3 class="text-lg font-extrabold text-white">Crear Nuevo Expediente</h3>
+        <button onclick="closePatientModal()" class="text-slate-400 hover:text-white text-xl">&times;</button>
+      </div>
+      <div class="grid grid-cols-2 gap-3">
+        <div class="col-span-2">
+          <label class="text-slate-400 font-bold block mb-1">Nombre Completo del Paciente / Cliente</label>
+          <input id="new-pat-name" type="text" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-white">
+        </div>
+        <div>
+          <label class="text-slate-400 font-bold block mb-1">Edad / Fecha Nac.</label>
+          <input id="new-pat-age" type="text" placeholder="Ej: 8 años / 34 años" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-white">
+        </div>
+        <div>
+          <label class="text-slate-400 font-bold block mb-1">Tipo Sangre / DNI</label>
+          <input id="new-pat-blood" type="text" placeholder="O+ / ID-4012" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-white">
+        </div>
+        <div>
+          <label class="text-slate-400 font-bold block mb-1">WhatsApp / Teléfono</label>
+          <input id="new-pat-phone" type="text" placeholder="+505 88887777" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-white mono">
+        </div>
+        <div>
+          <label class="text-slate-400 font-bold block mb-1">Correo Electrónico</label>
+          <input id="new-pat-email" type="email" placeholder="paciente@correo.com" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-white">
+        </div>
+        <div class="col-span-2">
+          <label class="text-red-400 font-bold block mb-1">Alergias / Alertas Médicas o Notas Importantes</label>
+          <input id="new-pat-allergies" type="text" placeholder="Ej: Alergia a Penicilina / Ninguna conocida" class="w-full bg-slate-900 border border-red-500/40 rounded-xl px-3 py-2 text-white">
+        </div>
+      </div>
+      <div class="flex justify-end gap-2 pt-3 border-t border-slate-800">
+        <button onclick="closePatientModal()" class="px-4 py-2 rounded-xl bg-slate-800 text-slate-300 font-bold">Cancelar</button>
+        <button onclick="savePatient()" class="px-6 py-2 rounded-xl bg-emerald-400 text-slate-950 font-extrabold">Guardar Expediente</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL RECETA / HISTORIAL IMPRIMIBLE -->
+  <div id="rx-modal" class="fixed inset-0 z-50 bg-black/85 hidden items-center justify-center p-4 overflow-y-auto">
+    <div class="bg-slate-900 max-w-xl w-full rounded-3xl p-6 border border-cyan-500/40 space-y-4">
+      <div class="flex items-center justify-between no-print">
+        <span class="text-xs font-mono text-cyan-400 font-bold">🩺 DOCUMENTO CLÍNICO / RECETA OFICIAL</span>
+        <button onclick="closeRxModal()" class="text-slate-400 hover:text-white text-xl">&times;</button>
+      </div>
+      <div id="print-rx-area" class="bg-white text-slate-900 rounded-2xl p-8 space-y-4 text-xs"></div>
+      <div class="flex gap-2 no-print">
+        <button onclick="window.print()" class="flex-1 py-3 rounded-xl bg-cyan-400 text-slate-950 font-extrabold text-xs">🖨️ Imprimir / Guardar PDF</button>
+        <button onclick="closeRxModal()" class="px-5 py-3 rounded-xl bg-slate-800 text-slate-300 font-bold text-xs">Cerrar</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const STORAGE_KEY = 'KINETIX_MED_SUITE_V3';
+    let currentUser = null;
+
+    const defaultState = {
+      settings: {
+        clinicName: 'Centro Clínico & Especialidades Kinetix',
+        specialty: 'Centro Médico Multiespecialidad',
+        regId: 'REG-MED-90421',
+        phone: '+505 8888-1111',
+        email: 'citas@clinicakinetix.com',
+        address: 'Torre Médica Corporativa, Piso 3',
+        logo: '',
+        reminderTemplate: 'Hola *{paciente}* 👋, le recordamos su cita de *{especialidad}* en *{clinica}* el día *{fecha}* a las *{hora}*. Por favor responda CONFIRMAR para asegurar su espacio.'
+      },
+      users: [
+        { id: 1, name: 'Dr. Director Principal', role: 'ADMIN', pin: '1234', active: true, isMaster: true },
+        { id: 2, name: 'Dra. Especialista Asociada', role: 'DOCTOR', pin: '1111', active: true, isMaster: false },
+        { id: 3, name: 'Recepción & Agendamiento', role: 'RECEPCION', pin: '2222', active: true, isMaster: false },
+        { id: 4, name: 'Enfermería & Signos Vitales', role: 'ASISTENTE', pin: '3333', active: true, isMaster: false }
+      ],
+      patients: [
+        {
+          id: 1, code: 'EXP-1001', name: 'Sofía Valentina Morales', age: '6 años', blood: 'O+',
+          phone: '50588881111', email: 'familia.morales@email.com', allergies: 'Ninguna conocida',
+          history: [
+            { date: '2026-10-10', specialty: 'Pediatría', doctor: 'Dr. Director Principal', vitals: 'T: 36.6°C · FC: 90 lpm', specData: 'Peso: 21 kg · Talla: 115 cm · Esquema vacunas al día', diagnosis: 'Z00.1 Control de salud de rutina del niño', rx: 'Vitamina C gotas 10 gotas cada mañana por 30 días. Cita control en 3 meses.' }
+          ]
+        },
+        {
+          id: 2, code: 'EXP-1002', name: 'María Fernanda Castellanos', age: '31 años', blood: 'A+',
+          phone: '50588882222', email: 'mcastellanos@email.com', allergies: 'AINEs (Ibuprofeno)',
+          history: [
+            { date: '2026-10-14', specialty: 'Ginecología y Obstetricia', doctor: 'Dra. Especialista Asociada', vitals: 'PA: 110/70 · FC: 76', specData: 'Gestación 22 semanas · FCF: 146 lpm · Ultrasonido normal', diagnosis: 'Z34 Supervisión de embarazo normal', rx: 'Ácido Fólico + Hierro 1 tableta diaria. Ultrasonido estructural en 4 semanas.' }
+          ]
+        },
+        {
+          id: 3, code: 'EXP-1003', name: 'Carlos Roberto Mendoza', age: '54 años', blood: 'B+',
+          phone: '50588883333', email: 'cmendoza@empresa.com', allergies: 'Penicilina',
+          history: [
+            { date: '2026-10-20', specialty: 'Medicina Interna', vitals: 'PA: 135/85 · SpO2: 98%', doctor: 'Dr. Director Principal', specData: 'Glucosa capilar 104 mg/dL · Perfil lipídico en control', diagnosis: 'I10 Hipertensión esencial controlada', rx: 'Losartán 50mg 1 tableta cada día. Dieta baja en sodio.' }
+          ]
+        }
+      ],
+      appointments: [
+        { id: 501, patientId: 1, date: new Date().toISOString().slice(0,10), time: '09:00', specialty: 'Pediatría', doctor: 'Dr. Director Principal', reason: 'Control de crecimiento y desarrollo', status: 'Confirmada', reminded: true },
+        { id: 502, patientId: 2, date: new Date().toISOString().slice(0,10), time: '10:30', specialty: 'Ginecología', doctor: 'Dra. Especialista Asociada', reason: 'Control prenatal mensual + Ecografía', status: 'Agendada', reminded: false },
+        { id: 503, patientId: 3, date: new Date().toISOString().slice(0,10), time: '14:00', specialty: 'Clínica Dental', doctor: 'Dr. Director Principal', reason: 'Revisión odontológica y profilaxis', status: 'En Sala', reminded: true }
+      ]
+    };
+
+    let state = loadState();
+
+    function loadState() {
+      try {
+        const raw = localStorage.getItem(STORAGE_KEY);
+        if (!raw) return JSON.parse(JSON.stringify(defaultState));
+        const parsed = JSON.parse(raw);
+        if (!parsed.users || parsed.users.length !== 4) parsed.users = defaultState.users;
+        return parsed;
+      } catch (e) {
+        return JSON.parse(JSON.stringify(defaultState));
+      }
+    }
+
+    function saveState() {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+      applyBranding();
+    }
+
+    // Gestión de Modo Claro / Oscuro
+    function initTheme() {
+      const saved = localStorage.getItem('KINETIX_MED_THEME') || 'dark';
+      applyAppTheme(saved);
+    }
+
+    function toggleAppTheme() {
+      const isLight = document.documentElement.classList.contains('light');
+      const nextTheme = isLight ? 'dark' : 'light';
+      applyAppTheme(nextTheme);
+      localStorage.setItem('KINETIX_MED_THEME', nextTheme);
+    }
+
+    function applyAppTheme(theme) {
+      const ic = document.getElementById('theme-icon');
+      if (theme === 'light') {
+        document.documentElement.classList.remove('dark');
+        document.documentElement.classList.add('light');
+        if (ic) ic.textContent = '🌙';
+      } else {
+        document.documentElement.classList.remove('light');
+        document.documentElement.classList.add('dark');
+        if (ic) ic.textContent = '☀️';
+      }
+    }
+
+    function initApp() {
+      initTheme();
+      applyBranding();
+      populateLogin();
+    }
+
+    function applyBranding() {
+      const s = state.settings;
+      document.getElementById('login-clinic-name').textContent = s.clinicName;
+      document.getElementById('login-clinic-spec').textContent = `${s.specialty} · Licencia 4 Usuarios`;
+      document.getElementById('sidebar-clinic-name').textContent = s.clinicName;
+      document.getElementById('sidebar-specialty').textContent = s.specialty;
+
+      const logoHTML = s.logo
+        ? `<img src="${s.logo}" class="w-full h-full object-cover">`
+        : `<span class="font-black text-cyan-400 mono text-sm">MED</span>`;
+      document.getElementById('login-logo-box').innerHTML = logoHTML;
+      document.getElementById('sidebar-logo').innerHTML = logoHTML;
+      document.getElementById('set-logo-preview').innerHTML = logoHTML;
+
+      const activeCount = state.users.filter(u => u.active).length;
+      document.getElementById('sidebar-user-count').textContent = `${activeCount}/4 Usuarios`;
+    }
+
+    function populateLogin() {
+      const sel = document.getElementById('login-user-select');
+      sel.innerHTML = state.users.filter(u => u.active).map(u => `<option value="${u.id}">${u.name} (${u.role})</option>`).join('');
+    }
+
+    function handleLogin() {
+      const uid = Number(document.getElementById('login-user-select').value);
+      const pin = document.getElementById('login-pin-input').value.trim();
+      const user = state.users.find(u => u.id === uid && u.active);
+      if (!user || user.pin !== pin) {
+        document.getElementById('login-error').classList.remove('hidden');
+        return;
+      }
+      document.getElementById('login-error').classList.add('hidden');
+      currentUser = user;
+      document.getElementById('login-pin-input').value = '';
+      document.getElementById('login-screen').classList.add('hidden');
+      document.getElementById('app-container').classList.remove('hidden');
+      document.getElementById('active-user-name').textContent = user.name;
+      document.getElementById('active-user-role').textContent = user.role;
+
+      applyPermissions();
+      renderAgenda();
+      renderPatients();
+      populatePatientSelects();
+      renderSpecialtyFields();
+      renderReminders();
+      renderUsers();
+      loadClinicSettings();
+    }
+
+    function logout() {
+      currentUser = null;
+      populateLogin();
+      document.getElementById('app-container').classList.add('hidden');
+      document.getElementById('login-screen').classList.remove('hidden');
+    }
+
+    function applyPermissions() {
+      const r = currentUser.role;
+      const canConsult = ['ADMIN', 'DOCTOR', 'ASISTENTE'].includes(r);
+      const isAdmin = r === 'ADMIN';
+      document.getElementById('nav-consult').classList.toggle('hidden', !canConsult);
+      document.getElementById('nav-users').classList.toggle('hidden', !isAdmin);
+      document.getElementById('nav-settings').classList.toggle('hidden', !isAdmin);
+      switchTab('agenda');
+    }
+
+    function switchTab(tab) {
+      ['agenda', 'patients', 'consult', 'reminders', 'users', 'settings'].forEach(t => {
+        document.getElementById(`tab-${t}`).classList.toggle('hidden', t !== tab);
+        const btn = document.getElementById(`nav-${t}`);
+        if (btn) {
+          btn.className = t === tab
+            ? 'nav-btn flex items-center gap-3 px-4 py-3 rounded-xl text-xs sm:text-sm font-bold transition whitespace-nowrap bg-cyan-400 text-slate-950'
+            : 'nav-btn flex items-center gap-3 px-4 py-3 rounded-xl text-xs sm:text-sm font-semibold text-slate-300 hover:bg-slate-900 transition whitespace-nowrap';
+        }
+      });
+    }
+
+    // AGENDA Y CITAS
+    function renderAgenda() {
+      const tbody = document.getElementById('agenda-table-body');
+      tbody.innerHTML = '';
+
+      let conf = 0, wait = 0, rem = 0;
+
+      state.appointments.forEach(a => {
+        if (a.status === 'Confirmada' || a.status === 'Atendida') conf++;
+        if (a.status === 'Agendada' || a.status === 'En Sala') wait++;
+        if (a.reminded) rem++;
+
+        const pat = state.patients.find(p => p.id === Number(a.patientId)) || { name: 'Paciente', phone: '' };
+        const badgeColor = a.status === 'Confirmada' ? 'bg-emerald-500/20 text-emerald-300'
+          : a.status === 'En Sala' ? 'bg-amber-500/20 text-amber-300'
+          : a.status === 'Atendida' ? 'bg-cyan-500/20 text-cyan-300'
+          : 'bg-slate-800 text-slate-300';
+
+        const tr = document.createElement('tr');
+        tr.className = 'hover:bg-slate-900/50';
+        tr.innerHTML = `
+          <td class="py-3.5 px-4 font-mono text-xs text-white"><strong>${a.date}</strong> · <span class="text-cyan-400">${a.time}</span></td>
+          <td class="py-3.5 px-4 font-bold text-white">${pat.name}<span class="block text-[11px] text-slate-400 font-normal">${a.reason}</span></td>
+          <td class="py-3.5 px-4"><span class="px-2.5 py-1 rounded-lg bg-slate-800 text-cyan-300 text-xs font-semibold">${a.specialty}</span></td>
+          <td class="py-3.5 px-4 text-slate-300">${a.doctor}</td>
+          <td class="py-3.5 px-4">
+            <select onchange="changeAppStatus(${a.id}, this.value)" class="px-2.5 py-1 rounded-lg text-xs font-bold ${badgeColor} border border-slate-700">
+              <option value="Agendada" ${a.status==='Agendada'?'selected':''}>Agendada</option>
+              <option value="Confirmada" ${a.status==='Confirmada'?'selected':''}>Confirmada ✅</option>
+              <option value="En Sala" ${a.status==='En Sala'?'selected':''}>En Sala ⏳</option>
+              <option value="Atendida" ${a.status==='Atendida'?'selected':''}>Atendida 🩺</option>
+            </select>
+          </td>
+          <td class="py-3.5 px-4">
+            ${a.reminded
+              ? `<span class="text-xs text-emerald-400 font-bold">✓ Enviado</span>`
+              : `<button onclick="sendWhatsAppReminder(${a.id})" class="px-2.5 py-1 rounded-lg bg-amber-500/20 text-amber-300 text-xs font-bold hover:bg-amber-400 hover:text-slate-950 transition">📲 Recordar</button>`}
+          </td>
+          <td class="py-3.5 px-4 text-right space-x-1">
+            <button onclick="startConsultFromApp(${a.patientId}, '${a.specialty}')" class="px-3 py-1 rounded-lg bg-cyan-500/20 text-cyan-300 hover:bg-cyan-400 hover:text-slate-950 text-xs font-bold transition">🩺 Pasar a Consulta</button>
+          </td>
+        `;
+        tbody.appendChild(tr);
+      });
+
+      document.getElementById('kpi-app-total').textContent = state.appointments.length;
+      document.getElementById('kpi-app-confirmed').textContent = conf;
+      document.getElementById('kpi-app-waiting').textContent = wait;
+      document.getElementById('kpi-app-reminded').textContent = rem;
+    }
+
+    function changeAppStatus(aid, newStatus) {
+      const a = state.appointments.find(x => x.id === aid);
+      if (a) {
+        a.status = newStatus;
+        saveState();
+        renderAgenda();
+      }
+    }
+
+    function startConsultFromApp(patId, spec) {
+      switchTab('consult');
+      document.getElementById('consult-patient-id').value = patId;
+      const sel = document.getElementById('consult-specialty');
+      for (let i = 0; i < sel.options.length; i++) {
+        if (sel.options[i].value.includes(spec)) {
+          sel.selectedIndex = i;
+          break;
+        }
+      }
+      renderSpecialtyFields();
+    }
+
+    function openAppointmentModal() {
+      populatePatientSelects();
+      document.getElementById('app-date').value = new Date().toISOString().slice(0,10);
+      document.getElementById('app-modal').classList.remove('hidden');
+      document.getElementById('app-modal').classList.add('flex');
+    }
+
+    function closeAppointmentModal() {
+      document.getElementById('app-modal').classList.add('hidden');
+      document.getElementById('app-modal').classList.remove('flex');
+    }
+
+    function saveAppointment() {
+      const patId = Number(document.getElementById('app-patient-id').value);
+      state.appointments.unshift({
+        id: Date.now(),
+        patientId: patId,
+        date: document.getElementById('app-date').value,
+        time: document.getElementById('app-time').value,
+        specialty: document.getElementById('app-spec').value,
+        doctor: document.getElementById('app-doc').value.trim() || currentUser.name,
+        reason: document.getElementById('app-reason').value.trim() || 'Consulta Programada',
+        status: 'Agendada',
+        reminded: false
+      });
+      saveState();
+      renderAgenda();
+      renderReminders();
+      closeAppointmentModal();
+    }
+
+    // EXPEDIENTES Y PACIENTES
+    function populatePatientSelects() {
+      const html = state.patients.map(p => `<option value="${p.id}">${p.code} - ${p.name} (${p.age})</option>`).join('');
+      document.getElementById('consult-patient-id').innerHTML = html;
+      document.getElementById('app-patient-id').innerHTML = html;
+    }
+
+    function renderPatients() {
+      const q = (document.getElementById('pat-search').value || '').toLowerCase();
+      const grid = document.getElementById('patients-grid');
+      grid.innerHTML = '';
+
+      state.patients.filter(p => p.name.toLowerCase().includes(q) || p.code.toLowerCase().includes(q)).forEach(p => {
+        const lastH = p.history && p.history[0];
+        const card = document.createElement('div');
+        card.className = 'glass rounded-3xl p-5 border border-slate-800 hover:border-cyan-500/40 transition flex flex-col justify-between space-y-4';
+        card.innerHTML = `
+          <div class="space-y-2">
+            <div class="flex items-center justify-between text-xs">
+              <span class="font-mono font-bold text-cyan-400">${p.code}</span>
+              <span class="px-2 py-0.5 rounded bg-slate-800 text-slate-300 font-semibold">${p.age} · Sangre: ${p.blood}</span>
+            </div>
+            <h3 class="text-lg font-extrabold text-white">${p.name}</h3>
+            <p class="text-xs text-red-400 bg-red-500/10 border border-red-500/20 px-2.5 py-1 rounded-lg">
+              ⚠️ <strong>Alergias / Alertas:</strong> ${p.allergies}
+            </p>
+            ${lastH ? `
+              <div class="p-3 rounded-xl bg-slate-900/90 border border-slate-800 text-xs space-y-1">
+                <span class="text-[10px] font-mono text-emerald-400 uppercase font-bold">ÚLTIMA CONSULTA (${lastH.date} · ${lastH.specialty}):</span>
+                <p class="text-slate-200 font-semibold">${lastH.diagnosis}</p>
+                <p class="text-slate-400 text-[11px] truncate">${lastH.specData}</p>
+              </div>
+            ` : `<p class="text-xs text-slate-500 italic">Sin consultas registradas aún.</p>`}
+          </div>
+          <div class="flex items-center justify-between pt-3 border-t border-slate-800 text-xs">
+            <button onclick="viewPatientRecord(${p.id})" class="px-3 py-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-white font-bold">📄 Ver Historial / Receta</button>
+            <button onclick="startConsultFromApp(${p.id}, 'Medicina')" class="px-3 py-1.5 rounded-xl bg-cyan-400 text-slate-950 font-extrabold">+ Nueva Consulta</button>
+          </div>
+        `;
+        grid.appendChild(card);
+      });
+    }
+
+    function openPatientModal() {
+      document.getElementById('pat-modal').classList.remove('hidden');
+      document.getElementById('pat-modal').classList.add('flex');
+    }
+
+    function closePatientModal() {
+      document.getElementById('pat-modal').classList.add('hidden');
+      document.getElementById('pat-modal').classList.remove('flex');
+    }
+
+    function savePatient() {
+      const name = document.getElementById('new-pat-name').value.trim();
+      if (!name) return alert('Ingresa el nombre del paciente o cliente.');
+      state.patients.unshift({
+        id: Date.now(),
+        code: 'EXP-' + (1001 + state.patients.length),
+        name,
+        age: document.getElementById('new-pat-age').value.trim() || 'Adulto',
+        blood: document.getElementById('new-pat-blood').value.trim() || 'O+',
+        phone: document.getElementById('new-pat-phone').value.trim(),
+        email: document.getElementById('new-pat-email').value.trim(),
+        allergies: document.getElementById('new-pat-allergies').value.trim() || 'Ninguna conocida',
+        history: []
+      });
+      saveState();
+      populatePatientSelects();
+      renderPatients();
+      closePatientModal();
+    }
+
+    // CONSULTA POR ESPECIALIDAD Y RECETA
+    function renderSpecialtyFields() {
+      const spec = document.getElementById('consult-specialty').value;
+      const lbl = document.getElementById('spec-field-label');
+      const inp = document.getElementById('consult-spec-data');
+      const map = {
+        'Pediatría': ['👶 Parámetros Pediátricos (Peso, Talla, PC, Vacunas)', 'Peso: 18.5 kg · Talla: 108 cm · PC: 50 cm · Percentil 50'],
+        'Ginecología y Obstetricia': ['🤰 Control Gineco-Obstétrico (FUM, Gestas, Semanas, FCF)', 'FUM: 12/05 · 20 Semanas Gestación · FCF: 144 lpm · Papanicolaou Normal'],
+        'Medicina Interna': ['🩺 Medicina Interna (Glucemia, Función Renal, Riesgo CV)', 'Glucemia: 96 mg/dL · Creatinina: 0.9 · ECG Ritmo Sinusal Normal'],
+        'Oncología': ['🎗️ Control Oncológico (Estadio, ECOG, Ciclo Quimio/Inmuno)', 'Estadio IIA · ECOG 0 · Ciclo #3 Tolerado sin toxicidad hematológica'],
+        'Clínica Dental / Odontología': ['🦷 Odontograma & Tratamiento Dental (Pieza, Procedimiento)', 'Pieza #26 Resina Fotocurada · Profilaxis Ultrasónica Completa'],
+        'Salón / Taller / Consultoría': ['✨ Detalles Técnicos del Servicio / Orden de Trabajo', 'Servicio Premium Realizado · Garantía 30 días · Próximo mantenimiento']
+      };
+      const cfg = map[spec] || map['Medicina Interna'];
+      lbl.textContent = cfg[0];
+      inp.placeholder = cfg[1];
+    }
+
+    function saveConsultation(printAfter) {
+      const patId = Number(document.getElementById('consult-patient-id').value);
+      const pat = state.patients.find(p => p.id === patId);
+      if (!pat) return;
+
+      const entry = {
+        date: new Date().toISOString().slice(0,10),
+        specialty: document.getElementById('consult-specialty').value,
+        doctor: currentUser ? currentUser.name : 'Especialista',
+        vitals: document.getElementById('consult-vitals').value.trim() || 'Estables',
+        specData: document.getElementById('consult-spec-data').value.trim() || 'Control satisfactorio',
+        notes: document.getElementById('consult-notes').value.trim(),
+        diagnosis: document.getElementById('consult-diagnosis').value.trim() || 'Consulta de Especialidad',
+        rx: document.getElementById('consult-rx').value.trim() || 'Indicaciones generales entregadas.'
+      };
+
+      pat.history.unshift(entry);
+      saveState();
+      renderPatients();
+
+      document.getElementById('consult-notes').value = '';
+      document.getElementById('consult-diagnosis').value = '';
+      document.getElementById('consult-rx').value = '';
+
+      if (printAfter) showPrescriptionModal(pat, entry);
+    }
+
+    function viewPatientRecord(patId) {
+      const pat = state.patients.find(p => p.id === patId);
+      if (!pat) return;
+      const last = (pat.history && pat.history[0]) || {
+        date: new Date().toISOString().slice(0,10),
+        specialty: state.settings.specialty,
+        doctor: currentUser ? currentUser.name : 'Dr. Titular',
+        vitals: 'N/A',
+        specData: 'Apertura de expediente clínico',
+        diagnosis: 'Evaluación Inicial',
+        rx: 'Sin prescripción activa.'
+      };
+      showPrescriptionModal(pat, last);
+    }
+
+    function showPrescriptionModal(pat, entry) {
+      const s = state.settings;
+      const logoImg = s.logo ? `<img src="${s.logo}" class="h-14 object-contain">` : `<div class="w-12 h-12 rounded-xl bg-slate-900 text-white font-black flex items-center justify-center">MED</div>`;
+      document.getElementById('print-rx-area').innerHTML = `
+        <div class="flex items-center justify-between border-b-2 border-slate-900 pb-4">
+          <div class="flex items-center gap-4">
+            ${logoImg}
+            <div>
+              <h2 class="text-lg font-black uppercase">${s.clinicName}</h2>
+              <p class="text-xs font-bold text-slate-600">${entry.specialty} · ${s.regId}</p>
+              <p class="text-[11px] text-slate-500">${s.address} · Tel: ${s.phone}</p>
+            </div>
+          </div>
+          <div class="text-right font-mono text-xs">
+            <strong>EXPEDIENTE: ${pat.code}</strong>
+            <span class="block">Fecha: ${entry.date}</span>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-3 gap-2 bg-slate-100 p-3 rounded-xl border border-slate-300 text-xs">
+          <div><strong>Paciente:</strong> ${pat.name}</div>
+          <div><strong>Edad / Sangre:</strong> ${pat.age} (${pat.blood})</div>
+          <div><strong>Alergias:</strong> <span class="text-red-600 font-bold">${pat.allergies}</span></div>
+          <div class="col-span-3"><strong>Signos Vitales & Parámetros:</strong> ${entry.vitals} | ${entry.specData}</div>
+        </div>
+
+        <div class="space-y-2">
+          <h4 class="font-black uppercase text-xs border-b border-slate-300 pb-1">Diagnóstico / Evaluación Clínica:</h4>
+          <p class="text-sm font-semibold">${entry.diagnosis}</p>
+        </div>
+
+        <div class="space-y-2 min-h-[140px]">
+          <h4 class="font-black uppercase text-xs border-b border-slate-300 pb-1">Rp. / Receta e Indicaciones Terapéuticas:</h4>
+          <pre class="font-sans text-sm whitespace-pre-wrap leading-relaxed">${entry.rx}</pre>
+        </div>
+
+        <div class="pt-10 flex items-center justify-between border-t border-slate-300 text-xs">
+          <span>Emitido en Kinetix Med Suite</span>
+          <div class="text-center">
+            <div class="w-48 border-b border-black mb-1"></div>
+            <strong>${entry.doctor}</strong>
+            <span class="block text-[10px]">Firma y Sello Profesional</span>
+          </div>
+        </div>
+      `;
+      document.getElementById('rx-modal').classList.remove('hidden');
+      document.getElementById('rx-modal').classList.add('flex');
+    }
+
+    function closeRxModal() {
+      document.getElementById('rx-modal').classList.add('hidden');
+      document.getElementById('rx-modal').classList.remove('flex');
+    }
+
+    // RECORDATORIOS AUTOMÁTICOS (WHATSAPP, SMS, CORREO)
+    function renderReminders() {
+      document.getElementById('rem-template').value = state.settings.reminderTemplate;
+      const box = document.getElementById('reminders-list');
+      box.innerHTML = state.appointments.map(a => {
+        const pat = state.patients.find(p => p.id === Number(a.patientId)) || { name: 'Cliente', phone: '', email: '' };
+        const msg = buildReminderMessage(a, pat);
+        return `
+          <div class="p-4 rounded-2xl bg-slate-900 border border-slate-800 flex flex-col md:flex-row md:items-center justify-between gap-4 text-xs">
+            <div class="space-y-1">
+              <div class="flex items-center gap-2">
+                <strong class="text-white text-sm">${pat.name}</strong>
+                <span class="px-2 py-0.5 rounded bg-cyan-500/20 text-cyan-300 font-bold">${a.specialty}</span>
+                <span class="font-mono text-slate-400">${a.date} · ${a.time}</span>
+              </div>
+              <p class="text-slate-400 italic">"${msg}"</p>
+            </div>
+            <div class="flex flex-wrap gap-2 shrink-0">
+              <button onclick="sendWhatsAppReminder(${a.id})" class="px-3 py-2 rounded-xl bg-emerald-500 text-slate-950 font-extrabold hover:bg-emerald-400 transition">
+                📲 WhatsApp
+              </button>
+              <button onclick="sendSMSReminder(${a.id})" class="px-3 py-2 rounded-xl bg-cyan-500/20 text-cyan-300 border border-cyan-500/40 font-bold hover:bg-cyan-400 hover:text-slate-950 transition">
+                💬 SMS
+              </button>
+              <button onclick="sendEmailReminder(${a.id})" class="px-3 py-2 rounded-xl bg-slate-800 text-slate-200 font-bold hover:bg-slate-700 transition">
+                ✉️ Correo
+              </button>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function buildReminderMessage(app, pat) {
+      return (state.settings.reminderTemplate || '')
+        .replace('{paciente}', pat.name)
+        .replace('{fecha}', app.date)
+        .replace('{hora}', app.time)
+        .replace('{especialidad}', app.specialty)
+        .replace('{clinica}', state.settings.clinicName);
+    }
+
+    function saveReminderTemplate() {
+      state.settings.reminderTemplate = document.getElementById('rem-template').value;
+      saveState();
+      renderReminders();
+    }
+
+    function sendWhatsAppReminder(aid) {
+      const a = state.appointments.find(x => x.id === aid);
+      if (!a) return;
+      const pat = state.patients.find(p => p.id === Number(a.patientId)) || { name: 'Cliente', phone: '' };
+      const msg = encodeURIComponent(buildReminderMessage(a, pat));
+      const phone = (pat.phone || '').replace(/[^0-9]/g, '');
+      a.reminded = true;
+      saveState();
+      renderAgenda();
+      renderReminders();
+      window.open(`https://wa.me/${phone}?text=${msg}`, '_blank');
+    }
+
+    function sendSMSReminder(aid) {
+      const a = state.appointments.find(x => x.id === aid);
+      if (!a) return;
+      const pat = state.patients.find(p => p.id === Number(a.patientId)) || { name: 'Cliente', phone: '' };
+      const msg = encodeURIComponent(buildReminderMessage(a, pat));
+      a.reminded = true;
+      saveState();
+      renderAgenda();
+      renderReminders();
+      window.open(`sms:${pat.phone || ''}?body=${msg}`, '_self');
+    }
+
+    function sendEmailReminder(aid) {
+      const a = state.appointments.find(x => x.id === aid);
+      if (!a) return;
+      const pat = state.patients.find(p => p.id === Number(a.patientId)) || { name: 'Cliente', email: '' };
+      const msg = encodeURIComponent(buildReminderMessage(a, pat));
+      const subj = encodeURIComponent(`Recordatorio de Cita - ${state.settings.clinicName}`);
+      a.reminded = true;
+      saveState();
+      renderAgenda();
+      renderReminders();
+      window.open(`mailto:${pat.email || ''}?subject=${subj}&body=${msg}`, '_self');
+    }
+
+    // 4 USUARIOS Y ROLES
+    function renderUsers() {
+      const activeCount = state.users.filter(u => u.active).length;
+      document.getElementById('med-users-badge').textContent = `Usuarios Activos: ${activeCount} / 4`;
+      document.getElementById('med-users-grid').innerHTML = state.users.map((u, idx) => `
+        <div class="glass rounded-3xl p-6 border ${u.isMaster ? 'border-cyan-500/50' : 'border-slate-800'} space-y-4 text-xs">
+          <div class="flex items-center justify-between">
+            <div>
+              <span class="text-[10px] font-mono uppercase ${u.isMaster ? 'text-cyan-400' : 'text-emerald-400'} font-bold">
+                ${u.isMaster ? '👑 USUARIO PRINCIPAL (DIRECTOR)' : `USUARIO ADICIONAL #${idx}`}
+              </span>
+              <h4 class="text-base font-bold text-white">${u.name}</h4>
+            </div>
+            ${u.isMaster ? '<span class="px-2.5 py-1 rounded bg-cyan-500/20 text-cyan-300 font-bold">Principal</span>' : `
+              <label class="flex items-center gap-2 cursor-pointer">
+                <input type="checkbox" ${u.active ? 'checked' : ''} onchange="updateMedUser(${u.id}, 'active', this.checked)" class="accent-cyan-400 w-4 h-4">
+                <span>${u.active ? 'Activo' : 'Inactivo'}</span>
+              </label>
+            `}
+          </div>
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-2 border-t border-slate-800">
+            <div>
+              <label class="text-slate-400 block mb-1">Nombre / Especialista</label>
+              <input type="text" value="${u.name}" onchange="updateMedUser(${u.id}, 'name', this.value)" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-white font-semibold">
+            </div>
+            <div>
+              <label class="text-slate-400 block mb-1">Rol y Permisos</label>
+              <select ${u.isMaster ? 'disabled' : ''} onchange="updateMedUser(${u.id}, 'role', this.value)" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-white font-semibold">
+                <option value="ADMIN" ${u.role==='ADMIN'?'selected':''}>ADMIN (Director Total)</option>
+                <option value="DOCTOR" ${u.role==='DOCTOR'?'selected':''}>DOCTOR / ESPECIALISTA</option>
+                <option value="RECEPCION" ${u.role==='RECEPCION'?'selected':''}>RECEPCIÓN & CITAS</option>
+                <option value="ASISTENTE" ${u.role==='ASISTENTE'?'selected':''}>ENFERMERÍA / ASISTENTE</option>
+              </select>
+            </div>
+            <div>
+              <label class="text-slate-400 block mb-1">PIN Acceso</label>
+              <input type="text" value="${u.pin}" onchange="updateMedUser(${u.id}, 'pin', this.value)" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-cyan-400 font-mono font-bold text-center">
+            </div>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function updateMedUser(uid, field, val) {
+      const u = state.users.find(x => x.id === uid);
+      if (u) {
+        u[field] = val;
+        saveState();
+        renderUsers();
+      }
+    }
+
+    // CONFIGURACIÓN WHITE-LABEL
+    function loadClinicSettings() {
+      const s = state.settings;
+      document.getElementById('set-clinic-name').value = s.clinicName;
+      document.getElementById('set-clinic-spec').value = s.specialty;
+      document.getElementById('set-clinic-reg').value = s.regId;
+      document.getElementById('set-clinic-phone').value = s.phone;
+      document.getElementById('set-clinic-email').value = s.email;
+      document.getElementById('set-clinic-address').value = s.address;
+    }
+
+    function saveClinicSettings() {
+      state.settings.clinicName = document.getElementById('set-clinic-name').value.trim() || 'Mi Clínica';
+      state.settings.specialty = document.getElementById('set-clinic-spec').value;
+      state.settings.regId = document.getElementById('set-clinic-reg').value.trim();
+      state.settings.phone = document.getElementById('set-clinic-phone').value.trim();
+      state.settings.email = document.getElementById('set-clinic-email').value.trim();
+      state.settings.address = document.getElementById('set-clinic-address').value.trim();
+      saveState();
+      renderReminders();
+      alert('✅ Identidad de clínica/negocio actualizada correctamente.');
+    }
+
+    function uploadClinicLogo(e) {
+      const file = e.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = evt => {
+        state.settings.logo = evt.target.result;
+        saveState();
+      };
+      reader.readAsDataURL(file);
+    }
+
+    function clearClinicLogo() {
+      state.settings.logo = '';
+      saveState();
+    }
+
+    function installAppPrompt() {
+      alert('📲 MODO APLICACIÓN INSTALABLE:\n\n• En PC (Chrome/Edge): Haz clic en el icono de instalar en la barra de direcciones (arriba a la derecha).\n• En iPad / Tablet / Celular: Abre el menú del navegador y elige "Agregar a pantalla de inicio".');
+    }
+
+    initApp();
+  </script>
+</body>
+</html>

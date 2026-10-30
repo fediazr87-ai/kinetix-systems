@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Carrusel 1 Instagram - Kinetix Systems</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #05080f; }
+    .slide-box {
+      width: 432px; /* 1080px scaled to 40% for desktop preview */
+      height: 540px; /* 1350px scaled to 40% (4:5 ratio) */
+      background: radial-gradient(circle at 80% 20%, rgba(16, 185, 129, 0.12) 0%, #080c15 65%);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      position: relative;
+    }
+  </style>
+</head>
+<body class="p-8 text-white min-h-screen">
+  <div class="max-w-6xl mx-auto">
+    <div class="flex items-center justify-between mb-8 pb-4 border-b border-slate-800">
+      <div>
+        <h1 class="text-2xl font-bold text-white">Carrusel Listo para Publicar #1</h1>
+        <p class="text-sm text-slate-400">Formato 4:5 (1080x1350px) para Instagram Feed. 100% Faceless.</p>
+      </div>
+      <div class="text-xs bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 px-3 py-1.5 rounded-full font-semibold">
+        6 Diapositivas Listas
+      </div>
+    </div>
+
+    <!-- Grid of Slides -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 justify-items-center">
+
+      <!-- Slide 1: Portada -->
+      <div class="slide-box rounded-2xl p-7 flex flex-col justify-between shadow-2xl">
+        <div class="flex items-center justify-between">
+          <span class="text-[11px] font-mono tracking-widest uppercase text-emerald-400 bg-emerald-950/60 border border-emerald-500/30 px-2.5 py-1 rounded-md">Kinetix.OS</span>
+          <span class="text-xs text-slate-500 font-mono">01/06</span>
+        </div>
+        <div class="space-y-4 my-auto">
+          <span class="text-xs font-bold uppercase tracking-wider text-red-400">Fuga Operativa</span>
+          <h2 class="text-2xl font-extrabold leading-tight text-white">
+            4 síntomas de que tu empresa superó a tus <span class="text-emerald-400 underline decoration-emerald-500/40">hojas de cálculo</span>
+          </h2>
+          <p class="text-xs text-slate-400 leading-relaxed">
+            Y por qué necesitas un sistema digital propio antes de que termine el mes.
+          </p>
+        </div>
+        <div class="flex items-center justify-between text-xs text-slate-400 pt-4 border-t border-slate-800/80">
+          <span>Desliza para ver &rarr;</span>
+          <div class="w-2 h-2 rounded-full bg-emerald-400"></div>
+        </div>
+      </div>
+
+      <!-- Slide 2: Problema 1 -->
+      <div class="slide-box rounded-2xl p-7 flex flex-col justify-between shadow-2xl">
+        <div class="flex items-center justify-between">
+          <span class="text-xs font-bold text-emerald-400">01. El Puente Humano</span>
+          <span class="text-xs text-slate-500 font-mono">02/06</span>
+        </div>
+        <div class="space-y-4 my-auto">
+          <div class="w-10 h-10 rounded-xl bg-red-500/10 border border-red-500/20 text-red-400 flex items-center justify-center font-mono font-bold">
+            !
+          </div>
+          <h3 class="text-lg font-bold text-white">Pasas más de 1 hora al día copiando y pegando datos</h3>
+          <p class="text-xs text-slate-300 leading-relaxed">
+            De WhatsApp a Excel. De Excel al correo. De correos a facturación.
+          </p>
+          <div class="p-3 bg-slate-900/80 border border-slate-800 rounded-xl text-xs text-slate-400">
+            <strong class="text-white">La realidad:</strong> Estás pagando un sueldo completo para hacer un trabajo que un script automático ejecuta en <strong>300 milisegundos</strong>.
+          </div>
+        </div>
+        <div class="text-right text-xs text-slate-500">Desliza &rarr;</div>
+      </div>
+
+      <!-- Slide 3: Problema 2 -->
+      <div class="slide-box rounded-2xl p-7 flex flex-col justify-between shadow-2xl">
+        <div class="flex items-center justify-between">
+          <span class="text-xs font-bold text-emerald-400">02. El Cuello de Botella</span>
+          <span class="text-xs text-slate-500 font-mono">03/06</span>
+        </div>
+        <div class="space-y-4 my-auto">
+          <div class="w-10 h-10 rounded-xl bg-amber-500/10 border border-amber-500/20 text-amber-400 flex items-center justify-center font-mono font-bold">
+            02
+          </div>
+          <h3 class="text-lg font-bold text-white">Si tú no estás encima, las cosas se detienen</h3>
+          <p class="text-xs text-slate-300 leading-relaxed">
+            Tu equipo no sabe si el cliente pagó, dónde están los archivos o quién debe hacer la siguiente entrega.
+          </p>
+          <div class="p-3 bg-slate-900/80 border border-slate-800 rounded-xl text-xs text-slate-400">
+            <strong class="text-white">Regla de oro:</strong> Un negocio que depende de la memoria de las personas no es un activo; es una cárcel.
+          </div>
+        </div>
+        <div class="text-right text-xs text-slate-500">Desliza &rarr;</div>
+      </div>
+
+      <!-- Slide 4: Problema 3 -->
+      <div class="slide-box rounded-2xl p-7 flex flex-col justify-between shadow-2xl">
+        <div class="flex items-center justify-between">
+          <span class="text-xs font-bold text-emerald-400">03. Fuga de Clientes</span>
+          <span class="text-xs text-slate-500 font-mono">04/06</span>
+        </div>
+        <div class="space-y-4 my-auto">
+          <div class="w-10 h-10 rounded-xl bg-cyan-500/10 border border-cyan-500/20 text-cyan-400 flex items-center justify-center font-mono font-bold">
+            03
+          </div>
+          <h3 class="text-lg font-bold text-white">Tus prospectos esperan horas por una cotización</h3>
+          <p class="text-xs text-slate-300 leading-relaxed">
+            La probabilidad de cerrar una venta cae un <strong>80%</strong> si tardas más de 15 minutos en responder.
+          </p>
+          <div class="p-3 bg-slate-900/80 border border-slate-800 rounded-xl text-xs text-slate-400">
+            Un bot de calificación o cotizador web envía la propuesta y el enlace de pago en <strong>20 segundos</strong> de forma autónoma.
+          </div>
+        </div>
+        <div class="text-right text-xs text-slate-500">Desliza &rarr;</div>
+      </div>
+
+      <!-- Slide 5: Problema 4 -->
+      <div class="slide-box rounded-2xl p-7 flex flex-col justify-between shadow-2xl">
+        <div class="flex items-center justify-between">
+          <span class="text-xs font-bold text-emerald-400">04. Gasto Cautivo</span>
+          <span class="text-xs text-slate-500 font-mono">05/06</span>
+        </div>
+        <div class="space-y-4 my-auto">
+          <div class="w-10 h-10 rounded-xl bg-teal-500/10 border border-teal-500/20 text-teal-400 flex items-center justify-center font-mono font-bold">
+            04
+          </div>
+          <h3 class="text-lg font-bold text-white">Pagas 5 softwares mensuales que nadie usa</h3>
+          <p class="text-xs text-slate-300 leading-relaxed">
+            Pagas licencias en dólares que suben de precio cada año por herramientas que solo usas al 10% de su capacidad.
+          </p>
+          <div class="p-3 bg-slate-900/80 border border-slate-800 rounded-xl text-xs text-emerald-300">
+            <strong>La alternativa:</strong> Un software propio, adaptado a tu modo de trabajar, sin rentas crecientes por usuario.
+          </div>
+        </div>
+        <div class="text-right text-xs text-slate-500">Desliza &rarr;</div>
+      </div>
+
+      <!-- Slide 6: Cierre & CTA -->
+      <div class="slide-box rounded-2xl p-7 flex flex-col justify-between shadow-2xl border-emerald-500/40">
+        <div class="flex items-center justify-between">
+          <span class="text-xs font-bold text-emerald-400">Solución Kinetix</span>
+          <span class="text-xs text-slate-500 font-mono">06/06</span>
+        </div>
+        <div class="space-y-4 my-auto text-center">
+          <div class="w-12 h-12 mx-auto rounded-2xl bg-emerald-500/20 text-emerald-400 flex items-center justify-center">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+          </div>
+          <h3 class="text-xl font-extrabold text-white">Sistematiza tu negocio en menos de 14 días</h3>
+          <p class="text-xs text-slate-300 leading-relaxed">
+            Diseñamos e implementamos tu WebApp, bots y centro de mando a medida sin que tengas que programar una sola línea de código.
+          </p>
+          <div class="p-3 bg-emerald-500/10 border border-emerald-500/30 rounded-xl text-xs text-emerald-300 font-bold">
+            Comenta la palabra "SISTEMA" 👇
+          </div>
+          <p class="text-[10px] text-slate-400">Y te enviamos nuestro diagnóstico operativo gratuito al DM.</p>
+        </div>
+        <div class="text-center text-[10px] text-slate-500 font-mono">
+          @kinetix.systems
+        </div>
+      </div>
+
+    </div>
+  </div>
+</body>
+</html>

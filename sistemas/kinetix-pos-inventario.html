@@ -1,0 +1,1301 @@
+<!DOCTYPE html>
+<html lang="es" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="theme-color" content="#080c15">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <title>Kinetix POS & Inventario Pro | Sistema de Facturación Comercial</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #070b13; color: #f1f5f9; }
+    .mono { font-family: 'JetBrains Mono', monospace; }
+    .glass { background: rgba(15, 23, 42, 0.85); backdrop-filter: blur(14px); border: 1px solid rgba(255,255,255,0.08); }
+    .brand-bg { background-color: var(--brand-color, #10b981); }
+    .brand-text { color: var(--brand-color, #10b981); }
+    .brand-border { border-color: var(--brand-color, #10b981); }
+    /* Soporte Modo Claro */
+    html.light body { background-color: #f8fafc !important; color: #0f172a !important; }
+    html.light .glass { background: #ffffff !important; border-color: #e2e8f0 !important; box-shadow: 0 4px 14px rgba(0,0,0,0.05) !important; }
+    html.light aside { background-color: #ffffff !important; border-color: #e2e8f0 !important; }
+    html.light .bg-slate-950 { background-color: #ffffff !important; }
+    html.light .bg-slate-900 { background-color: #f1f5f9 !important; }
+    html.light .bg-slate-900\/70, html.light .bg-slate-900\/90 { background-color: #f8fafc !important; }
+    html.light .border-slate-800, html.light .border-slate-700, html.light .border-slate-800\/80, html.light .border-slate-800\/90 { border-color: #e2e8f0 !important; }
+    html.light .text-white { color: #0f172a !important; }
+    html.light .text-slate-200 { color: #1e293b !important; }
+    html.light .text-slate-300, html.light .text-slate-400 { color: #475569 !important; }
+    html.light input, html.light select, html.light textarea { background-color: #ffffff !important; color: #0f172a !important; border-color: #cbd5e1 !important; }
+    html.light .bg-\[\#060911\], html.light .bg-\[\#070b13\] { background-color: #f8fafc !important; }
+    html.light tr:hover { background-color: #f1f5f9 !important; }
+    @media print {
+      body * { visibility: hidden !important; }
+      #print-area, #print-area * { visibility: visible !important; }
+      #print-area {
+        position: fixed !important;
+        left: 0 !important;
+        top: 0 !important;
+        width: 100% !important;
+        background: white !important;
+        color: black !important;
+        padding: 16px !important;
+        box-shadow: none !important;
+      }
+      .no-print { display: none !important; }
+    }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col selection:bg-emerald-500 selection:text-black">
+
+  <!-- PANTALLA DE LOGIN MULTI-USUARIO (MÁX 4 USUARIOS) -->
+  <div id="login-screen" class="fixed inset-0 z-50 bg-[#060911] flex items-center justify-center p-4">
+    <div class="max-w-md w-full glass rounded-3xl p-8 border border-emerald-500/30 shadow-2xl space-y-6">
+      <div class="text-center space-y-2">
+        <div id="login-logo-box" class="w-16 h-16 mx-auto rounded-2xl bg-emerald-500/20 border border-emerald-500/40 flex items-center justify-center overflow-hidden">
+          <span class="text-2xl font-black text-emerald-400 mono">POS</span>
+        </div>
+        <h1 id="login-company-name" class="text-2xl font-extrabold text-white">Kinetix POS & Inventario</h1>
+        <p id="login-company-type" class="text-xs uppercase tracking-widest text-emerald-400 font-semibold">Licencia Corporativa · Máx. 4 Usuarios</p>
+      </div>
+
+      <div class="space-y-4">
+        <div>
+          <label class="text-xs font-bold uppercase text-slate-400 block mb-2">Selecciona tu Usuario (1 Principal + 3 Roles)</label>
+          <select id="login-user-select" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-3 text-white font-semibold focus:outline-none focus:border-emerald-400"></select>
+        </div>
+        <div>
+          <label class="text-xs font-bold uppercase text-slate-400 block mb-2">PIN / Contraseña de Acceso</label>
+          <input id="login-pin-input" type="password" placeholder="Ingresa tu PIN (Ej: 1234)" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-3 text-white mono text-center text-lg tracking-widest focus:outline-none focus:border-emerald-400" onkeydown="if(event.key==='Enter') handleLogin()">
+          <p class="text-[11px] text-slate-400 mt-1.5 text-center">Demo / Inicial: PIN del Admin Principal es <strong class="text-emerald-400 mono">1234</strong></p>
+        </div>
+        <p id="login-error" class="text-xs text-red-400 text-center font-semibold hidden">PIN incorrecto. Verifica tus credenciales.</p>
+        <button onclick="handleLogin()" class="w-full py-3.5 rounded-xl bg-gradient-to-r from-emerald-400 to-teal-400 text-slate-950 font-extrabold text-sm hover:opacity-95 transition shadow-lg shadow-emerald-500/20">
+          Entrar al Sistema &rarr;
+        </button>
+      </div>
+
+      <div class="pt-4 border-t border-slate-800/80 flex items-center justify-between text-[11px] text-slate-500">
+        <span>Kinetix POS Suite v3.0</span>
+        <a href="../index.html" class="text-emerald-400 hover:underline">&larr; Volver al Catálogo</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- INTERFAZ PRINCIPAL DEL SISTEMA -->
+  <div id="app-container" class="flex-1 flex flex-col lg:flex-row hidden">
+
+    <!-- SIDEBAR NAVEGACIÓN -->
+    <aside class="w-full lg:w-64 bg-slate-950 border-b lg:border-b-0 lg:border-r border-slate-800/90 flex flex-col justify-between shrink-0 no-print">
+      <div>
+        <!-- Brand Header -->
+        <div class="p-5 border-b border-slate-800/80 flex items-center justify-between lg:justify-start gap-3">
+          <div id="sidebar-logo" class="w-11 h-11 rounded-xl bg-emerald-500/20 border border-emerald-500/40 flex items-center justify-center overflow-hidden shrink-0">
+            <span class="font-black text-emerald-400 mono text-sm">POS</span>
+          </div>
+          <div class="truncate">
+            <h2 id="sidebar-company-name" class="font-extrabold text-white text-base truncate">Mi Negocio POS</h2>
+            <span id="sidebar-business-type" class="text-[11px] text-emerald-400 font-semibold block">Tienda / Comercio</span>
+          </div>
+        </div>
+
+        <!-- User Active Badge & Theme Switcher -->
+        <div class="px-4 py-3 bg-slate-900/70 border-b border-slate-800/80 flex items-center justify-between text-xs">
+          <div class="truncate">
+            <span class="text-slate-400 block text-[10px]">OPERADOR ACTIVO:</span>
+            <strong id="active-user-name" class="text-white truncate">Admin Principal</strong>
+            <span id="active-user-role" class="ml-1 px-1.5 py-0.5 rounded bg-emerald-500/20 text-emerald-300 text-[10px] font-bold">ADMIN</span>
+          </div>
+          <div class="flex items-center gap-1.5 shrink-0">
+            <button onclick="toggleAppTheme()" id="btn-theme-toggle" title="Alternar Modo Oscuro / Claro" class="px-2 py-1 rounded-lg bg-slate-800 hover:bg-slate-700 text-amber-300 text-xs font-bold transition flex items-center gap-1 cursor-pointer">
+              <span id="theme-icon">☀️</span>
+            </button>
+            <button onclick="logout()" title="Cambiar Usuario" class="px-2.5 py-1 rounded-lg bg-slate-800 hover:bg-red-500/20 hover:text-red-300 text-slate-300 text-[11px] font-semibold transition cursor-pointer">
+              Salir
+            </button>
+          </div>
+        </div>
+
+        <!-- Menu Links -->
+        <nav class="p-3 flex lg:flex-col gap-1.5 overflow-x-auto">
+          <button id="nav-pos" onclick="switchTab('pos')" class="nav-btn flex items-center gap-3 px-4 py-3 rounded-xl text-xs sm:text-sm font-bold transition whitespace-nowrap bg-emerald-500 text-slate-950">
+            <span>🛒</span> <span>Punto de Venta (POS)</span>
+          </button>
+          <button id="nav-inventory" onclick="switchTab('inventory')" class="nav-btn flex items-center gap-3 px-4 py-3 rounded-xl text-xs sm:text-sm font-semibold text-slate-300 hover:bg-slate-900 transition whitespace-nowrap">
+            <span>📦</span> <span>Inventario & Stock</span>
+          </button>
+          <button id="nav-sales" onclick="switchTab('sales')" class="nav-btn flex items-center gap-3 px-4 py-3 rounded-xl text-xs sm:text-sm font-semibold text-slate-300 hover:bg-slate-900 transition whitespace-nowrap">
+            <span>🧾</span> <span>Facturas & Corte Caja</span>
+          </button>
+          <button id="nav-users" onclick="switchTab('users')" class="nav-btn flex items-center gap-3 px-4 py-3 rounded-xl text-xs sm:text-sm font-semibold text-slate-300 hover:bg-slate-900 transition whitespace-nowrap">
+            <span>👥</span> <span>4 Usuarios & Roles</span>
+          </button>
+          <button id="nav-settings" onclick="switchTab('settings')" class="nav-btn flex items-center gap-3 px-4 py-3 rounded-xl text-xs sm:text-sm font-semibold text-slate-300 hover:bg-slate-900 transition whitespace-nowrap">
+            <span>⚙️</span> <span>Personalizar Marca</span>
+          </button>
+        </nav>
+      </div>
+
+      <!-- Bottom Quick Actions -->
+      <div class="hidden lg:block p-4 border-t border-slate-800/80 space-y-2">
+        <div class="p-3 rounded-xl bg-slate-900/90 border border-slate-800 text-[11px] space-y-1">
+          <div class="flex justify-between text-slate-400">
+            <span>Licencia Activa:</span>
+            <span id="sidebar-user-count" class="text-emerald-400 font-bold mono">4/4 Usuarios</span>
+          </div>
+          <div class="w-full h-1.5 bg-slate-800 rounded-full overflow-hidden">
+            <div class="h-full bg-emerald-400 w-full"></div>
+          </div>
+        </div>
+        <button onclick="installAppPrompt()" class="w-full py-2.5 px-3 rounded-xl bg-cyan-500/15 border border-cyan-500/30 text-cyan-300 hover:bg-cyan-500/25 text-xs font-bold transition flex items-center justify-center gap-2">
+          <span>📲</span> Instalar en PC / Móvil
+        </button>
+      </div>
+    </aside>
+
+    <!-- CONTENIDO PRINCIPAL -->
+    <main class="flex-1 p-4 md:p-6 overflow-y-auto no-print">
+
+      <!-- TAB 1: TERMINAL PUNTO DE VENTA (POS) -->
+      <section id="tab-pos" class="space-y-6">
+        <div class="grid grid-cols-1 xl:grid-cols-12 gap-6">
+          
+          <!-- Catálogo de Productos (Izquierda 7 cols) -->
+          <div class="xl:col-span-7 space-y-4">
+            <div class="glass rounded-2xl p-4 flex flex-col sm:flex-row gap-3 items-center justify-between">
+              <div class="relative w-full sm:flex-1">
+                <input id="pos-search" type="text" oninput="renderPOSProducts()" placeholder="🔍 Buscar por nombre, código o escanear código de barras..." class="w-full bg-slate-900 border border-slate-700 rounded-xl pl-4 pr-4 py-2.5 text-sm text-white focus:outline-none focus:border-emerald-400">
+              </div>
+              <select id="pos-category-filter" onchange="renderPOSProducts()" class="w-full sm:w-48 bg-slate-900 border border-slate-700 rounded-xl px-3 py-2.5 text-sm text-white focus:outline-none focus:border-emerald-400">
+                <option value="ALL">Todas las Categorías</option>
+              </select>
+            </div>
+
+            <!-- Grid de Productos -->
+            <div id="pos-products-grid" class="grid grid-cols-2 sm:grid-cols-3 gap-3 max-h-[68vh] overflow-y-auto pr-1"></div>
+          </div>
+
+          <!-- Carrito / Facturación en Tiempo Real (Derecha 5 cols) -->
+          <div class="xl:col-span-5 glass rounded-3xl p-5 border border-emerald-500/30 flex flex-col justify-between space-y-4">
+            <div>
+              <div class="flex items-center justify-between border-b border-slate-800 pb-3 mb-3">
+                <div>
+                  <span class="text-[10px] font-mono uppercase text-emerald-400 font-bold">TERMINAL DE FACTURACIÓN</span>
+                  <h3 class="text-lg font-extrabold text-white">Comprobante / Orden Actual</h3>
+                </div>
+                <button onclick="clearCart()" class="text-xs text-red-400 hover:underline font-semibold">Vaciar Carrito</button>
+              </div>
+
+              <!-- Datos del Cliente -->
+              <div class="grid grid-cols-2 gap-2 mb-3">
+                <input id="pos-client-name" type="text" placeholder="Cliente (Opcional / General)" class="bg-slate-900 border border-slate-800 rounded-xl px-3 py-2 text-xs text-white">
+                <input id="pos-client-phone" type="text" placeholder="WhatsApp / NIT / RUC" class="bg-slate-900 border border-slate-800 rounded-xl px-3 py-2 text-xs text-white">
+              </div>
+
+              <!-- Lista de Items en Carrito -->
+              <div id="pos-cart-items" class="space-y-2 max-h-60 overflow-y-auto pr-1 my-2"></div>
+            </div>
+
+            <!-- Totales y Pago -->
+            <div class="border-t border-slate-800 pt-4 space-y-3">
+              <div class="grid grid-cols-2 gap-2 text-xs">
+                <div class="flex items-center justify-between bg-slate-900 px-3 py-2 rounded-xl">
+                  <span class="text-slate-400">Descuento (%):</span>
+                  <input id="pos-discount" type="number" min="0" max="100" value="0" oninput="renderCart()" class="w-14 bg-slate-950 border border-slate-700 rounded px-2 py-0.5 text-right text-white font-mono">
+                </div>
+                <div class="flex items-center justify-between bg-slate-900 px-3 py-2 rounded-xl">
+                  <span class="text-slate-400">Método Pago:</span>
+                  <select id="pos-payment-method" onchange="toggleCashCalc()" class="bg-slate-950 border border-slate-700 rounded px-2 py-0.5 text-white font-semibold">
+                    <option value="Efectivo">💵 Efectivo</option>
+                    <option value="Tarjeta">💳 Tarjeta</option>
+                    <option value="Transferencia">🏦 Transferencia</option>
+                  </select>
+                </div>
+              </div>
+
+              <!-- Cálculo de Vuelto en Efectivo -->
+              <div id="cash-calc-row" class="grid grid-cols-2 gap-2 text-xs bg-slate-900/80 p-2.5 rounded-xl border border-slate-800">
+                <div>
+                  <span class="text-slate-400 block text-[10px]">Efectivo Recibido:</span>
+                  <input id="pos-cash-received" type="number" step="0.01" placeholder="0.00" oninput="updateChangeDue()" class="w-full bg-slate-950 border border-slate-700 rounded px-2 py-1 text-white font-mono mt-0.5">
+                </div>
+                <div class="text-right">
+                  <span class="text-slate-400 block text-[10px]">Cambio / Vuelto al Cliente:</span>
+                  <strong id="pos-change-due" class="text-lg font-black text-emerald-400 mono">$0.00</strong>
+                </div>
+              </div>
+
+              <!-- Resumen Financiero -->
+              <div class="bg-slate-950 p-4 rounded-2xl border border-slate-800 space-y-1.5 text-xs">
+                <div class="flex justify-between text-slate-400">
+                  <span>Subtotal:</span>
+                  <span id="cart-subtotal" class="mono">$0.00</span>
+                </div>
+                <div class="flex justify-between text-slate-400">
+                  <span>Descuento:</span>
+                  <span id="cart-discount-val" class="mono text-amber-400">-$0.00</span>
+                </div>
+                <div class="flex justify-between text-slate-400">
+                  <span id="cart-tax-label">Impuesto (15%):</span>
+                  <span id="cart-tax" class="mono">$0.00</span>
+                </div>
+                <div class="flex justify-between text-lg font-black text-white pt-2 border-t border-slate-800">
+                  <span>TOTAL A COBRAR:</span>
+                  <span id="cart-total" class="text-emerald-400 mono">$0.00</span>
+                </div>
+              </div>
+
+              <button onclick="processSale()" class="w-full py-4 rounded-2xl bg-gradient-to-r from-emerald-400 via-teal-300 to-cyan-400 text-slate-950 font-black text-base shadow-xl shadow-emerald-500/20 hover:scale-[1.01] active:scale-95 transition">
+                ✅ COBRAR Y EMITIR FACTURA / TICKET
+              </button>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- TAB 2: CONTROL DE INVENTARIOS Y STOCK EN TIEMPO REAL -->
+      <section id="tab-inventory" class="space-y-6 hidden">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+          <div>
+            <span class="text-xs font-mono uppercase text-emerald-400 font-bold">KARDEX & ALMACÉN EN TIEMPO REAL</span>
+            <h2 class="text-2xl font-extrabold text-white">Control de Inventarios y Productos</h2>
+          </div>
+          <div class="flex flex-wrap gap-2">
+            <button onclick="openProductModal()" class="px-4 py-2.5 rounded-xl bg-emerald-400 hover:bg-emerald-300 text-slate-950 font-bold text-xs transition">
+              + Nuevo Producto / Servicio
+            </button>
+            <button onclick="exportInventoryCSV()" class="px-4 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-white font-semibold text-xs border border-slate-700 transition">
+              📥 Exportar Excel (CSV)
+            </button>
+          </div>
+        </div>
+
+        <!-- KPIs de Inventario -->
+        <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
+          <div class="glass p-4 rounded-2xl">
+            <span class="text-xs text-slate-400">Total Productos / SKUs</span>
+            <p id="inv-kpi-total" class="text-2xl font-black text-white mono mt-1">0</p>
+          </div>
+          <div class="glass p-4 rounded-2xl">
+            <span class="text-xs text-slate-400">Unidades en Almacén</span>
+            <p id="inv-kpi-units" class="text-2xl font-black text-cyan-400 mono mt-1">0</p>
+          </div>
+          <div class="glass p-4 rounded-2xl">
+            <span class="text-xs text-slate-400">Valor Venta Inventario</span>
+            <p id="inv-kpi-value" class="text-2xl font-black text-emerald-400 mono mt-1">$0.00</p>
+          </div>
+          <div class="glass p-4 rounded-2xl">
+            <span class="text-xs text-slate-400">Alertas de Stock Bajo</span>
+            <p id="inv-kpi-low" class="text-2xl font-black text-amber-400 mono mt-1">0</p>
+          </div>
+        </div>
+
+        <!-- Tabla de Inventario -->
+        <div class="glass rounded-3xl overflow-hidden">
+          <div class="overflow-x-auto">
+            <table class="w-full text-left text-xs sm:text-sm">
+              <thead class="bg-slate-900/90 text-slate-400 uppercase text-[11px] font-bold border-b border-slate-800">
+                <tr>
+                  <th class="py-3.5 px-4">SKU / Código</th>
+                  <th class="py-3.5 px-4">Producto / Servicio</th>
+                  <th class="py-3.5 px-4">Categoría</th>
+                  <th class="py-3.5 px-4">Costo</th>
+                  <th class="py-3.5 px-4">Precio Venta</th>
+                  <th class="py-3.5 px-4">Stock Actual</th>
+                  <th class="py-3.5 px-4">Estado</th>
+                  <th class="py-3.5 px-4 text-right">Acciones</th>
+                </tr>
+              </thead>
+              <tbody id="inventory-table-body" class="divide-y divide-slate-800/70"></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- TAB 3: HISTORIAL DE VENTAS, FACTURAS Y CORTE DE CAJA -->
+      <section id="tab-sales" class="space-y-6 hidden">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+          <div>
+            <span class="text-xs font-mono uppercase text-cyan-400 font-bold">ARQUEO Y COMPROBANTES EMITIDOS</span>
+            <h2 class="text-2xl font-extrabold text-white">Historial de Facturación y Corte de Caja</h2>
+          </div>
+          <button onclick="exportSalesCSV()" class="px-4 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-white font-semibold text-xs border border-slate-700 transition">
+            📥 Descargar Reporte de Ventas (CSV)
+          </button>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+          <div class="glass p-5 rounded-2xl border-l-4 border-emerald-400">
+            <span class="text-xs text-slate-400">Ingresos Totales Facturados</span>
+            <p id="sales-kpi-revenue" class="text-3xl font-black text-white mono mt-1">$0.00</p>
+          </div>
+          <div class="glass p-5 rounded-2xl border-l-4 border-cyan-400">
+            <span class="text-xs text-slate-400">Comprobantes Emitidos</span>
+            <p id="sales-kpi-count" class="text-3xl font-black text-cyan-400 mono mt-1">0</p>
+          </div>
+          <div class="glass p-5 rounded-2xl border-l-4 border-teal-400">
+            <span class="text-xs text-slate-400">Ganancia Bruta Estimada</span>
+            <p id="sales-kpi-profit" class="text-3xl font-black text-emerald-400 mono mt-1">$0.00</p>
+          </div>
+        </div>
+
+        <div class="glass rounded-3xl overflow-hidden">
+          <div class="overflow-x-auto">
+            <table class="w-full text-left text-xs sm:text-sm">
+              <thead class="bg-slate-900/90 text-slate-400 uppercase text-[11px] font-bold border-b border-slate-800">
+                <tr>
+                  <th class="py-3.5 px-4">Folio #</th>
+                  <th class="py-3.5 px-4">Fecha y Hora</th>
+                  <th class="py-3.5 px-4">Cliente</th>
+                  <th class="py-3.5 px-4">Cajero / Usuario</th>
+                  <th class="py-3.5 px-4">Método</th>
+                  <th class="py-3.5 px-4">Total</th>
+                  <th class="py-3.5 px-4 text-right">Comprobante</th>
+                </tr>
+              </thead>
+              <tbody id="sales-table-body" class="divide-y divide-slate-800/70"></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- TAB 4: GESTIÓN DE 4 USUARIOS Y ROLES (EXCLUSIVO ADMIN PRINCIPAL) -->
+      <section id="tab-users" class="space-y-6 hidden">
+        <div class="glass rounded-3xl p-6 border border-emerald-500/30 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+          <div>
+            <span class="text-xs font-mono uppercase text-emerald-400 font-bold">CONTROL DE ACCESO POR ROLES (RBAC)</span>
+            <h2 class="text-2xl font-extrabold text-white">Administración de Usuarios de Licencia (Máx. 4)</h2>
+            <p class="text-xs text-slate-400 mt-1">El Usuario Principal (Master) puede otorgar acceso hasta a <strong>3 usuarios adicionales</strong> con permisos específicos según su cargo.</p>
+          </div>
+          <div class="text-right">
+            <span id="users-slot-badge" class="inline-block px-4 py-2 rounded-xl bg-emerald-500/15 border border-emerald-500/40 text-emerald-300 font-mono font-bold text-sm">
+              Cupos: 4 / 4
+            </span>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6" id="users-cards-grid"></div>
+      </section>
+
+      <!-- TAB 5: PERSONALIZACIÓN WHITE-LABEL (MARCA, LOGO Y GIRO COMERCIAL) -->
+      <section id="tab-settings" class="space-y-6 hidden">
+        <div class="glass rounded-3xl p-6 sm:p-8 space-y-6 max-w-4xl">
+          <div class="border-b border-slate-800 pb-4 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+            <div>
+              <span class="text-xs font-mono uppercase text-emerald-400 font-bold">PERSONALIZACIÓN INTERNA WHITE-LABEL</span>
+              <h2 class="text-2xl font-extrabold text-white">Identidad de Marca, Logo y Parámetros del Negocio</h2>
+              <p class="text-xs text-slate-400">Personaliza el sistema con tu propio logo, nombre comercial y giro de negocio.</p>
+            </div>
+            <button onclick="saveSettings()" class="px-6 py-3 rounded-xl bg-emerald-400 hover:bg-emerald-300 text-slate-950 font-extrabold text-xs transition shadow-lg">
+              💾 Guardar Cambios Ahora
+            </button>
+          </div>
+
+          <!-- Subida de Logo y Giro Comercial -->
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-6 items-center bg-slate-900/70 p-5 rounded-2xl border border-slate-800">
+            <div class="flex items-center gap-4">
+              <div id="settings-logo-preview" class="w-20 h-20 rounded-2xl bg-slate-950 border-2 border-emerald-500/40 flex items-center justify-center overflow-hidden shrink-0">
+                <span class="text-slate-500 text-xs">Sin Logo</span>
+              </div>
+              <div class="space-y-2">
+                <label class="block text-xs font-bold text-white">Logo de tu Negocio</label>
+                <input type="file" accept="image/*" onchange="handleLogoUpload(event)" class="text-xs text-slate-400 file:mr-2 file:py-1.5 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-bold file:bg-emerald-500 file:text-slate-950 hover:file:bg-emerald-400 cursor-pointer">
+                <button onclick="clearLogo()" class="text-[11px] text-red-400 hover:underline block">Restaurar icono original</button>
+              </div>
+            </div>
+
+            <div class="md:col-span-2 grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div>
+                <label class="text-xs font-bold text-slate-300 block mb-1">Giro del Comercio (Plantilla Rápida)</label>
+                <select id="set-business-type" onchange="applyBusinessPreset(this.value)" class="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2.5 text-sm text-white">
+                  <option value="Tienda / Retail">🛍️ Tienda / Minimarket / Retail</option>
+                  <option value="Restaurante / Cafetería">🍔 Restaurante / Cafetería / Bar</option>
+                  <option value="Barbería / Salón">💈 Barbería / Salón de Belleza</option>
+                  <option value="Farmacia / Clínica">💊 Farmacia / Droguería</option>
+                </select>
+              </div>
+              <div>
+                <label class="text-xs font-bold text-slate-300 block mb-1">Nombre Comercial de la Empresa</label>
+                <input id="set-company-name" type="text" class="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2.5 text-sm text-white">
+              </div>
+            </div>
+          </div>
+
+          <!-- Datos Fiscales y Moneda -->
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+            <div>
+              <label class="text-xs font-bold text-slate-400 block mb-1">RUC / NIT / RFC Fiscal</label>
+              <input id="set-tax-id" type="text" placeholder="Ej: J03100001234" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2.5 text-sm text-white">
+            </div>
+            <div>
+              <label class="text-xs font-bold text-slate-400 block mb-1">Teléfono / WhatsApp</label>
+              <input id="set-phone" type="text" placeholder="+505 8888-8888" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2.5 text-sm text-white">
+            </div>
+            <div>
+              <label class="text-xs font-bold text-slate-400 block mb-1">Símbolo de Moneda</label>
+              <input id="set-currency" type="text" placeholder="$ / C$ / MX$ / €" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2.5 text-sm text-white mono">
+            </div>
+            <div>
+              <label class="text-xs font-bold text-slate-400 block mb-1">% Impuesto (IVA / ISV / IGV)</label>
+              <input id="set-tax-rate" type="number" step="0.1" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2.5 text-sm text-white mono">
+            </div>
+            <div class="sm:col-span-2">
+              <label class="text-xs font-bold text-slate-400 block mb-1">Dirección Física del Local</label>
+              <input id="set-address" type="text" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2.5 text-sm text-white">
+            </div>
+            <div class="sm:col-span-3">
+              <label class="text-xs font-bold text-slate-400 block mb-1">Mensaje al Pie del Ticket / Factura</label>
+              <input id="set-footer" type="text" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2.5 text-sm text-white">
+            </div>
+          </div>
+
+          <!-- Respaldo de Base de Datos -->
+          <div class="pt-4 border-t border-slate-800 flex flex-wrap items-center justify-between gap-4">
+            <div>
+              <h4 class="text-sm font-bold text-white">Copia de Seguridad Local (Offline Database)</h4>
+              <p class="text-xs text-slate-400">Descarga o restaura todos tus productos, ventas y configuraciones en un archivo seguro.</p>
+            </div>
+            <div class="flex gap-2">
+              <button onclick="exportBackupJSON()" class="px-4 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-xs font-bold text-emerald-400 border border-slate-700">
+                ⬇️ Exportar Respaldo (.JSON)
+              </button>
+              <label class="px-4 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-xs font-bold text-cyan-400 border border-slate-700 cursor-pointer">
+                ⬆️ Restaurar Respaldo
+                <input type="file" accept=".json" onchange="importBackupJSON(event)" class="hidden">
+              </label>
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <!-- MODAL AGREGAR / EDITAR PRODUCTO -->
+  <div id="product-modal" class="fixed inset-0 z-50 bg-black/80 hidden items-center justify-center p-4 no-print">
+    <div class="glass max-w-md w-full rounded-3xl p-6 border border-emerald-500/40 space-y-4">
+      <div class="flex items-center justify-between border-b border-slate-800 pb-3">
+        <h3 id="prod-modal-title" class="text-lg font-extrabold text-white">Nuevo Producto / Servicio</h3>
+        <button onclick="closeProductModal()" class="text-slate-400 hover:text-white text-xl">&times;</button>
+      </div>
+      <input type="hidden" id="prod-id">
+      <div class="grid grid-cols-2 gap-3 text-xs">
+        <div>
+          <label class="text-slate-400 font-bold block mb-1">Código SKU / Barras</label>
+          <input id="prod-sku" type="text" placeholder="SKU-001" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-white mono">
+        </div>
+        <div>
+          <label class="text-slate-400 font-bold block mb-1">Categoría</label>
+          <input id="prod-cat" type="text" placeholder="General / Bebidas / Corte" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-white">
+        </div>
+        <div class="col-span-2">
+          <label class="text-slate-400 font-bold block mb-1">Nombre del Producto o Servicio</label>
+          <input id="prod-name" type="text" placeholder="Ej: Producto Premium" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-white">
+        </div>
+        <div>
+          <label class="text-slate-400 font-bold block mb-1">Costo Compra</label>
+          <input id="prod-cost" type="number" step="0.01" value="0" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-white mono">
+        </div>
+        <div>
+          <label class="text-slate-400 font-bold block mb-1">Precio Venta</label>
+          <input id="prod-price" type="number" step="0.01" value="10" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-white mono">
+        </div>
+        <div>
+          <label class="text-slate-400 font-bold block mb-1">Stock Actual</label>
+          <input id="prod-stock" type="number" value="25" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-white mono">
+        </div>
+        <div>
+          <label class="text-slate-400 font-bold block mb-1">Alerta Stock Mínimo</label>
+          <input id="prod-min" type="number" value="5" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-white mono">
+        </div>
+      </div>
+      <div class="flex justify-end gap-2 pt-3 border-t border-slate-800">
+        <button onclick="closeProductModal()" class="px-4 py-2 rounded-xl bg-slate-800 text-slate-300 text-xs font-bold">Cancelar</button>
+        <button onclick="saveProduct()" class="px-6 py-2 rounded-xl bg-emerald-400 text-slate-950 text-xs font-extrabold">Guardar Producto</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL FACTURA / TICKET IMPRIMIBLE -->
+  <div id="invoice-modal" class="fixed inset-0 z-50 bg-black/85 hidden items-center justify-center p-4 overflow-y-auto">
+    <div class="bg-slate-900 max-w-md w-full rounded-3xl p-6 border border-emerald-500/40 space-y-4">
+      <div class="flex items-center justify-between no-print">
+        <span class="text-xs font-mono text-emerald-400 font-bold">✅ VENTA REGISTRADA CON ÉXITO</span>
+        <button onclick="closeInvoiceModal()" class="text-slate-400 hover:text-white text-xl">&times;</button>
+      </div>
+
+      <!-- ÁREA IMPRIMIBLE (TICKET 80MM / FACTURA) -->
+      <div id="print-area" class="bg-white text-slate-900 rounded-2xl p-6 font-mono text-xs space-y-3 shadow-inner"></div>
+
+      <div class="grid grid-cols-2 gap-2 no-print">
+        <button onclick="window.print()" class="py-3 rounded-xl bg-emerald-400 hover:bg-emerald-300 text-slate-950 font-extrabold text-xs flex items-center justify-center gap-2">
+          🖨️ Imprimir / PDF
+        </button>
+        <button onclick="sendInvoiceWhatsApp()" class="py-3 rounded-xl bg-green-500 hover:bg-green-400 text-slate-950 font-extrabold text-xs flex items-center justify-center gap-2">
+          📲 Enviar por WhatsApp
+        </button>
+      </div>
+      <button onclick="closeInvoiceModal()" class="w-full py-2.5 rounded-xl bg-slate-800 text-slate-300 text-xs font-bold no-print">
+        Cerrar y Nueva Venta
+      </button>
+    </div>
+  </div>
+
+  <script>
+    const STORAGE_KEY = 'KINETIX_POS_SUITE_V3';
+    let currentUser = null;
+    let cart = [];
+    let lastInvoice = null;
+
+    const defaultState = {
+      settings: {
+        companyName: 'Comercial & Retail Kinetix',
+        businessType: 'Tienda / Retail',
+        taxId: 'NIT-9012834-1',
+        phone: '+505 8888-0000',
+        address: 'Av. Central Corporativa, Local 4',
+        currency: '$',
+        taxRate: 15,
+        footer: '¡Gracias por su compra! Comprobante emitido con Kinetix POS.',
+        logo: ''
+      },
+      // Estricto límite de 4 usuarios: 1 Principal + 3 Secundarios
+      users: [
+        { id: 1, name: 'Administrador Principal', username: 'admin', pin: '1234', role: 'ADMIN', roleLabel: 'Usuario Principal (Control Total)', active: true, isMaster: true },
+        { id: 2, name: 'Cajero Turno 1', username: 'caja1', pin: '1111', role: 'CAJERO', roleLabel: 'Cajero / Ventas POS', active: true, isMaster: false },
+        { id: 3, name: 'Encargado Almacén', username: 'bodega', pin: '2222', role: 'INVENTARIO', roleLabel: 'Gestor de Inventario & Stock', active: true, isMaster: false },
+        { id: 4, name: 'Supervisor General', username: 'super', pin: '3333', role: 'SUPERVISOR', roleLabel: 'Supervisor (POS + Inventario + Cortes)', active: true, isMaster: false }
+      ],
+      products: [
+        { id: 101, sku: 'PRD-001', name: 'Café Espresso Doble / Bebida', category: 'Bebidas', cost: 1.10, price: 3.50, stock: 85, min: 10 },
+        { id: 102, sku: 'PRD-002', name: 'Combo Ejecutivo / Menú Especial', category: 'Alimentos', cost: 4.50, price: 11.90, stock: 32, min: 8 },
+        { id: 103, sku: 'PRD-003', name: 'Corte Clásico + Barba VIP', category: 'Servicios', cost: 2.00, price: 15.00, stock: 999, min: 5 },
+        { id: 104, sku: 'PRD-004', name: 'Kit Cuidado Personal / Farmacia', category: 'Salud & Cuidado', cost: 8.00, price: 19.50, stock: 14, min: 5 },
+        { id: 105, sku: 'PRD-005', name: 'Audífonos Inalámbricos Pro', category: 'Tecnología', cost: 14.00, price: 34.99, stock: 4, min: 6 },
+        { id: 106, sku: 'PRD-006', name: 'Camiseta Algodón Premium', category: 'Tienda / Ropa', cost: 7.50, price: 22.00, stock: 19, min: 5 }
+      ],
+      sales: []
+    };
+
+    let state = loadState();
+
+    function loadState() {
+      try {
+        const raw = localStorage.getItem(STORAGE_KEY);
+        if (!raw) return JSON.parse(JSON.stringify(defaultState));
+        const parsed = JSON.parse(raw);
+        // Garantizar máximo 4 usuarios siempre
+        if (!parsed.users || parsed.users.length !== 4) parsed.users = defaultState.users;
+        return parsed;
+      } catch (e) {
+        return JSON.parse(JSON.stringify(defaultState));
+      }
+    }
+
+    function saveState() {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+      applyBrandingUI();
+    }
+
+    function fmt(num) {
+      return (state.settings.currency || '$') + Number(num || 0).toFixed(2);
+    }
+
+    // Gestión de Tema Claro / Oscuro
+    function initTheme() {
+      const saved = localStorage.getItem('KINETIX_POS_THEME') || 'dark';
+      applyAppTheme(saved);
+    }
+
+    function toggleAppTheme() {
+      const isLight = document.documentElement.classList.contains('light');
+      const nextTheme = isLight ? 'dark' : 'light';
+      applyAppTheme(nextTheme);
+      localStorage.setItem('KINETIX_POS_THEME', nextTheme);
+    }
+
+    function applyAppTheme(theme) {
+      const ic = document.getElementById('theme-icon');
+      if (theme === 'light') {
+        document.documentElement.classList.remove('dark');
+        document.documentElement.classList.add('light');
+        if (ic) ic.textContent = '🌙';
+      } else {
+        document.documentElement.classList.remove('light');
+        document.documentElement.classList.add('dark');
+        if (ic) ic.textContent = '☀️';
+      }
+    }
+
+    // Inicializar Login, Marca y Tema
+    function initApp() {
+      initTheme();
+      applyBrandingUI();
+      populateLoginUsers();
+    }
+
+    function applyBrandingUI() {
+      const s = state.settings;
+      document.getElementById('login-company-name').textContent = s.companyName;
+      document.getElementById('login-company-type').textContent = `${s.businessType} · Licencia 4 Usuarios`;
+      document.getElementById('sidebar-company-name').textContent = s.companyName;
+      document.getElementById('sidebar-business-type').textContent = s.businessType;
+      document.getElementById('cart-tax-label').textContent = `Impuesto (${s.taxRate}%):`;
+
+      const logoHTML = s.logo
+        ? `<img src="${s.logo}" class="w-full h-full object-cover">`
+        : `<span class="font-black text-emerald-400 mono text-sm">POS</span>`;
+      document.getElementById('login-logo-box').innerHTML = logoHTML;
+      document.getElementById('sidebar-logo').innerHTML = logoHTML;
+      document.getElementById('settings-logo-preview').innerHTML = logoHTML;
+
+      const activeCount = state.users.filter(u => u.active).length;
+      document.getElementById('sidebar-user-count').textContent = `${activeCount}/4 Usuarios`;
+    }
+
+    function populateLoginUsers() {
+      const sel = document.getElementById('login-user-select');
+      sel.innerHTML = '';
+      state.users.filter(u => u.active).forEach(u => {
+        const opt = document.createElement('option');
+        opt.value = u.id;
+        opt.textContent = `${u.name} (${u.role})`;
+        sel.appendChild(opt);
+      });
+    }
+
+    function handleLogin() {
+      const uid = Number(document.getElementById('login-user-select').value);
+      const pin = document.getElementById('login-pin-input').value.trim();
+      const user = state.users.find(u => u.id === uid && u.active);
+      const err = document.getElementById('login-error');
+
+      if (!user || user.pin !== pin) {
+        err.classList.remove('hidden');
+        return;
+      }
+      err.classList.add('hidden');
+      currentUser = user;
+      document.getElementById('login-pin-input').value = '';
+      document.getElementById('login-screen').classList.add('hidden');
+      document.getElementById('app-container').classList.remove('hidden');
+
+      document.getElementById('active-user-name').textContent = user.name;
+      document.getElementById('active-user-role').textContent = user.role;
+
+      applyRolePermissions();
+      populateCategoryFilter();
+      renderPOSProducts();
+      renderCart();
+      renderInventory();
+      renderSales();
+      renderUsersGrid();
+      loadSettingsForm();
+    }
+
+    function logout() {
+      currentUser = null;
+      populateLoginUsers();
+      document.getElementById('app-container').classList.add('hidden');
+      document.getElementById('login-screen').classList.remove('hidden');
+    }
+
+    // Permisos por Rol (RBAC)
+    function applyRolePermissions() {
+      const r = currentUser.role;
+      const showPOS = ['ADMIN', 'CAJERO', 'SUPERVISOR'].includes(r);
+      const showInv = ['ADMIN', 'INVENTARIO', 'SUPERVISOR'].includes(r);
+      const showSales = ['ADMIN', 'CAJERO', 'SUPERVISOR'].includes(r);
+      const showUsers = r === 'ADMIN';
+      const showSettings = r === 'ADMIN';
+
+      document.getElementById('nav-pos').classList.toggle('hidden', !showPOS);
+      document.getElementById('nav-inventory').classList.toggle('hidden', !showInv);
+      document.getElementById('nav-sales').classList.toggle('hidden', !showSales);
+      document.getElementById('nav-users').classList.toggle('hidden', !showUsers);
+      document.getElementById('nav-settings').classList.toggle('hidden', !showSettings);
+
+      if (showPOS) switchTab('pos');
+      else if (showInv) switchTab('inventory');
+    }
+
+    function switchTab(tab) {
+      ['pos', 'inventory', 'sales', 'users', 'settings'].forEach(t => {
+        document.getElementById(`tab-${t}`).classList.toggle('hidden', t !== tab);
+        const btn = document.getElementById(`nav-${t}`);
+        if (btn) {
+          if (t === tab) {
+            btn.className = 'nav-btn flex items-center gap-3 px-4 py-3 rounded-xl text-xs sm:text-sm font-bold transition whitespace-nowrap bg-emerald-500 text-slate-950';
+          } else {
+            btn.className = 'nav-btn flex items-center gap-3 px-4 py-3 rounded-xl text-xs sm:text-sm font-semibold text-slate-300 hover:bg-slate-900 transition whitespace-nowrap';
+          }
+        }
+      });
+    }
+
+    // POS & CARRITO
+    function populateCategoryFilter() {
+      const sel = document.getElementById('pos-category-filter');
+      const cats = [...new Set(state.products.map(p => p.category))];
+      sel.innerHTML = '<option value="ALL">Todas las Categorías</option>';
+      cats.forEach(c => {
+        sel.innerHTML += `<option value="${c}">${c}</option>`;
+      });
+    }
+
+    function renderPOSProducts() {
+      const q = document.getElementById('pos-search').value.toLowerCase();
+      const cat = document.getElementById('pos-category-filter').value;
+      const grid = document.getElementById('pos-products-grid');
+      grid.innerHTML = '';
+
+      const filtered = state.products.filter(p => {
+        const matchQ = p.name.toLowerCase().includes(q) || p.sku.toLowerCase().includes(q);
+        const matchCat = cat === 'ALL' || p.category === cat;
+        return matchQ && matchCat;
+      });
+
+      filtered.forEach(p => {
+        const low = p.stock <= p.min;
+        const out = p.stock <= 0;
+        const card = document.createElement('div');
+        card.className = `p-4 rounded-2xl bg-slate-900/90 border ${out ? 'border-red-500/40 opacity-60' : 'border-slate-800 hover:border-emerald-400 cursor-pointer'} transition flex flex-col justify-between gap-3`;
+        if (!out) card.onclick = () => addToCart(p.id);
+        card.innerHTML = `
+          <div>
+            <div class="flex items-center justify-between text-[10px] font-mono text-slate-400 mb-1">
+              <span>${p.sku}</span>
+              <span class="px-2 py-0.5 rounded ${out ? 'bg-red-500/20 text-red-300' : low ? 'bg-amber-500/20 text-amber-300' : 'bg-emerald-500/15 text-emerald-300'} font-bold">
+                Stock: ${p.stock}
+              </span>
+            </div>
+            <h4 class="font-bold text-white text-xs sm:text-sm leading-snug">${p.name}</h4>
+            <span class="text-[10px] text-slate-500">${p.category}</span>
+          </div>
+          <div class="flex items-center justify-between pt-2 border-t border-slate-800/80">
+            <span class="text-base font-black text-emerald-400 mono">${fmt(p.price)}</span>
+            <span class="text-xs bg-emerald-500/20 text-emerald-300 px-2.5 py-1 rounded-lg font-bold">+ Agregar</span>
+          </div>
+        `;
+        grid.appendChild(card);
+      });
+    }
+
+    function addToCart(pid) {
+      const prod = state.products.find(p => p.id === pid);
+      if (!prod || prod.stock <= 0) return;
+      const item = cart.find(i => i.id === pid);
+      if (item) {
+        if (item.qty < prod.stock) item.qty++;
+        else alert('No hay más unidades disponibles en stock.');
+      } else {
+        cart.push({ id: prod.id, sku: prod.sku, name: prod.name, price: prod.price, cost: prod.cost, qty: 1 });
+      }
+      renderCart();
+    }
+
+    function updateCartQty(pid, delta) {
+      const item = cart.find(i => i.id === pid);
+      const prod = state.products.find(p => p.id === pid);
+      if (!item) return;
+      item.qty += delta;
+      if (item.qty <= 0) cart = cart.filter(i => i.id !== pid);
+      else if (prod && item.qty > prod.stock) item.qty = prod.stock;
+      renderCart();
+    }
+
+    function clearCart() {
+      cart = [];
+      renderCart();
+    }
+
+    function getCartTotals() {
+      const subtotal = cart.reduce((s, i) => s + i.price * i.qty, 0);
+      const discPct = Math.min(100, Math.max(0, Number(document.getElementById('pos-discount').value) || 0));
+      const discVal = subtotal * (discPct / 100);
+      const taxable = subtotal - discVal;
+      const tax = taxable * ((Number(state.settings.taxRate) || 0) / 100);
+      const total = taxable + tax;
+      return { subtotal, discPct, discVal, tax, total };
+    }
+
+    function renderCart() {
+      const box = document.getElementById('pos-cart-items');
+      if (cart.length === 0) {
+        box.innerHTML = `<div class="text-center py-10 text-xs text-slate-500">Haz clic en cualquier producto del catálogo para agregarlo a la factura.</div>`;
+      } else {
+        box.innerHTML = cart.map(i => `
+          <div class="flex items-center justify-between bg-slate-900 p-2.5 rounded-xl border border-slate-800 text-xs">
+            <div class="truncate pr-2">
+              <p class="font-bold text-white truncate">${i.name}</p>
+              <span class="text-[11px] text-slate-400 mono">${fmt(i.price)} x ${i.qty} = <strong class="text-emerald-400">${fmt(i.price * i.qty)}</strong></span>
+            </div>
+            <div class="flex items-center gap-1.5 shrink-0">
+              <button onclick="updateCartQty(${i.id}, -1)" class="w-6 h-6 rounded bg-slate-800 hover:bg-slate-700 text-white font-bold">-</button>
+              <span class="w-6 text-center font-mono font-bold">${i.qty}</span>
+              <button onclick="updateCartQty(${i.id}, 1)" class="w-6 h-6 rounded bg-slate-800 hover:bg-emerald-500 hover:text-slate-950 text-white font-bold">+</button>
+            </div>
+          </div>
+        `).join('');
+      }
+
+      const t = getCartTotals();
+      document.getElementById('cart-subtotal').textContent = fmt(t.subtotal);
+      document.getElementById('cart-discount-val').textContent = '-' + fmt(t.discVal);
+      document.getElementById('cart-tax').textContent = fmt(t.tax);
+      document.getElementById('cart-total').textContent = fmt(t.total);
+      updateChangeDue();
+    }
+
+    function toggleCashCalc() {
+      const m = document.getElementById('pos-payment-method').value;
+      document.getElementById('cash-calc-row').classList.toggle('hidden', m !== 'Efectivo');
+    }
+
+    function updateChangeDue() {
+      const t = getCartTotals().total;
+      const rec = Number(document.getElementById('pos-cash-received').value) || 0;
+      const diff = Math.max(0, rec - t);
+      document.getElementById('pos-change-due').textContent = fmt(diff);
+    }
+
+    function processSale() {
+      if (cart.length === 0) {
+        alert('Agrega al menos un producto al carrito para facturar.');
+        return;
+      }
+      const totals = getCartTotals();
+      const client = document.getElementById('pos-client-name').value.trim() || 'Consumidor Final';
+      const phone = document.getElementById('pos-client-phone').value.trim() || '';
+      const method = document.getElementById('pos-payment-method').value;
+      const folio = 'FAC-' + String(state.sales.length + 1001);
+      const dateStr = new Date().toLocaleString('es-ES');
+
+      // Descontar Stock en Tiempo Real
+      cart.forEach(item => {
+        const prod = state.products.find(p => p.id === item.id);
+        if (prod) prod.stock = Math.max(0, prod.stock - item.qty);
+      });
+
+      const costTotal = cart.reduce((s, i) => s + (i.cost || 0) * i.qty, 0);
+      const saleRecord = {
+        folio,
+        date: dateStr,
+        client,
+        phone,
+        cashier: currentUser.name,
+        method,
+        items: JSON.parse(JSON.stringify(cart)),
+        ...totals,
+        profit: totals.total - totals.tax - costTotal
+      };
+
+      state.sales.unshift(saleRecord);
+      lastInvoice = saleRecord;
+      saveState();
+
+      cart = [];
+      document.getElementById('pos-client-name').value = '';
+      document.getElementById('pos-client-phone').value = '';
+      document.getElementById('pos-cash-received').value = '';
+      renderPOSProducts();
+      renderCart();
+      renderInventory();
+      renderSales();
+      showInvoiceModal(saleRecord);
+    }
+
+    function showInvoiceModal(sale) {
+      lastInvoice = sale;
+      const s = state.settings;
+      const logoImg = s.logo ? `<img src="${s.logo}" class="h-12 mx-auto mb-2 object-contain">` : '';
+      const itemsHTML = sale.items.map(i => `
+        <div class="flex justify-between py-1 border-b border-dashed border-slate-300">
+          <span>${i.qty}x ${i.name}</span>
+          <strong>${fmt(i.price * i.qty)}</strong>
+        </div>
+      `).join('');
+
+      document.getElementById('print-area').innerHTML = `
+        <div class="text-center border-b-2 border-black pb-3">
+          ${logoImg}
+          <h3 class="text-base font-black uppercase">${s.companyName}</h3>
+          <p class="text-[11px]">${s.businessType} · ${s.taxId}</p>
+          <p class="text-[11px]">${s.address}</p>
+          <p class="text-[11px]">Tel: ${s.phone}</p>
+        </div>
+        <div class="py-2 border-b border-black text-[11px] space-y-0.5">
+          <div class="flex justify-between"><span>COMPROBANTE:</span><strong>${sale.folio}</strong></div>
+          <div class="flex justify-between"><span>FECHA:</span><span>${sale.date}</span></div>
+          <div class="flex justify-between"><span>CLIENTE:</span><span>${sale.client}</span></div>
+          <div class="flex justify-between"><span>CAJERO:</span><span>${sale.cashier}</span></div>
+          <div class="flex justify-between"><span>PAGO:</span><span>${sale.method}</span></div>
+        </div>
+        <div class="py-2 space-y-1 text-[11px]">
+          ${itemsHTML}
+        </div>
+        <div class="pt-2 border-t-2 border-black space-y-1 text-xs">
+          <div class="flex justify-between"><span>Subtotal:</span><span>${fmt(sale.subtotal)}</span></div>
+          <div class="flex justify-between"><span>Descuento:</span><span>-${fmt(sale.discVal)}</span></div>
+          <div class="flex justify-between"><span>Impuesto (${s.taxRate}%):</span><span>${fmt(sale.tax)}</span></div>
+          <div class="flex justify-between text-base font-black pt-1 border-t border-black">
+            <span>TOTAL:</span><span>${fmt(sale.total)}</span>
+          </div>
+        </div>
+        <p class="text-center text-[10px] pt-3">${s.footer}</p>
+      `;
+      document.getElementById('invoice-modal').classList.remove('hidden');
+      document.getElementById('invoice-modal').classList.add('flex');
+    }
+
+    function closeInvoiceModal() {
+      document.getElementById('invoice-modal').classList.add('hidden');
+      document.getElementById('invoice-modal').classList.remove('flex');
+    }
+
+    function sendInvoiceWhatsApp() {
+      if (!lastInvoice) return;
+      const s = state.settings;
+      const lines = lastInvoice.items.map(i => `• ${i.qty}x ${i.name}: ${fmt(i.price * i.qty)}`).join('%0A');
+      const msg = `*${s.companyName}*%0AComprobante: *${lastInvoice.folio}*%0ACliente: ${lastInvoice.client}%0AFecha: ${lastInvoice.date}%0A----------------%0A${lines}%0A----------------%0A*TOTAL: ${fmt(lastInvoice.total)}*%0A${s.footer}`;
+      const phoneClean = (lastInvoice.phone || '').replace(/[^0-9]/g, '');
+      window.open(`https://wa.me/${phoneClean}?text=${msg}`, '_blank');
+    }
+
+    // INVENTARIO
+    function renderInventory() {
+      const tbody = document.getElementById('inventory-table-body');
+      tbody.innerHTML = '';
+
+      let totalUnits = 0;
+      let totalValue = 0;
+      let lowCount = 0;
+
+      state.products.forEach(p => {
+        totalUnits += Number(p.stock);
+        totalValue += Number(p.stock) * Number(p.price);
+        if (p.stock <= p.min) lowCount++;
+
+        const statusBadge = p.stock <= 0
+          ? `<span class="px-2.5 py-1 rounded-full bg-red-500/20 text-red-300 text-xs font-bold">Agotado 🚨</span>`
+          : p.stock <= p.min
+            ? `<span class="px-2.5 py-1 rounded-full bg-amber-500/20 text-amber-300 text-xs font-bold">Stock Bajo ⚠️</span>`
+            : `<span class="px-2.5 py-1 rounded-full bg-emerald-500/15 text-emerald-300 text-xs font-bold">Óptimo ✅</span>`;
+
+        const tr = document.createElement('tr');
+        tr.className = 'hover:bg-slate-900/50 transition';
+        tr.innerHTML = `
+          <td class="py-3 px-4 font-mono text-xs text-slate-400">${p.sku}</td>
+          <td class="py-3 px-4 font-bold text-white">${p.name}</td>
+          <td class="py-3 px-4 text-slate-300">${p.category}</td>
+          <td class="py-3 px-4 font-mono text-slate-400">${fmt(p.cost)}</td>
+          <td class="py-3 px-4 font-mono font-bold text-emerald-400">${fmt(p.price)}</td>
+          <td class="py-3 px-4 font-mono font-bold text-white">${p.stock}</td>
+          <td class="py-3 px-4">${statusBadge}</td>
+          <td class="py-3 px-4 text-right space-x-1">
+            <button onclick="quickAddStock(${p.id})" class="px-2.5 py-1 rounded-lg bg-emerald-500/20 text-emerald-300 hover:bg-emerald-500 hover:text-slate-950 text-xs font-bold transition">+ Stock</button>
+            <button onclick="openProductModal(${p.id})" class="px-2.5 py-1 rounded-lg bg-slate-800 text-slate-200 hover:bg-slate-700 text-xs font-semibold">Editar</button>
+            <button onclick="deleteProduct(${p.id})" class="px-2.5 py-1 rounded-lg bg-red-500/15 text-red-300 hover:bg-red-500/30 text-xs font-semibold">&times;</button>
+          </td>
+        `;
+        tbody.appendChild(tr);
+      });
+
+      document.getElementById('inv-kpi-total').textContent = state.products.length;
+      document.getElementById('inv-kpi-units').textContent = totalUnits;
+      document.getElementById('inv-kpi-value').textContent = fmt(totalValue);
+      document.getElementById('inv-kpi-low').textContent = lowCount;
+    }
+
+    function quickAddStock(pid) {
+      const prod = state.products.find(p => p.id === pid);
+      if (!prod) return;
+      const qty = prompt(`Ingresar unidades nuevas al stock de "${prod.name}":`, '10');
+      if (qty !== null && !isNaN(Number(qty))) {
+        prod.stock += Number(qty);
+        saveState();
+        renderInventory();
+        renderPOSProducts();
+      }
+    }
+
+    function openProductModal(pid = null) {
+      const modal = document.getElementById('product-modal');
+      if (pid) {
+        const p = state.products.find(x => x.id === pid);
+        document.getElementById('prod-modal-title').textContent = 'Editar Producto / Servicio';
+        document.getElementById('prod-id').value = p.id;
+        document.getElementById('prod-sku').value = p.sku;
+        document.getElementById('prod-cat').value = p.category;
+        document.getElementById('prod-name').value = p.name;
+        document.getElementById('prod-cost').value = p.cost;
+        document.getElementById('prod-price').value = p.price;
+        document.getElementById('prod-stock').value = p.stock;
+        document.getElementById('prod-min').value = p.min;
+      } else {
+        document.getElementById('prod-modal-title').textContent = 'Nuevo Producto / Servicio';
+        document.getElementById('prod-id').value = '';
+        document.getElementById('prod-sku').value = 'PRD-00' + (state.products.length + 1);
+        document.getElementById('prod-cat').value = 'General';
+        document.getElementById('prod-name').value = '';
+        document.getElementById('prod-cost').value = '0';
+        document.getElementById('prod-price').value = '10';
+        document.getElementById('prod-stock').value = '20';
+        document.getElementById('prod-min').value = '5';
+      }
+      modal.classList.remove('hidden');
+      modal.classList.add('flex');
+    }
+
+    function closeProductModal() {
+      document.getElementById('product-modal').classList.add('hidden');
+      document.getElementById('product-modal').classList.remove('flex');
+    }
+
+    function saveProduct() {
+      const id = document.getElementById('prod-id').value;
+      const data = {
+        id: id ? Number(id) : Date.now(),
+        sku: document.getElementById('prod-sku').value.trim() || 'SKU',
+        category: document.getElementById('prod-cat').value.trim() || 'General',
+        name: document.getElementById('prod-name').value.trim() || 'Producto',
+        cost: Number(document.getElementById('prod-cost').value) || 0,
+        price: Number(document.getElementById('prod-price').value) || 0,
+        stock: Number(document.getElementById('prod-stock').value) || 0,
+        min: Number(document.getElementById('prod-min').value) || 0
+      };
+      if (id) {
+        const idx = state.products.findIndex(p => p.id === Number(id));
+        if (idx > -1) state.products[idx] = data;
+      } else {
+        state.products.push(data);
+      }
+      saveState();
+      populateCategoryFilter();
+      renderInventory();
+      renderPOSProducts();
+      closeProductModal();
+    }
+
+    function deleteProduct(pid) {
+      if (!confirm('¿Eliminar este producto del inventario?')) return;
+      state.products = state.products.filter(p => p.id !== pid);
+      saveState();
+      renderInventory();
+      renderPOSProducts();
+    }
+
+    // HISTORIAL DE VENTAS
+    function renderSales() {
+      const tbody = document.getElementById('sales-table-body');
+      tbody.innerHTML = '';
+      let rev = 0;
+      let prof = 0;
+
+      state.sales.forEach((s, idx) => {
+        rev += s.total;
+        prof += (s.profit || 0);
+        const tr = document.createElement('tr');
+        tr.className = 'hover:bg-slate-900/50';
+        tr.innerHTML = `
+          <td class="py-3 px-4 font-mono font-bold text-emerald-400">${s.folio}</td>
+          <td class="py-3 px-4 text-xs text-slate-400">${s.date}</td>
+          <td class="py-3 px-4 font-semibold text-white">${s.client}</td>
+          <td class="py-3 px-4 text-slate-300">${s.cashier}</td>
+          <td class="py-3 px-4"><span class="px-2 py-0.5 rounded bg-slate-800 text-xs">${s.method}</span></td>
+          <td class="py-3 px-4 font-mono font-bold text-white">${fmt(s.total)}</td>
+          <td class="py-3 px-4 text-right">
+            <button onclick="reprintSale(${idx})" class="px-3 py-1 rounded-lg bg-emerald-500/20 text-emerald-300 hover:bg-emerald-500 hover:text-slate-950 text-xs font-bold transition">
+              🧾 Ver / Imprimir
+            </button>
+          </td>
+        `;
+        tbody.appendChild(tr);
+      });
+
+      document.getElementById('sales-kpi-revenue').textContent = fmt(rev);
+      document.getElementById('sales-kpi-count').textContent = state.sales.length;
+      document.getElementById('sales-kpi-profit').textContent = fmt(prof);
+    }
+
+    function reprintSale(idx) {
+      if (state.sales[idx]) showInvoiceModal(state.sales[idx]);
+    }
+
+    // GESTIÓN DE 4 USUARIOS Y ROLES
+    function renderUsersGrid() {
+      const grid = document.getElementById('users-cards-grid');
+      const activeCount = state.users.filter(u => u.active).length;
+      document.getElementById('users-slot-badge').textContent = `Usuarios Activos: ${activeCount} / 4 (Límite de Licencia)`;
+
+      grid.innerHTML = state.users.map((u, idx) => `
+        <div class="glass rounded-3xl p-6 border ${u.isMaster ? 'border-emerald-500/50' : 'border-slate-800'} space-y-4">
+          <div class="flex items-center justify-between">
+            <div class="flex items-center gap-3">
+              <div class="w-10 h-10 rounded-xl ${u.isMaster ? 'bg-emerald-500 text-slate-950' : 'bg-slate-800 text-emerald-400'} font-black flex items-center justify-center mono">
+                U${idx + 1}
+              </div>
+              <div>
+                <span class="text-[10px] font-mono uppercase ${u.isMaster ? 'text-emerald-400' : 'text-cyan-400'} font-bold">
+                  ${u.isMaster ? '👑 USUARIO PRINCIPAL (PROPIETARIO)' : `USUARIO ADICIONAL #${idx}`}
+                </span>
+                <h4 class="font-bold text-white text-base">${u.name}</h4>
+              </div>
+            </div>
+            ${u.isMaster ? '<span class="px-2.5 py-1 rounded bg-emerald-500/20 text-emerald-300 text-xs font-bold">Siempre Activo</span>' : `
+              <label class="flex items-center gap-2 text-xs cursor-pointer">
+                <input type="checkbox" ${u.active ? 'checked' : ''} onchange="toggleUserActive(${u.id}, this.checked)" class="accent-emerald-400 w-4 h-4">
+                <span class="${u.active ? 'text-emerald-400 font-bold' : 'text-slate-500'}">${u.active ? 'Habilitado' : 'Desactivado'}</span>
+              </label>
+            `}
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs pt-2 border-t border-slate-800">
+            <div>
+              <label class="text-slate-400 block mb-1">Nombre del Usuario</label>
+              <input type="text" value="${u.name}" onchange="updateUserField(${u.id}, 'name', this.value)" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-white font-semibold">
+            </div>
+            <div>
+              <label class="text-slate-400 block mb-1">Rol Asignado</label>
+              <select ${u.isMaster ? 'disabled' : ''} onchange="updateUserField(${u.id}, 'role', this.value)" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-white font-semibold">
+                <option value="ADMIN" ${u.role === 'ADMIN' ? 'selected' : ''}>ADMIN (Control Total)</option>
+                <option value="CAJERO" ${u.role === 'CAJERO' ? 'selected' : ''}>CAJERO (Solo Ventas POS)</option>
+                <option value="INVENTARIO" ${u.role === 'INVENTARIO' ? 'selected' : ''}>INVENTARIO (Solo Stock)</option>
+                <option value="SUPERVISOR" ${u.role === 'SUPERVISOR' ? 'selected' : ''}>SUPERVISOR (POS + Stock)</option>
+              </select>
+            </div>
+            <div>
+              <label class="text-slate-400 block mb-1">PIN de Acceso</label>
+              <input type="text" value="${u.pin}" onchange="updateUserField(${u.id}, 'pin', this.value)" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-emerald-400 mono font-bold text-center">
+            </div>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function toggleUserActive(uid, val) {
+      const u = state.users.find(x => x.id === uid);
+      if (u && !u.isMaster) {
+        u.active = val;
+        saveState();
+        renderUsersGrid();
+      }
+    }
+
+    function updateUserField(uid, field, val) {
+      const u = state.users.find(x => x.id === uid);
+      if (u) {
+        u[field] = val.trim();
+        saveState();
+        renderUsersGrid();
+      }
+    }
+
+    // PERSONALIZACIÓN WHITE-LABEL
+    function loadSettingsForm() {
+      const s = state.settings;
+      document.getElementById('set-business-type').value = s.businessType;
+      document.getElementById('set-company-name').value = s.companyName;
+      document.getElementById('set-tax-id').value = s.taxId;
+      document.getElementById('set-phone').value = s.phone;
+      document.getElementById('set-currency').value = s.currency;
+      document.getElementById('set-tax-rate').value = s.taxRate;
+      document.getElementById('set-address').value = s.address;
+      document.getElementById('set-footer').value = s.footer;
+    }
+
+    function saveSettings() {
+      state.settings.businessType = document.getElementById('set-business-type').value;
+      state.settings.companyName = document.getElementById('set-company-name').value.trim() || 'Mi Empresa';
+      state.settings.taxId = document.getElementById('set-tax-id').value.trim();
+      state.settings.phone = document.getElementById('set-phone').value.trim();
+      state.settings.currency = document.getElementById('set-currency').value.trim() || '$';
+      state.settings.taxRate = Number(document.getElementById('set-tax-rate').value) || 0;
+      state.settings.address = document.getElementById('set-address').value.trim();
+      state.settings.footer = document.getElementById('set-footer').value.trim();
+      saveState();
+      renderPOSProducts();
+      renderCart();
+      renderInventory();
+      alert('✅ Marca y parámetros guardados correctamente en todo el sistema.');
+    }
+
+    function handleLogoUpload(e) {
+      const file = e.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = function(evt) {
+        state.settings.logo = evt.target.result;
+        saveState();
+      };
+      reader.readAsDataURL(file);
+    }
+
+    function clearLogo() {
+      state.settings.logo = '';
+      saveState();
+    }
+
+    function applyBusinessPreset(type) {
+      state.settings.businessType = type;
+      saveState();
+    }
+
+    // EXPORTAR CSV Y RESPALDOS
+    function exportInventoryCSV() {
+      let csv = 'SKU,Producto,Categoria,Costo,Precio,Stock\n';
+      state.products.forEach(p => {
+        csv += `"${p.sku}","${p.name}","${p.category}",${p.cost},${p.price},${p.stock}\n`;
+      });
+      downloadBlob(csv, 'Inventario_Kinetix.csv', 'text/csv');
+    }
+
+    function exportSalesCSV() {
+      let csv = 'Folio,Fecha,Cliente,Cajero,Metodo,Total\n';
+      state.sales.forEach(s => {
+        csv += `"${s.folio}","${s.date}","${s.client}","${s.cashier}","${s.method}",${s.total}\n`;
+      });
+      downloadBlob(csv, 'Ventas_Kinetix.csv', 'text/csv');
+    }
+
+    function exportBackupJSON() {
+      downloadBlob(JSON.stringify(state, null, 2), 'Respaldo_Kinetix_POS.json', 'application/json');
+    }
+
+    function importBackupJSON(e) {
+      const file = e.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = function(evt) {
+        try {
+          const imported = JSON.parse(evt.target.result);
+          if (imported.products && imported.settings) {
+            state = imported;
+            saveState();
+            location.reload();
+          }
+        } catch (err) {
+          alert('Archivo de respaldo inválido.');
+        }
+      };
+      reader.readAsText(file);
+    }
+
+    function downloadBlob(content, filename, type) {
+      const blob = new Blob([content], { type });
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = filename;
+      a.click();
+    }
+
+    function installAppPrompt() {
+      alert('📲 MODO APLICACIÓN INSTALABLE:\n\n• En PC (Chrome/Edge): Haz clic en el icono de computadora con flecha en la barra de direcciones (arriba a la derecha) o Menú ⋮ -> "Guardar y compartir" -> "Instalar página como aplicación".\n• En Android / iPhone / Tablet: Abre el menú del navegador y selecciona "Agregar a pantalla de inicio".');
+    }
+
+    initApp();
+  </script>
+</body>
+</html>

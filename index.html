@@ -1,0 +1,906 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Kinetix Systems | Sistemas Instalables POS, Clínicas, Citas y CRM ($189 USD)</title>
+  <meta name="description" content="Sistemas empresariales instalables en PC, Móvil y Tablet: Facturación POS e Inventarios, Gestión de Expedientes Clínicos y Citas con Recordatorios, y CRM con Cotizador PDF. Personalizables con tu logo y para 4 usuarios.">
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+  <!-- Tailwind CSS via CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+            mono: ['"JetBrains Mono"', 'monospace']
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    body {
+      background-color: #070b13;
+      color: #f1f5f9;
+      font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+    }
+    .gradient-radial {
+      background: radial-gradient(circle at 50% 15%, rgba(16, 185, 129, 0.14) 0%, rgba(56, 189, 248, 0.06) 35%, transparent 70%);
+    }
+    .glow-emerald {
+      box-shadow: 0 0 55px -12px rgba(16, 185, 129, 0.28);
+    }
+    .glass-nav {
+      background: rgba(7, 11, 19, 0.82);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+    }
+    .glass-card {
+      background: rgba(15, 23, 42, 0.65);
+      backdrop-filter: blur(14px);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+    .glass-card:hover {
+      border-color: rgba(52, 211, 153, 0.4);
+      box-shadow: 0 14px 36px -10px rgba(16, 185, 129, 0.18);
+    }
+    /* Estilos de Modo Claro */
+    html.light body { background-color: #f8fafc; color: #0f172a; }
+    html.light .glass-nav { background: rgba(255, 255, 255, 0.92); border-color: #e2e8f0; }
+    html.light .glass-card { background: rgba(255, 255, 255, 0.96); border-color: #e2e8f0; box-shadow: 0 10px 25px -5px rgba(0,0,0,0.06); }
+    html.light .glass-card:hover { border-color: #10b981; }
+    html.light .bg-slate-950 { background-color: #ffffff !important; }
+    html.light .bg-slate-900 { background-color: #f1f5f9 !important; }
+    html.light .bg-slate-900\/90, html.light .bg-slate-900\/70 { background-color: #f8fafc !important; }
+    html.light .text-white { color: #0f172a !important; }
+    html.light .text-slate-300, html.light .text-slate-400 { color: #475569 !important; }
+    html.light .text-slate-200 { color: #1e293b !important; }
+    html.light .border-slate-800, html.light .border-slate-700, html.light .border-slate-900 { border-color: #e2e8f0 !important; }
+    html.light footer { background-color: #ffffff !important; border-color: #e2e8f0 !important; }
+  </style>
+</head>
+<body class="antialiased selection:bg-emerald-500 selection:text-black relative">
+
+  <!-- Glow Background -->
+  <div class="fixed inset-0 gradient-radial pointer-events-none z-0"></div>
+
+  <!-- Top Notification Bar -->
+  <div class="relative z-40 bg-gradient-to-r from-emerald-950 via-slate-900 to-cyan-950 border-b border-emerald-500/20 py-2.5 px-4 text-center text-xs md:text-sm font-medium text-emerald-300">
+    <div class="max-w-7xl mx-auto flex flex-wrap items-center justify-center gap-2">
+      <span class="inline-block w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
+      <span><strong>Descarga Automática Inmediata:</strong> Sistemas instalables en PC, Móvil y Tablet · Licencia White-Label para 4 Usuarios por solo <strong>$189 USD</strong> (Pago Único).</span>
+      <a href="#catalogo-sistemas" class="underline hover:text-white transition font-bold ml-1">Ver los 3 Sistemas &rarr;</a>
+    </div>
+  </div>
+
+  <!-- Header / Navigation -->
+  <header class="sticky top-0 z-40 glass-nav border-b border-slate-800/80">
+    <div class="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
+      <a href="#" class="flex items-center gap-3 group">
+        <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-emerald-400 to-cyan-500 p-0.5 shadow-lg shadow-emerald-500/20">
+          <div class="w-full h-full bg-slate-950 rounded-[10px] flex items-center justify-center">
+            <svg class="w-5 h-5 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
+            </svg>
+          </div>
+        </div>
+        <div class="flex flex-col">
+          <span class="text-xl font-extrabold tracking-tight text-white">KINETIX<span class="text-emerald-400">.</span>OS</span>
+          <span class="text-[10px] uppercase tracking-widest text-slate-400 font-semibold">Software Store & Custom Systems</span>
+        </div>
+      </a>
+
+      <nav class="hidden lg:flex items-center gap-7 text-sm font-medium text-slate-300">
+        <a href="#catalogo-sistemas" class="text-emerald-400 font-bold hover:text-emerald-300 transition">Catálogo de Sistemas ($189)</a>
+        <a href="#personalizacion" class="hover:text-emerald-400 transition">Marca Propia & 4 Usuarios</a>
+        <a href="#problema" class="hover:text-emerald-400 transition">Por Qué Kinetix</a>
+        <a href="#faq" class="hover:text-emerald-400 transition">Preguntas Frecuentes</a>
+      </nav>
+
+      <div class="flex items-center gap-3">
+        <!-- Toggle Modo Oscuro / Claro -->
+        <button onclick="toggleGlobalTheme()" id="global-theme-btn" class="px-3.5 py-2 rounded-xl bg-slate-900 border border-slate-700 hover:border-emerald-400 text-slate-200 hover:text-emerald-400 transition flex items-center gap-2 text-xs font-semibold cursor-pointer" title="Cambiar Tema (Modo Claro / Modo Oscuro)">
+          <span id="theme-btn-symbol">☀️</span>
+          <span id="theme-btn-label" class="hidden sm:inline">Modo Claro</span>
+        </button>
+        <a href="#catalogo-sistemas" class="inline-flex items-center justify-center px-5 py-2.5 text-xs sm:text-sm font-extrabold text-slate-950 bg-emerald-400 rounded-xl hover:bg-emerald-300 transition shadow-lg shadow-emerald-500/20">
+          Explorar Sistemas
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <main class="relative z-10">
+
+    <!-- HERO SECTION -->
+    <section class="relative pt-16 pb-16 md:pt-24 md:pb-20 overflow-hidden">
+      <div class="max-w-5xl mx-auto px-6 text-center">
+        <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 text-xs md:text-sm font-semibold tracking-wide uppercase mb-6">
+          <svg class="w-4 h-4 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+          <span>Software Instalable en PC, Móvil y Tablet · Sin Mensualidades</span>
+        </div>
+
+        <h1 class="text-4xl sm:text-6xl md:text-7xl font-black tracking-tight text-white leading-[1.08] mb-6">
+          Sistemas Digitales Listos Para Instalar, <span class="bg-gradient-to-r from-emerald-400 via-teal-300 to-cyan-400 bg-clip-text text-transparent">Personalizar con Tu Logo y Escalar Hoy Mismo.</span>
+        </h1>
+
+        <p class="text-base sm:text-xl text-slate-300 max-w-3xl mx-auto font-normal leading-relaxed mb-10">
+          Olvídate de las hojas de cálculo rotas y de pagar rentas mensuales eternas. Elige tu sistema llave en mano (<strong>Facturación POS & Inventarios</strong>, <strong>Expedientes Clínicos & Citas con Recordatorios</strong> o <strong>CRM & Cotizador PDF</strong>), personalízalo desde adentro con tu marca y asigna acceso hasta a <strong>4 usuarios por roles</strong>.
+        </p>
+
+        <div class="flex flex-col sm:flex-row items-center justify-center gap-4 max-w-xl mx-auto mb-14">
+          <a href="#catalogo-sistemas" class="w-full sm:w-auto px-8 py-4 rounded-2xl bg-gradient-to-r from-emerald-400 to-cyan-400 text-slate-950 font-black text-base hover:opacity-95 shadow-xl shadow-emerald-500/25 transition flex items-center justify-center gap-2">
+            <span>Probar Demos y Descargar ($189 USD)</span>
+            <span>&rarr;</span>
+          </a>
+          <button onclick="openLiveDemo('pos')" class="w-full sm:w-auto px-6 py-4 rounded-2xl bg-slate-900 hover:bg-slate-800 text-white font-bold text-base border border-slate-700 transition flex items-center justify-center gap-2">
+            <svg class="w-5 h-5 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
+            <span>Ver Demo en Vivo Ahora</span>
+          </button>
+        </div>
+
+        <!-- Highlights Bar -->
+        <div class="pt-8 border-t border-slate-800/80 grid grid-cols-2 md:grid-cols-4 gap-6 max-w-4xl mx-auto text-left">
+          <div class="p-4 rounded-2xl bg-slate-900/60 border border-slate-800/80">
+            <p class="text-xl md:text-2xl font-black text-emerald-400">$189 USD</p>
+            <p class="text-xs text-slate-400 mt-0.5">Pago único · Cero rentas mensuales</p>
+          </div>
+          <div class="p-4 rounded-2xl bg-slate-900/60 border border-slate-800/80">
+            <p class="text-xl md:text-2xl font-black text-white">4 Usuarios</p>
+            <p class="text-xs text-slate-400 mt-0.5">1 Principal + 3 usuarios por roles</p>
+          </div>
+          <div class="p-4 rounded-2xl bg-slate-900/60 border border-slate-800/80">
+            <p class="text-xl md:text-2xl font-black text-cyan-400">100% Tu Marca</p>
+            <p class="text-xs text-slate-400 mt-0.5">Sube tu logo y nombre desde adentro</p>
+          </div>
+          <div class="p-4 rounded-2xl bg-slate-900/60 border border-slate-800/80">
+            <p class="text-xl md:text-2xl font-black text-white">Multi-Dispositivo</p>
+            <p class="text-xs text-slate-400 mt-0.5">Instalable en PC, Móvil y Tablet</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CATÁLOGO PRINCIPAL DE LOS 3 SISTEMAS INSTALABLES ($189 USD C/U) -->
+    <section id="catalogo-sistemas" class="py-20 bg-slate-950/70 border-y border-slate-800/90 relative">
+      <div class="max-w-7xl mx-auto px-6">
+        <div class="text-center max-w-3xl mx-auto mb-16">
+          <span class="text-xs font-mono font-bold uppercase tracking-widest text-emerald-400 bg-emerald-950/80 border border-emerald-500/30 px-3.5 py-1.5 rounded-full">
+            Catálogo de Software Llave en Mano · Entrega Automática
+          </span>
+          <h2 class="text-3xl sm:text-5xl font-black tracking-tight text-white mt-4">
+            Elige Tu Sistema, Pruébalo en Vivo y Descarga el Instalador al Instante
+          </h2>
+          <p class="text-slate-400 text-base md:text-lg mt-3">
+            Cada sistema incluye código completo instalable en PC, Android, iPhone y Tablet, base de datos local ilimitada, personalizador de Logo/Marca y control de acceso para <strong>4 usuarios por roles</strong>.
+          </p>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+
+          <!-- SISTEMA 1: FACTURACIÓN, POS Y CONTROL DE INVENTARIOS -->
+          <div class="glass-card rounded-3xl p-7 flex flex-col justify-between border-2 border-emerald-500/35 relative overflow-hidden">
+            <div class="absolute top-4 right-4 bg-emerald-500/20 border border-emerald-500/40 text-emerald-300 font-mono font-bold text-[11px] px-3 py-1 rounded-full">
+              MÁS VENDIDO PYMES
+            </div>
+
+            <div class="space-y-5">
+              <div class="w-14 h-14 rounded-2xl bg-emerald-500/15 border border-emerald-500/40 flex items-center justify-center text-emerald-400 shadow-inner">
+                <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/>
+                </svg>
+              </div>
+
+              <div>
+                <span class="text-xs font-mono uppercase text-emerald-400 font-bold">Comercios · Tiendas · Restaurantes · Farmacias</span>
+                <h3 class="text-2xl font-black text-white mt-1">Sistema de Facturación, POS y Control de Inventarios</h3>
+              </div>
+
+              <!-- Vista Previa Mockup UI -->
+              <div class="relative rounded-2xl overflow-hidden border border-emerald-500/25 group shadow-lg shadow-emerald-950/40">
+                <img src="preview_pos.jpg" alt="Vista previa POS e Inventario" class="w-full h-44 object-cover object-top rounded-2xl group-hover:scale-105 transition-transform duration-300" />
+                <div class="absolute inset-0 bg-gradient-to-t from-slate-950/70 via-transparent to-transparent pointer-events-none"></div>
+                <button onclick="openLiveDemo('pos')" class="absolute bottom-2.5 right-2.5 px-3 py-1.5 rounded-xl bg-emerald-400 text-slate-950 font-extrabold text-[11px] shadow-lg hover:bg-emerald-300 transition flex items-center gap-1.5 cursor-pointer">
+                  <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
+                  <span>Ver Demo en Vivo</span>
+                </button>
+              </div>
+
+              <p class="text-slate-300 text-sm leading-relaxed">
+                El sistema todo-en-uno con mayor rotación para <strong>tiendas, minimarkets, restaurantes, barberías y farmacias</strong>. Registra ventas en segundos, emite facturas/tickets y controla tu stock en tiempo real.
+              </p>
+
+              <!-- Industrias Compatibles -->
+              <div class="flex flex-wrap gap-1.5 text-[11px]">
+                <span class="px-2.5 py-1 rounded-lg bg-slate-900 border border-slate-800 text-slate-300">Tiendas & Retail</span>
+                <span class="px-2.5 py-1 rounded-lg bg-slate-900 border border-slate-800 text-slate-300">Restaurantes</span>
+                <span class="px-2.5 py-1 rounded-lg bg-slate-900 border border-slate-800 text-slate-300">Barberías</span>
+                <span class="px-2.5 py-1 rounded-lg bg-slate-900 border border-slate-800 text-slate-300">Farmacias</span>
+              </div>
+
+              <!-- Checklist de Funciones -->
+              <ul class="space-y-2.5 text-xs text-slate-200 border-t border-slate-800/90 pt-4">
+                <li class="flex items-start gap-2.5">
+                  <span class="text-emerald-400 font-bold">✓</span>
+                  <span><strong>Terminal Punto de Venta (POS):</strong> Carrito rápido, descuentos, impuestos, cálculo de vuelto en efectivo, tarjeta y transferencia.</span>
+                </li>
+                <li class="flex items-start gap-2.5">
+                  <span class="text-emerald-400 font-bold">✓</span>
+                  <span><strong>Comprobantes y Facturas con Tu Logo:</strong> Impresión térmica 80mm / PDF y envío del ticket por WhatsApp al cliente en 1 clic.</span>
+                </li>
+                <li class="flex items-start gap-2.5">
+                  <span class="text-emerald-400 font-bold">✓</span>
+                  <span><strong>Kardex y Stock en Tiempo Real:</strong> Descuento automático en cada venta, alertas de stock mínimo y exportación a Excel.</span>
+                </li>
+                <li class="flex items-start gap-2.5">
+                  <span class="text-emerald-400 font-bold">✓</span>
+                  <span><strong>Personalizable + 4 Usuarios con Roles:</strong> Sube tu logo y nombre comercial. Incluye 1 Usuario Principal + 3 usuarios (Cajero, Almacén, Supervisor).</span>
+                </li>
+              </ul>
+            </div>
+
+            <!-- Precio y Botones -->
+            <div class="pt-6 mt-6 border-t border-slate-800 space-y-3">
+              <div class="flex items-baseline justify-between">
+                <div>
+                  <span class="text-[11px] text-slate-400 uppercase font-bold block">Licencia Vitalicia + Instalador</span>
+                  <span class="text-xs text-emerald-400 font-semibold">PC · Móvil · Tablet (4 Usuarios)</span>
+                </div>
+                <div class="text-right">
+                  <span class="text-xs text-slate-500 line-through block">$490 USD</span>
+                  <span class="text-3xl font-black text-white font-mono">$189 <span class="text-xs font-normal text-slate-400">USD</span></span>
+                </div>
+              </div>
+
+              <div class="grid grid-cols-1 gap-2.5">
+                <button onclick="openCheckoutModal('pos')" class="w-full py-4 rounded-2xl bg-gradient-to-r from-emerald-400 to-teal-400 text-slate-950 font-black text-sm hover:opacity-95 transition shadow-lg shadow-emerald-500/20 flex items-center justify-center gap-2">
+                  <span>Comprar y Descargar Instalador ($189)</span>
+                </button>
+                <div class="grid grid-cols-2 gap-2">
+                  <button onclick="openLiveDemo('pos')" class="py-2.5 px-3 rounded-xl bg-slate-900 hover:bg-slate-800 text-emerald-300 border border-emerald-500/30 text-xs font-bold transition">
+                    Probar Demo Aquí
+                  </button>
+                  <a href="sistemas/kinetix-pos-inventario.html" target="_blank" class="py-2.5 px-3 rounded-xl bg-slate-900 hover:bg-slate-800 text-slate-300 border border-slate-800 text-xs font-semibold text-center transition">
+                    Abrir Pantalla Completa
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- SISTEMA 2: EXPEDIENTES CLÍNICOS, CONSULTAS, CITAS Y RECORDATORIOS -->
+          <div class="glass-card rounded-3xl p-7 flex flex-col justify-between border-2 border-cyan-500/35 relative overflow-hidden">
+            <div class="absolute top-4 right-4 bg-cyan-500/20 border border-cyan-500/40 text-cyan-300 font-mono font-bold text-[11px] px-3 py-1 rounded-full">
+              SALUD & AGENDAMIENTO
+            </div>
+
+            <div class="space-y-5">
+              <div class="w-14 h-14 rounded-2xl bg-cyan-500/15 border border-cyan-500/40 flex items-center justify-center text-cyan-400 shadow-inner">
+                <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"/>
+                </svg>
+              </div>
+
+              <div>
+                <span class="text-xs font-mono uppercase text-cyan-400 font-bold">Clínicas · Especialidades · Salones · Talleres</span>
+                <h3 class="text-2xl font-black text-white mt-1">Sistema de Expedientes, Consultas, Citas y Recordatorios</h3>
+              </div>
+
+              <!-- Vista Previa Mockup UI -->
+              <div class="relative rounded-2xl overflow-hidden border border-cyan-500/25 group shadow-lg shadow-cyan-950/40">
+                <img src="preview_clinica.jpg" alt="Vista previa Expedientes Clínicos y Citas" class="w-full h-44 object-cover object-top rounded-2xl group-hover:scale-105 transition-transform duration-300" />
+                <div class="absolute inset-0 bg-gradient-to-t from-slate-950/70 via-transparent to-transparent pointer-events-none"></div>
+                <button onclick="openLiveDemo('med')" class="absolute bottom-2.5 right-2.5 px-3 py-1.5 rounded-xl bg-cyan-400 text-slate-950 font-extrabold text-[11px] shadow-lg hover:bg-cyan-300 transition flex items-center gap-1.5 cursor-pointer">
+                  <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
+                  <span>Ver Demo en Vivo</span>
+                </button>
+              </div>
+
+              <p class="text-slate-300 text-sm leading-relaxed">
+                Suite integral de historias clínicas para <strong>todas las especialidades médicas</strong> combinada con motor de <strong>Citas, Agendamiento, Reservas y Recordatorios Automáticos</strong> para clínicas, salones, talleres y consultorías.
+              </p>
+
+              <!-- Especialidades Compatibles -->
+              <div class="flex flex-wrap gap-1.5 text-[11px]">
+                <span class="px-2.5 py-1 rounded-lg bg-slate-900 border border-slate-800 text-cyan-300">Pediatría</span>
+                <span class="px-2.5 py-1 rounded-lg bg-slate-900 border border-slate-800 text-cyan-300">Ginecología</span>
+                <span class="px-2.5 py-1 rounded-lg bg-slate-900 border border-slate-800 text-cyan-300">Med. Interna & Oncología</span>
+                <span class="px-2.5 py-1 rounded-lg bg-slate-900 border border-slate-800 text-cyan-300">Clínica Dental</span>
+                <span class="px-2.5 py-1 rounded-lg bg-slate-900 border border-slate-800 text-slate-300">Salones & Talleres</span>
+              </div>
+
+              <!-- Checklist de Funciones -->
+              <ul class="space-y-2.5 text-xs text-slate-200 border-t border-slate-800/90 pt-4">
+                <li class="flex items-start gap-2.5">
+                  <span class="text-cyan-400 font-bold">✓</span>
+                  <span><strong>Expedientes y Consultas Multiespecialidad:</strong> Campos adaptables (Pediatría, Ginecología, Medicina Interna, Oncología, Odontología), signos vitales, alergias, CIE-10 y evolución.</span>
+                </li>
+                <li class="flex items-start gap-2.5">
+                  <span class="text-cyan-400 font-bold">✓</span>
+                  <span><strong>Recetario Oficial Imprimible en PDF:</strong> Emite recetas médicas y órdenes de servicio personalizadas con el logo de tu clínica y firma.</span>
+                </li>
+                <li class="flex items-start gap-2.5">
+                  <span class="text-cyan-400 font-bold">✓</span>
+                  <span><strong>Agenda de Citas + Recordatorios Automáticos:</strong> Envía recordatorios por <strong>WhatsApp, SMS y Correo</strong> en 1 clic para reducir el ausentismo en un 90%.</span>
+                </li>
+                <li class="flex items-start gap-2.5">
+                  <span class="text-cyan-400 font-bold">✓</span>
+                  <span><strong>Personalizable + 4 Usuarios con Roles:</strong> Sube tu logo y nombre. 1 Director Principal + 3 usuarios (Doctores, Recepción, Enfermería).</span>
+                </li>
+              </ul>
+            </div>
+
+            <!-- Precio y Botones -->
+            <div class="pt-6 mt-6 border-t border-slate-800 space-y-3">
+              <div class="flex items-baseline justify-between">
+                <div>
+                  <span class="text-[11px] text-slate-400 uppercase font-bold block">Licencia Vitalicia + Instalador</span>
+                  <span class="text-xs text-cyan-400 font-semibold">PC · Móvil · Tablet (4 Usuarios)</span>
+                </div>
+                <div class="text-right">
+                  <span class="text-xs text-slate-500 line-through block">$550 USD</span>
+                  <span class="text-3xl font-black text-white font-mono">$189 <span class="text-xs font-normal text-slate-400">USD</span></span>
+                </div>
+              </div>
+
+              <div class="grid grid-cols-1 gap-2.5">
+                <button onclick="openCheckoutModal('med')" class="w-full py-4 rounded-2xl bg-gradient-to-r from-cyan-400 to-emerald-400 text-slate-950 font-black text-sm hover:opacity-95 transition shadow-lg shadow-cyan-500/20 flex items-center justify-center gap-2">
+                  <span>Comprar y Descargar Instalador ($189)</span>
+                </button>
+                <div class="grid grid-cols-2 gap-2">
+                  <button onclick="openLiveDemo('med')" class="py-2.5 px-3 rounded-xl bg-slate-900 hover:bg-slate-800 text-cyan-300 border border-cyan-500/30 text-xs font-bold transition">
+                    Probar Demo Aquí
+                  </button>
+                  <a href="sistemas/kinetix-clinica-citas.html" target="_blank" class="py-2.5 px-3 rounded-xl bg-slate-900 hover:bg-slate-800 text-slate-300 border border-slate-800 text-xs font-semibold text-center transition">
+                    Abrir Pantalla Completa
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- SISTEMA 3: MÓDULO CRM, COTIZADOR PDF Y AUTOMATIZACIÓN DE CLIENTES -->
+          <div class="glass-card rounded-3xl p-7 flex flex-col justify-between border-2 border-indigo-500/35 relative overflow-hidden">
+            <div class="absolute top-4 right-4 bg-indigo-500/20 border border-indigo-500/40 text-indigo-300 font-mono font-bold text-[11px] px-3 py-1 rounded-full">
+              VENTAS & B2B/B2C
+            </div>
+
+            <div class="space-y-5">
+              <div class="w-14 h-14 rounded-2xl bg-indigo-500/15 border border-indigo-500/40 flex items-center justify-center text-indigo-400 shadow-inner">
+                <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/>
+                </svg>
+              </div>
+
+              <div>
+                <span class="text-xs font-mono uppercase text-indigo-400 font-bold">Empresas · Inmobiliarias · Agencias · Servicios</span>
+                <h3 class="text-2xl font-black text-white mt-1">Sistema CRM, Cotizador PDF y Automatización de Clientes</h3>
+              </div>
+
+              <!-- Vista Previa Mockup UI -->
+              <div class="relative rounded-2xl overflow-hidden border border-indigo-500/25 group shadow-lg shadow-indigo-950/40">
+                <img src="preview_crm.jpg" alt="Vista previa CRM y Cotizador" class="w-full h-44 object-cover object-top rounded-2xl group-hover:scale-105 transition-transform duration-300" />
+                <div class="absolute inset-0 bg-gradient-to-t from-slate-950/70 via-transparent to-transparent pointer-events-none"></div>
+                <button onclick="openLiveDemo('crm')" class="absolute bottom-2.5 right-2.5 px-3 py-1.5 rounded-xl bg-indigo-400 text-slate-950 font-extrabold text-[11px] shadow-lg hover:bg-indigo-300 transition flex items-center gap-1.5 cursor-pointer">
+                  <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
+                  <span>Ver Demo en Vivo</span>
+                </button>
+              </div>
+
+              <p class="text-slate-300 text-sm leading-relaxed">
+                Herramienta ejecutiva sin complicaciones para <strong>captar leads, controlar tu embudo de ventas, dar seguimiento a cotizaciones formales</strong> y gestionar tu base de datos de clientes.
+              </p>
+
+              <!-- Sectores Compatibles -->
+              <div class="flex flex-wrap gap-1.5 text-[11px]">
+                <span class="px-2.5 py-1 rounded-lg bg-slate-900 border border-slate-800 text-indigo-300">Inmobiliarias & Constructoras</span>
+                <span class="px-2.5 py-1 rounded-lg bg-slate-900 border border-slate-800 text-indigo-300">Agencias & Consultoras</span>
+                <span class="px-2.5 py-1 rounded-lg bg-slate-900 border border-slate-800 text-slate-300">Distribuidoras B2B</span>
+              </div>
+
+              <!-- Checklist de Funciones -->
+              <ul class="space-y-2.5 text-xs text-slate-200 border-t border-slate-800/90 pt-4">
+                <li class="flex items-start gap-2.5">
+                  <span class="text-indigo-400 font-bold">✓</span>
+                  <span><strong>Embudo Kanban de Ventas:</strong> Controla visualmente cada prospecto desde "Nuevo Lead" hasta "Cerrado Ganado" con métricas de ingresos.</span>
+                </li>
+                <li class="flex items-start gap-2.5">
+                  <span class="text-indigo-400 font-bold">✓</span>
+                  <span><strong>Generador de Cotizaciones en PDF con Tu Logo:</strong> Crea propuestas formales en segundos y envíalas por WhatsApp con 1 clic.</span>
+                </li>
+                <li class="flex items-start gap-2.5">
+                  <span class="text-indigo-400 font-bold">✓</span>
+                  <span><strong>Secuencias de Seguimiento por WhatsApp:</strong> Plantillas pre-configuradas de bienvenida, seguimiento de cotización y cierre de venta.</span>
+                </li>
+                <li class="flex items-start gap-2.5">
+                  <span class="text-indigo-400 font-bold">✓</span>
+                  <span><strong>Personalizable + 4 Usuarios con Roles:</strong> Sube el logo de tu empresa. 1 Director Comercial + 3 ejecutivos (Closers, SDR, Soporte).</span>
+                </li>
+              </ul>
+            </div>
+
+            <!-- Precio y Botones -->
+            <div class="pt-6 mt-6 border-t border-slate-800 space-y-3">
+              <div class="flex items-baseline justify-between">
+                <div>
+                  <span class="text-[11px] text-slate-400 uppercase font-bold block">Licencia Vitalicia + Instalador</span>
+                  <span class="text-xs text-indigo-400 font-semibold">PC · Móvil · Tablet (4 Usuarios)</span>
+                </div>
+                <div class="text-right">
+                  <span class="text-xs text-slate-500 line-through block">$490 USD</span>
+                  <span class="text-3xl font-black text-white font-mono">$189 <span class="text-xs font-normal text-slate-400">USD</span></span>
+                </div>
+              </div>
+
+              <div class="grid grid-cols-1 gap-2.5">
+                <button onclick="openCheckoutModal('crm')" class="w-full py-4 rounded-2xl bg-gradient-to-r from-indigo-500 to-cyan-400 text-slate-950 font-black text-sm hover:opacity-95 transition shadow-lg shadow-indigo-500/20 flex items-center justify-center gap-2">
+                  <span>Comprar y Descargar Instalador ($189)</span>
+                </button>
+                <div class="grid grid-cols-2 gap-2">
+                  <button onclick="openLiveDemo('crm')" class="py-2.5 px-3 rounded-xl bg-slate-900 hover:bg-slate-800 text-indigo-300 border border-indigo-500/30 text-xs font-bold transition">
+                    Probar Demo Aquí
+                  </button>
+                  <a href="sistemas/kinetix-crm-automatizacion.html" target="_blank" class="py-2.5 px-3 rounded-xl bg-slate-900 hover:bg-slate-800 text-slate-300 border border-slate-800 text-xs font-semibold text-center transition">
+                    Abrir Pantalla Completa
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- SECCIÓN DE PERSONALIZACIÓN WHITE-LABEL + 4 USUARIOS CON ROLES + MULTIPLATAFORMA -->
+    <section id="personalizacion" class="py-20 relative">
+      <div class="max-w-6xl mx-auto px-6">
+        <div class="text-center max-w-3xl mx-auto mb-14">
+          <span class="text-xs font-mono font-bold uppercase tracking-widest text-cyan-400 bg-cyan-950/60 border border-cyan-500/30 px-3.5 py-1 rounded-full">
+            Arquitectura Empresarial Autogestionable
+          </span>
+          <h2 class="text-3xl sm:text-4xl font-black text-white mt-4">
+            Diseñado Para Que Lo Personalices en 1 Minuto
+          </h2>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <div class="glass-card p-8 rounded-3xl space-y-4">
+            <div class="w-12 h-12 rounded-2xl bg-emerald-500/15 border border-emerald-500/30 flex items-center justify-center text-emerald-400 shadow-inner">
+              <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21a4 4 0 01-4-4 4 4 0 014-4c.66 0 1.28.16 1.83.44l7.17-7.17a3 3 0 014.24 4.24l-7.17 7.17c.28.55.44 1.17.44 1.83a4 4 0 01-4 4H7z"/>
+              </svg>
+            </div>
+            <h3 class="text-xl font-bold text-white">1. Personalización Interna (Tu Logo y Marca)</h3>
+            <p class="text-slate-300 text-sm leading-relaxed">
+              Desde la pestaña <strong>"Personalizar Marca"</strong> dentro del mismo sistema puedes subir tu <strong>propio Logo</strong>, cambiar el nombre de tu empresa o clínica, RUC/NIT, moneda local e impuestos. Todas las facturas, recetas y cotizaciones saldrán con tu imagen corporativa.
+            </p>
+          </div>
+
+          <div class="glass-card p-8 rounded-3xl space-y-4">
+            <div class="w-12 h-12 rounded-2xl bg-cyan-500/15 border border-cyan-500/30 flex items-center justify-center text-cyan-400 shadow-inner">
+              <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/>
+              </svg>
+            </div>
+            <h3 class="text-xl font-bold text-white">2. Control para 4 Usuarios por Roles</h3>
+            <p class="text-slate-300 text-sm leading-relaxed">
+              Cada licencia incluye <strong>4 usuarios activos</strong>: el <strong>Usuario Principal (Administrador Master)</strong> tiene control total y puede configurar el nombre, PIN y permisos de los otros <strong>3 usuarios adicionales</strong> (Cajeros, Doctores, Recepción, Almacén o Vendedores).
+            </p>
+          </div>
+
+          <div class="glass-card p-8 rounded-3xl space-y-4">
+            <div class="w-12 h-12 rounded-2xl bg-indigo-500/15 border border-indigo-500/30 flex items-center justify-center text-indigo-400 shadow-inner">
+              <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 18h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z"/>
+              </svg>
+            </div>
+            <h3 class="text-xl font-bold text-white">3. Instalable en PC, Móviles y Tabletas</h3>
+            <p class="text-slate-300 text-sm leading-relaxed">
+              Una vez realizado tu pago de <strong>$189 USD</strong>, se descarga automáticamente tu paquete instalador <code>.zip</code> que incluye el ejecutable de escritorio para PC (Windows/Mac) y la versión PWA instalable en teléfonos Android, iPhone y Tabletas sin pagar servidores mensuales.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- AGITACIÓN DEL PROBLEMA -->
+    <section id="problema" class="py-20 bg-slate-950/60 border-t border-slate-800/80">
+      <div class="max-w-6xl mx-auto px-6">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <div class="glass-card p-7 rounded-2xl">
+            <div class="inline-block px-2.5 py-0.5 rounded bg-red-500/20 text-red-400 font-mono text-xs font-bold mb-3">Hojas de Cálculo y Cuadernos</div>
+            <p class="text-slate-400 text-xs sm:text-sm leading-relaxed">
+              Fórmulas rotas, inventario descuadrado, citas olvidadas y horas perdidas buscando información. Un error manual cuesta más que todo el sistema.
+            </p>
+          </div>
+          <div class="glass-card p-7 rounded-2xl">
+            <div class="inline-block px-2.5 py-0.5 rounded bg-amber-500/20 text-amber-400 font-mono text-xs font-bold mb-3">Softwares con Rentas Eternas</div>
+            <p class="text-slate-400 text-xs sm:text-sm leading-relaxed">
+              Plataformas que te cobran $50 a $150 USD todos los meses por cada usuario y si dejas de pagar un mes te bloquean el acceso a tus propios clientes.
+            </p>
+          </div>
+          <div class="glass-card p-7 rounded-2xl border-emerald-500/30">
+            <div class="inline-block px-2.5 py-0.5 rounded bg-emerald-500/20 text-emerald-400 font-mono text-xs font-bold mb-3">Solución Kinetix ($189 Pago Único)</div>
+            <p class="text-slate-300 text-xs sm:text-sm leading-relaxed">
+              Compras una sola vez, descargas el instalador inmediatamente después del pago y el sistema queda instalado en tus equipos como un activo 100% tuyo.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- FAQ -->
+    <section id="faq" class="py-20 border-t border-slate-800/80">
+      <div class="max-w-4xl mx-auto px-6">
+        <h2 class="text-3xl font-extrabold text-white text-center mb-10">Preguntas Frecuentes</h2>
+        <div class="space-y-4">
+          <div class="glass-card rounded-2xl p-6 cursor-pointer" onclick="toggleFaq(this)">
+            <div class="flex items-center justify-between">
+              <h3 class="text-base font-bold text-white">¿Cómo recibo el instalador después de pagar los $189 USD?</h3>
+              <span class="text-emerald-400 font-bold text-xl icon">+</span>
+            </div>
+            <div class="faq-content hidden mt-3 pt-3 border-t border-slate-800 text-xs sm:text-sm text-slate-300 leading-relaxed">
+              El proceso es <strong>100% automatizado</strong>. En cuanto completas el pago seguro en PayPal, el sistema desbloquea y descarga automáticamente a tu dispositivo el paquete instalable (<code>.zip</code>) junto con tu clave de activación para 4 usuarios y el manual rápido de instalación en PC, Móvil y Tablet.
+            </div>
+          </div>
+
+          <div class="glass-card rounded-2xl p-6 cursor-pointer" onclick="toggleFaq(this)">
+            <div class="flex items-center justify-between">
+              <h3 class="text-base font-bold text-white">¿Puedo poner mi propio logo y nombre de mi negocio o clínica?</h3>
+              <span class="text-emerald-400 font-bold text-xl icon">+</span>
+            </div>
+            <div class="faq-content hidden mt-3 pt-3 border-t border-slate-800 text-xs sm:text-sm text-slate-300 leading-relaxed">
+              ¡Sí! Todos nuestros sistemas tienen un módulo interno llamado <strong>"Personalizar Marca"</strong>. Con un clic subes el logo de tu negocio desde tu PC o celular, escribes el nombre de tu empresa, tu moneda local, teléfono y dirección, y automáticamente todo el sistema y los documentos imprimibles llevan tu marca.
+            </div>
+          </div>
+
+          <div class="glass-card rounded-2xl p-6 cursor-pointer" onclick="toggleFaq(this)">
+            <div class="flex items-center justify-between">
+              <h3 class="text-base font-bold text-white">¿Cómo funciona el límite de 4 usuarios y los roles?</h3>
+              <span class="text-emerald-400 font-bold text-xl icon">+</span>
+            </div>
+            <div class="faq-content hidden mt-3 pt-3 border-t border-slate-800 text-xs sm:text-sm text-slate-300 leading-relaxed">
+              Tú ingresas como <strong>Usuario Principal (Administrador Master)</strong> con acceso completo. Desde la pestaña <strong>"4 Usuarios & Roles"</strong> puedes habilitar hasta a 3 miembros de tu equipo (total 4 usuarios), asignarles su propio PIN secreto y definir qué módulos pueden ver según su puesto.
+            </div>
+          </div>
+
+          <!-- FAQ 4: SOPORTE TÉCNICO (7 ASISTENCIAS GRATIS, LUEGO $15) -->
+          <div class="glass-card rounded-2xl p-6 cursor-pointer" onclick="toggleFaq(this)">
+            <div class="flex items-center justify-between">
+              <h3 class="text-base font-bold text-white">¿Cómo funciona el soporte técnico incluido con mi compra?</h3>
+              <span class="text-emerald-400 font-bold text-xl icon">+</span>
+            </div>
+            <div class="faq-content hidden mt-3 pt-3 border-t border-slate-800 text-xs sm:text-sm text-slate-300 leading-relaxed">
+              Cada sistema adquirido incluye <strong>7 asistencias técnicas anuales completamente gratuitas</strong> para acompañarte en la puesta en marcha, resolución de dudas operativas o configuración inicial. En caso de requerir asistencias adicionales a partir de la 8va sesión, cada asistencia técnica tendrá un costo sumamente accesible de tan solo <strong>$15 USD</strong>.
+            </div>
+          </div>
+
+          <!-- FAQ 5: PERSONALIZACIONES A MEDIDA -->
+          <div class="glass-card rounded-2xl p-6 cursor-pointer" onclick="toggleFaq(this)">
+            <div class="flex items-center justify-between">
+              <h3 class="text-base font-bold text-white">¿Puedo solicitar personalizaciones o módulos adicionales a la medida?</h3>
+              <span class="text-emerald-400 font-bold text-xl icon">+</span>
+            </div>
+            <div class="faq-content hidden mt-3 pt-3 border-t border-slate-800 text-xs sm:text-sm text-slate-300 leading-relaxed">
+              ¡Totalmente! Cada sistema ya te permite personalizar de forma autónoma tu logo, nombre comercial, moneda local e impuestos. Si tu negocio requiere flujos especiales, nuevos módulos exclusivos o integraciones a la medida de tu empresa, puedes solicitarlo directamente a nuestro equipo de desarrollo y tendrá un costo adicional presupuestado según el alcance del proyecto.
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="border-t border-slate-900 bg-slate-950 py-10 text-slate-500 text-xs">
+    <div class="max-w-7xl mx-auto px-6 flex flex-col md:flex-row items-center justify-between gap-4">
+      <div class="flex items-center gap-3">
+        <span class="text-base font-black text-white">KINETIX<span class="text-emerald-400">.</span>OS</span>
+        <span>|</span>
+        <span>Sistemas Empresariales Instalables & Automatización</span>
+      </div>
+      <div>&copy; 2026 Kinetix Systems. Todos los derechos reservados.</div>
+    </div>
+  </footer>
+
+  <!-- BOTÓN FLOTANTE CIRCULAR DE WHATSAPP (+50587931852) -->
+  <div class="fixed bottom-6 right-6 z-50 flex items-center gap-3 group">
+    <span class="hidden sm:inline-block px-3 py-1.5 rounded-xl bg-slate-900/90 border border-emerald-500/40 text-emerald-300 text-xs font-bold shadow-xl opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">
+      ¿Tienes dudas? Escríbenos por WhatsApp
+    </span>
+    <a 
+      href="https://wa.me/50587931852?text=Hola%2C%20deseo%20m%C3%A1s%20informaci%C3%B3n%20sobre%20los%20Sistemas%20Kinetix" 
+      target="_blank" 
+      rel="noopener noreferrer" 
+      aria-label="Contactar por WhatsApp"
+      class="w-14 h-14 rounded-full bg-[#25D366] hover:bg-[#20bd5a] text-white flex items-center justify-center shadow-2xl shadow-emerald-500/40 transform hover:scale-110 active:scale-95 transition-all duration-200"
+    >
+      <svg class="w-8 h-8 fill-current" viewBox="0 0 24 24">
+        <path d="M12.031 2C6.516 2 2.016 6.5 2.016 12.016c0 1.953.563 3.797 1.547 5.375L2 22l4.766-1.531c1.516.891 3.281 1.406 5.266 1.406 5.516 0 10.016-4.5 10.016-10.016C22.047 6.5 17.547 2 12.031 2zm0 18.25c-1.734 0-3.344-.516-4.703-1.406l-.344-.219-3.328 1.078 1.094-3.219-.234-.375c-1-1.422-1.563-3.125-1.563-4.906 0-4.531 3.688-8.219 8.219-8.219 4.531 0 8.219 3.688 8.219 8.219 0 4.531-3.688 8.219-8.219 8.219zm4.734-6.141c-.266-.141-1.578-.781-1.828-.875-.25-.094-.438-.141-.625.141-.188.281-.719.875-.875 1.063-.156.188-.328.203-.594.063-.266-.141-1.125-.422-2.141-1.344-.797-.719-1.344-1.609-1.5-1.891-.156-.281-.016-.438.125-.578.125-.125.266-.328.406-.484.141-.156.188-.266.281-.438.094-.188.047-.359-.016-.5-.063-.141-.625-1.5-.859-2.063-.234-.547-.469-.469-.641-.469h-.547c-.188 0-.5.063-.766.359-.266.281-1.016.984-1.016 2.406s1.047 2.797 1.188 2.984c.141.188 2.063 3.156 4.984 4.422.688.297 1.234.484 1.656.625.703.219 1.344.188 1.844.109.563-.078 1.719-.703 1.969-1.375.25-.688.25-1.281.172-1.375-.078-.109-.266-.172-.531-.313z"/>
+      </svg>
+    </a>
+  </div>
+
+  <!-- MODAL 1: VISOR INTERACTIVO DE DEMO EN VIVO (PANTALLA COMPLETA TOTAL SIN ESPACIOS LATERALES) -->
+  <div id="demo-viewer-modal" class="fixed inset-0 z-50 bg-black hidden flex-col p-0 m-0 w-screen h-screen">
+    <div class="w-full bg-slate-950/95 border-b border-emerald-500/40 px-4 py-2.5 flex flex-wrap items-center justify-between gap-3 shrink-0">
+      <div class="flex items-center gap-3">
+        <span class="px-2.5 py-1 rounded bg-emerald-500/20 text-emerald-300 font-mono text-xs font-bold">DEMO EN VIVO FUNCIONAL</span>
+        <h4 id="demo-modal-title" class="text-sm font-extrabold text-white">Sistema Kinetix</h4>
+        <span class="text-xs text-slate-400 hidden md:inline">PIN de prueba Admin Principal: <strong class="text-emerald-400 font-mono">1234</strong></span>
+      </div>
+      <div class="flex items-center gap-2">
+        <button id="demo-buy-btn" class="px-4 py-1.5 rounded-xl bg-emerald-400 text-slate-950 font-black text-xs hover:bg-emerald-300 transition cursor-pointer">
+          Comprar Este Sistema ($189 USD)
+        </button>
+        <button onclick="closeLiveDemo()" class="px-3 py-1.5 rounded-xl bg-slate-800 hover:bg-red-500/20 text-slate-300 hover:text-red-300 text-xs font-bold cursor-pointer">
+          ✕ Cerrar Demo
+        </button>
+      </div>
+    </div>
+    <div class="w-full flex-1 bg-slate-950 overflow-hidden">
+      <iframe id="demo-iframe" src="" class="w-full h-full border-0 block"></iframe>
+    </div>
+  </div>
+
+  <!-- MODAL 2: CHECKOUT AUTOMATIZADO POR SISTEMA ($189 USD) + DESCARGA POST-PAGO -->
+  <div id="checkout-modal" class="fixed inset-0 z-50 bg-black/85 hidden items-center justify-center p-4 overflow-y-auto">
+    <div class="glass-card max-w-lg w-full rounded-3xl p-6 sm:p-8 border-2 border-emerald-500/50 glow-emerald space-y-6 relative">
+      <button onclick="closeCheckoutModal()" class="absolute top-5 right-5 text-slate-400 hover:text-white text-2xl leading-none">&times;</button>
+
+      <div class="space-y-2">
+        <span class="px-3 py-1 rounded-full bg-emerald-500/15 border border-emerald-500/30 text-emerald-400 font-mono text-[11px] font-bold uppercase">
+          Checkout Automatizado & Descarga Inmediata
+        </span>
+        <h3 id="chk-title" class="text-2xl font-black text-white">Sistema Kinetix</h3>
+        <p id="chk-desc" class="text-xs text-slate-300 leading-relaxed"></p>
+      </div>
+
+      <!-- Resumen del Paquete -->
+      <div class="bg-slate-950/90 border border-slate-800 rounded-2xl p-4 space-y-2.5 text-xs">
+        <div class="flex justify-between items-center border-b border-slate-800 pb-2">
+          <span class="text-slate-400 font-semibold">Licencia Corporativa White-Label (4 Usuarios)</span>
+          <strong class="text-2xl font-black text-emerald-400 font-mono">$189.00 USD</strong>
+        </div>
+        <div class="grid grid-cols-2 gap-2 text-[11px] text-slate-300 pt-1">
+          <span>✓ Instalador PC (Windows/Mac)</span>
+          <span>✓ Instalable en Móvil y Tablet</span>
+          <span>✓ Personalizable con Tu Logo</span>
+          <span>✓ 1 Principal + 3 Usuarios por Rol</span>
+        </div>
+      </div>
+
+      <!-- Paso 1: Pagar en PayPal -->
+      <div class="space-y-3">
+        <a id="chk-paypal-btn" href="#" target="_blank" rel="noopener noreferrer" class="w-full py-4 rounded-2xl bg-gradient-to-r from-emerald-400 via-teal-300 to-cyan-400 text-slate-950 font-black text-base shadow-xl hover:scale-[1.01] transition flex items-center justify-center gap-2 text-center">
+          <span>Pagar $189 USD con PayPal y Recibir Instalador &rarr;</span>
+        </a>
+        <div class="p-3.5 rounded-xl bg-slate-900 border border-slate-800 text-[11px] text-center text-slate-400 space-y-1">
+          <p class="text-emerald-400 font-semibold">🔒 Transacción Segura Directa en PayPal</p>
+          <p>Al completar el pago serás redirigido inmediatamente a la entrega automática de tu instalador y tu licencia para 4 usuarios.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL 3: BÓVEDA AUTOMÁTICA DE DESCARGA DEL INSTALADOR (POST-PAGO) -->
+  <div id="delivery-vault-modal" class="fixed inset-0 z-50 bg-black/90 hidden items-center justify-center p-4 overflow-y-auto">
+    <div class="glass-card max-w-xl w-full rounded-3xl p-6 sm:p-8 border-2 border-emerald-400 glow-emerald space-y-6 relative">
+      <button onclick="closeDeliveryVaultModal()" class="absolute top-5 right-5 text-slate-400 hover:text-white text-2xl leading-none">&times;</button>
+
+      <div class="text-center space-y-2">
+        <div class="w-16 h-16 mx-auto rounded-2xl bg-emerald-500/20 border border-emerald-400 flex items-center justify-center text-emerald-400">
+          <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/>
+          </svg>
+        </div>
+        <span class="text-xs font-mono uppercase text-emerald-400 font-bold">ENTREGA DIGITAL AUTOMATIZADA</span>
+        <h3 class="text-2xl font-black text-white">Centro de Descarga de Instaladores Kinetix</h3>
+        <p class="text-xs text-slate-300">Descarga el paquete instalable (<code>.zip</code>) para PC, Móvil y Tablet junto con tus credenciales de Administrador Principal.</p>
+      </div>
+
+      <!-- Selector o Producto Desbloqueado -->
+      <div id="vault-products-list" class="space-y-3"></div>
+
+      <div class="bg-slate-950 border border-slate-800 rounded-2xl p-4 text-xs space-y-1.5">
+        <strong class="text-emerald-400 block">Credenciales Iniciales de Tu Licencia (4 Usuarios):</strong>
+        <p class="text-slate-300">• <strong>Usuario Principal:</strong> Administrador / Director Principal | <strong>PIN Inicial:</strong> <code class="text-emerald-400 font-bold">1234</code></p>
+        <p class="text-slate-400 text-[11px]">• Dentro del sistema ve a <strong>"Personalizar Marca"</strong> para subir tu logo y a <strong>"4 Usuarios & Roles"</strong> para configurar a tus otros 3 usuarios.</p>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // =========================================================================
+    // CONFIGURACIÓN CENTRAL DE ENLACES DE PAGO PAYPAL ($189 USD CADA SISTEMA)
+    // Cuando crees los 3 enlaces individuales de $189 USD en PayPal, se pegan aquí:
+    // =========================================================================
+    const PAYPAL_LINKS = {
+      pos: "https://www.paypal.com/ncp/payment/6N33BA6V5CXM4", // Enlace PayPal $189 USD - Sistema Facturación, POS e Inventarios
+      med: "https://www.paypal.com/ncp/payment/D7L3CB8AWY75Y", // Enlace PayPal $189 USD - Sistema Expedientes Clínicos, Consultas y Citas
+      crm: "https://www.paypal.com/ncp/payment/5LX3ZS2TR4A22"  // Enlace PayPal $189 USD - Sistema CRM, Cotizador y Automatización
+    };
+
+    const PRODUCTS = {
+      pos: {
+        id: 'pos',
+        name: 'Sistema de Facturación, POS y Control de Inventarios v3.0',
+        shortDesc: 'Para tiendas, restaurantes, barberías, farmacias y todo comercio. Incluye Punto de Venta, emisión de comprobantes/facturas con tu logo, control de stock en tiempo real y 4 usuarios por roles.',
+        price: 189,
+        demoUrl: 'sistemas/kinetix-pos-inventario.html',
+        installerZip: 'instaladores/Kinetix-POS-Inventario-Installer.zip',
+        badge: 'POS & Inventario'
+      },
+      med: {
+        id: 'med',
+        name: 'Sistema de Expedientes Clínicos, Consultas, Citas y Recordatorios v3.0',
+        shortDesc: 'Para todas las especialidades (pediatría, ginecología, medicina interna, oncología, clínica dental), salones, talleres y consultorías. Incluye agenda, recetas PDF con tu logo y recordatorios por WhatsApp, SMS y Correo.',
+        price: 189,
+        demoUrl: 'sistemas/kinetix-clinica-citas.html',
+        installerZip: 'instaladores/Kinetix-Clinica-Citas-Installer.zip',
+        badge: 'Expedientes & Citas'
+      },
+      crm: {
+        id: 'crm',
+        name: 'Sistema CRM, Cotizador PDF y Automatización de Clientes v3.0',
+        shortDesc: 'Para empresas, inmobiliarias, agencias y negocios B2B/B2C. Incluye embudo Kanban de leads, generador de cotizaciones PDF con tu logo, base de clientes y seguimiento automático por WhatsApp.',
+        price: 189,
+        demoUrl: 'sistemas/kinetix-crm-automatizacion.html',
+        installerZip: 'instaladores/Kinetix-CRM-Automatizacion-Installer.zip',
+        badge: 'CRM & Cotizador'
+      }
+    };
+
+    let selectedProductKey = 'pos';
+
+    // Visor de Demo en Vivo
+    function openLiveDemo(key) {
+      const p = PRODUCTS[key];
+      if (!p) return;
+      selectedProductKey = key;
+      document.getElementById('demo-modal-title').textContent = p.name;
+      document.getElementById('demo-iframe').src = p.demoUrl;
+      document.getElementById('demo-buy-btn').onclick = () => {
+        closeLiveDemo();
+        openCheckoutModal(key);
+      };
+      const modal = document.getElementById('demo-viewer-modal');
+      modal.classList.remove('hidden');
+      modal.classList.add('flex');
+    }
+
+    function closeLiveDemo() {
+      const modal = document.getElementById('demo-viewer-modal');
+      document.getElementById('demo-iframe').src = '';
+      modal.classList.add('hidden');
+      modal.classList.remove('flex');
+    }
+
+    // Checkout Automatizado ($189 USD)
+    function openCheckoutModal(key) {
+      const p = PRODUCTS[key];
+      if (!p) return;
+      selectedProductKey = key;
+      document.getElementById('chk-title').textContent = p.name;
+      document.getElementById('chk-desc').textContent = p.shortDesc;
+      document.getElementById('chk-paypal-btn').href = PAYPAL_LINKS[key] || PAYPAL_LINKS.pos;
+      const modal = document.getElementById('checkout-modal');
+      modal.classList.remove('hidden');
+      modal.classList.add('flex');
+    }
+
+    function closeCheckoutModal() {
+      const modal = document.getElementById('checkout-modal');
+      modal.classList.add('hidden');
+      modal.classList.remove('flex');
+    }
+
+    // Gestión de Modo Oscuro / Modo Claro Global
+    function initGlobalTheme() {
+      const savedTheme = localStorage.getItem('KINETIX_GLOBAL_THEME') || 'dark';
+      applyGlobalTheme(savedTheme);
+    }
+
+    function toggleGlobalTheme() {
+      const isLight = document.documentElement.classList.contains('light');
+      const next = isLight ? 'dark' : 'light';
+      applyGlobalTheme(next);
+      localStorage.setItem('KINETIX_GLOBAL_THEME', next);
+    }
+
+    function applyGlobalTheme(theme) {
+      const sym = document.getElementById('theme-btn-symbol');
+      const lbl = document.getElementById('theme-btn-label');
+      if (theme === 'light') {
+        document.documentElement.classList.remove('dark');
+        document.documentElement.classList.add('light');
+        if (sym) sym.textContent = '🌙';
+        if (lbl) lbl.textContent = 'Modo Oscuro';
+      } else {
+        document.documentElement.classList.remove('light');
+        document.documentElement.classList.add('dark');
+        if (sym) sym.textContent = '☀️';
+        if (lbl) lbl.textContent = 'Modo Claro';
+      }
+    }
+
+    // Entrega y Descarga Automática del Instalador (.zip)
+    function triggerAutomatedDelivery(key) {
+      const p = PRODUCTS[key] || PRODUCTS.pos;
+      openDeliveryVaultModal(key);
+      const a = document.createElement('a');
+      a.href = p.installerZip;
+      a.download = p.installerZip.split('/').pop();
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+    }
+
+    function openDeliveryVaultModal(highlightKey = null) {
+      const box = document.getElementById('vault-products-list');
+      const keys = highlightKey ? [highlightKey] : ['pos', 'med', 'crm'];
+      const licenseCode = 'KNX-4U-' + Math.random().toString(36).substring(2, 8).toUpperCase();
+
+      box.innerHTML = keys.map(k => {
+        const p = PRODUCTS[k];
+        return `
+          <div class="p-4 rounded-2xl bg-slate-900 border border-emerald-500/40 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+            <div class="space-y-1">
+              <span class="text-[10px] font-mono text-emerald-400 font-bold uppercase">${p.badge} · LICENCIA ACTIVA: ${licenseCode}</span>
+              <h4 class="text-sm font-extrabold text-white">${p.name}</h4>
+              <p class="text-[11px] text-slate-400">Incluye Instalador PC (.bat/.html), versión Móvil/Tablet y guía de personalización.</p>
+            </div>
+            <div class="flex flex-col sm:flex-row gap-2 shrink-0">
+              <a href="${p.installerZip}" download class="px-4 py-2.5 rounded-xl bg-emerald-400 hover:bg-emerald-300 text-slate-950 font-black text-xs text-center transition">
+                Descargar Instalador (.ZIP)
+              </a>
+              <a href="${p.demoUrl}" target="_blank" class="px-3 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-white font-bold text-xs text-center transition">
+                Abrir App
+              </a>
+            </div>
+          </div>
+        `;
+      }).join('');
+
+      const modal = document.getElementById('delivery-vault-modal');
+      modal.classList.remove('hidden');
+      modal.classList.add('flex');
+    }
+
+    function closeDeliveryVaultModal() {
+      const modal = document.getElementById('delivery-vault-modal');
+      modal.classList.add('hidden');
+      modal.classList.remove('flex');
+    }
+
+    // Inicializar tema y detectar redirección automática desde PayPal (?entrega=pos | ?entrega=med | ?entrega=crm)
+    window.addEventListener('DOMContentLoaded', () => {
+      initGlobalTheme();
+      const params = new URLSearchParams(window.location.search);
+      const entrega = params.get('entrega');
+      if (entrega && PRODUCTS[entrega]) {
+        triggerAutomatedDelivery(entrega);
+      }
+    });
+
+    function toggleFaq(element) {
+      const content = element.querySelector('.faq-content');
+      const icon = element.querySelector('.icon');
+      const isHidden = content.classList.contains('hidden');
+      document.querySelectorAll('.faq-content').forEach(c => c.classList.add('hidden'));
+      document.querySelectorAll('.icon').forEach(i => i.textContent = '+');
+      if (isHidden) {
+        content.classList.remove('hidden');
+        icon.textContent = '−';
+      }
+    }
+  </script>
+</body>
+</html>

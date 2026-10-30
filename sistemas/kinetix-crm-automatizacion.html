@@ -1,0 +1,874 @@
+<!DOCTYPE html>
+<html lang="es" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="theme-color" content="#080c15">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <title>Kinetix CRM & Cotizador Pro | Gestión de Leads, Cotizaciones y Automatización</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #070b13; color: #f1f5f9; }
+    .mono { font-family: 'JetBrains Mono', monospace; }
+    .glass { background: rgba(15, 23, 42, 0.85); backdrop-filter: blur(14px); border: 1px solid rgba(255,255,255,0.08); }
+    /* Soporte Modo Claro */
+    html.light body { background-color: #f8fafc !important; color: #0f172a !important; }
+    html.light .glass { background: #ffffff !important; border-color: #e2e8f0 !important; box-shadow: 0 4px 14px rgba(0,0,0,0.05) !important; }
+    html.light aside { background-color: #ffffff !important; border-color: #e2e8f0 !important; }
+    html.light .bg-slate-950 { background-color: #ffffff !important; }
+    html.light .bg-slate-900 { background-color: #f1f5f9 !important; }
+    html.light .bg-slate-900\/70, html.light .bg-slate-900\/90 { background-color: #f8fafc !important; }
+    html.light .border-slate-800, html.light .border-slate-700, html.light .border-slate-800\/80, html.light .border-slate-800\/90 { border-color: #e2e8f0 !important; }
+    html.light .text-white { color: #0f172a !important; }
+    html.light .text-slate-200 { color: #1e293b !important; }
+    html.light .text-slate-300, html.light .text-slate-400 { color: #475569 !important; }
+    html.light input, html.light select, html.light textarea { background-color: #ffffff !important; color: #0f172a !important; border-color: #cbd5e1 !important; }
+    html.light .bg-\[\#060911\], html.light .bg-\[\#070b13\] { background-color: #f8fafc !important; }
+    html.light tr:hover { background-color: #f1f5f9 !important; }
+    @media print {
+      body * { visibility: hidden !important; }
+      #print-quote-area, #print-quote-area * { visibility: visible !important; }
+      #print-quote-area {
+        position: fixed !important;
+        left: 0 !important;
+        top: 0 !important;
+        width: 100% !important;
+        background: white !important;
+        color: black !important;
+        padding: 24px !important;
+      }
+      .no-print { display: none !important; }
+    }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col selection:bg-indigo-500 selection:text-white">
+
+  <!-- PANTALLA DE LOGIN MULTI-USUARIO (MÁX 4 USUARIOS) -->
+  <div id="login-screen" class="fixed inset-0 z-50 bg-[#060911] flex items-center justify-center p-4">
+    <div class="max-w-md w-full glass rounded-3xl p-8 border border-indigo-500/30 shadow-2xl space-y-6">
+      <div class="text-center space-y-2">
+        <div id="login-logo-box" class="w-16 h-16 mx-auto rounded-2xl bg-indigo-500/20 border border-indigo-500/40 flex items-center justify-center overflow-hidden">
+          <span class="text-2xl font-black text-indigo-400 mono">CRM</span>
+        </div>
+        <h1 id="login-company-name" class="text-2xl font-extrabold text-white">Kinetix CRM & Lead Engine</h1>
+        <p id="login-company-sub" class="text-xs uppercase tracking-widest text-indigo-400 font-semibold">Captación, Cotizaciones & Seguimiento · Máx. 4 Usuarios</p>
+      </div>
+
+      <div class="space-y-4">
+        <div>
+          <label class="text-xs font-bold uppercase text-slate-400 block mb-2">Selecciona tu Usuario (1 Principal + 3 Roles)</label>
+          <select id="login-user-select" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-3 text-white font-semibold focus:outline-none focus:border-indigo-400"></select>
+        </div>
+        <div>
+          <label class="text-xs font-bold uppercase text-slate-400 block mb-2">PIN de Acceso</label>
+          <input id="login-pin-input" type="password" placeholder="Ingresa tu PIN (Ej: 1234)" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-3 text-white mono text-center text-lg tracking-widest focus:outline-none focus:border-indigo-400" onkeydown="if(event.key==='Enter') handleLogin()">
+          <p class="text-[11px] text-slate-400 mt-1.5 text-center">Demo / Inicial: PIN del Director Principal es <strong class="text-indigo-400 mono">1234</strong></p>
+        </div>
+        <p id="login-error" class="text-xs text-red-400 text-center font-semibold hidden">PIN incorrecto. Verifica tus credenciales.</p>
+        <button onclick="handleLogin()" class="w-full py-3.5 rounded-xl bg-gradient-to-r from-indigo-500 to-cyan-400 text-slate-950 font-extrabold text-sm hover:opacity-95 transition shadow-lg">
+          Entrar al CRM &rarr;
+        </button>
+      </div>
+
+      <div class="pt-4 border-t border-slate-800/80 flex items-center justify-between text-[11px] text-slate-500">
+        <span>Kinetix CRM Suite v3.0</span>
+        <a href="../index.html" class="text-indigo-400 hover:underline">&larr; Volver al Catálogo</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- APLICACIÓN PRINCIPAL -->
+  <div id="app-container" class="flex-1 flex flex-col lg:flex-row hidden">
+
+    <!-- SIDEBAR -->
+    <aside class="w-full lg:w-64 bg-slate-950 border-b lg:border-b-0 lg:border-r border-slate-800/90 flex flex-col justify-between shrink-0 no-print">
+      <div>
+        <div class="p-5 border-b border-slate-800/80 flex items-center gap-3">
+          <div id="sidebar-logo" class="w-11 h-11 rounded-xl bg-indigo-500/20 border border-indigo-500/40 flex items-center justify-center overflow-hidden shrink-0">
+            <span class="font-black text-indigo-400 mono text-sm">CRM</span>
+          </div>
+          <div class="truncate">
+            <h2 id="sidebar-company-name" class="font-extrabold text-white text-base truncate">Mi Empresa CRM</h2>
+            <span class="text-[11px] text-indigo-400 font-semibold block">Pipeline & Cotizaciones</span>
+          </div>
+        </div>
+
+        <div class="px-4 py-3 bg-slate-900/70 border-b border-slate-800/80 flex items-center justify-between text-xs">
+          <div class="truncate">
+            <span class="text-slate-400 block text-[10px]">EJECUTIVO ACTIVO:</span>
+            <strong id="active-user-name" class="text-white truncate">Director Comercial</strong>
+            <span id="active-user-role" class="ml-1 px-1.5 py-0.5 rounded bg-indigo-500/20 text-indigo-300 text-[10px] font-bold">ADMIN</span>
+          </div>
+          <div class="flex items-center gap-1.5 shrink-0">
+            <button onclick="toggleAppTheme()" id="btn-theme-toggle" title="Alternar Modo Oscuro / Claro" class="px-2 py-1 rounded-lg bg-slate-800 hover:bg-slate-700 text-amber-300 text-xs font-bold transition flex items-center gap-1 cursor-pointer">
+              <span id="theme-icon">☀️</span>
+            </button>
+            <button onclick="logout()" class="px-2.5 py-1 rounded-lg bg-slate-800 hover:bg-red-500/20 hover:text-red-300 text-slate-300 text-[11px] font-semibold transition cursor-pointer">Salir</button>
+          </div>
+        </div>
+
+        <nav class="p-3 flex lg:flex-col gap-1.5 overflow-x-auto">
+          <button id="nav-pipeline" onclick="switchTab('pipeline')" class="nav-btn flex items-center gap-3 px-4 py-3 rounded-xl text-xs sm:text-sm font-bold transition whitespace-nowrap bg-indigo-500 text-white">
+            <span>📊</span> <span>Pipeline & Leads</span>
+          </button>
+          <button id="nav-quotes" onclick="switchTab('quotes')" class="nav-btn flex items-center gap-3 px-4 py-3 rounded-xl text-xs sm:text-sm font-semibold text-slate-300 hover:bg-slate-900 transition whitespace-nowrap">
+            <span>📑</span> <span>Cotizaciones & PDF</span>
+          </button>
+          <button id="nav-clients" onclick="switchTab('clients')" class="nav-btn flex items-center gap-3 px-4 py-3 rounded-xl text-xs sm:text-sm font-semibold text-slate-300 hover:bg-slate-900 transition whitespace-nowrap">
+            <span>📇</span> <span>Base de Clientes & Bots</span>
+          </button>
+          <button id="nav-users" onclick="switchTab('users')" class="nav-btn flex items-center gap-3 px-4 py-3 rounded-xl text-xs sm:text-sm font-semibold text-slate-300 hover:bg-slate-900 transition whitespace-nowrap">
+            <span>👥</span> <span>4 Usuarios & Roles</span>
+          </button>
+          <button id="nav-settings" onclick="switchTab('settings')" class="nav-btn flex items-center gap-3 px-4 py-3 rounded-xl text-xs sm:text-sm font-semibold text-slate-300 hover:bg-slate-900 transition whitespace-nowrap">
+            <span>⚙️</span> <span>Personalizar Marca</span>
+          </button>
+        </nav>
+      </div>
+
+      <div class="hidden lg:block p-4 border-t border-slate-800/80 space-y-2">
+        <div class="p-3 rounded-xl bg-slate-900/90 border border-slate-800 text-[11px] space-y-1">
+          <div class="flex justify-between text-slate-400">
+            <span>Licencia Activa:</span>
+            <span id="sidebar-user-count" class="text-indigo-400 font-bold mono">4/4 Usuarios</span>
+          </div>
+          <div class="w-full h-1.5 bg-slate-800 rounded-full overflow-hidden">
+            <div class="h-full bg-indigo-400 w-full"></div>
+          </div>
+        </div>
+        <button onclick="installAppPrompt()" class="w-full py-2.5 px-3 rounded-xl bg-indigo-500/15 border border-indigo-500/30 text-indigo-300 hover:bg-indigo-500/25 text-xs font-bold transition">
+          📲 Instalar en PC / Móvil
+        </button>
+      </div>
+    </aside>
+
+    <!-- MAIN CONTENT -->
+    <main class="flex-1 p-4 md:p-6 overflow-y-auto no-print">
+
+      <!-- TAB 1: PIPELINE KANBAN & CAPTACIÓN DE LEADS -->
+      <section id="tab-pipeline" class="space-y-6">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+          <div>
+            <span class="text-xs font-mono uppercase text-indigo-400 font-bold">EMBUDO DE VENTAS & AUTOMATIZACIÓN</span>
+            <h2 class="text-2xl font-extrabold text-white">Pipeline de Prospectos y Oportunidades</h2>
+          </div>
+          <div class="flex gap-2">
+            <button onclick="openLeadModal()" class="px-4 py-2.5 rounded-xl bg-indigo-500 hover:bg-indigo-400 text-white font-extrabold text-xs transition shadow-lg">
+              + Captar Nuevo Lead / Trato
+            </button>
+            <button onclick="switchTab('quotes')" class="px-4 py-2.5 rounded-xl bg-emerald-500/20 border border-emerald-500/40 text-emerald-300 font-bold text-xs">
+              📑 Crear Cotización Rápida
+            </button>
+          </div>
+        </div>
+
+        <!-- KPIs Pipeline -->
+        <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
+          <div class="glass p-4 rounded-2xl border-l-4 border-indigo-400">
+            <span class="text-xs text-slate-400">Leads Activos en Embudo</span>
+            <p id="kpi-crm-leads" class="text-2xl font-black text-white mono mt-1">0</p>
+          </div>
+          <div class="glass p-4 rounded-2xl border-l-4 border-cyan-400">
+            <span class="text-xs text-slate-400">Valor en Negociación</span>
+            <p id="kpi-crm-pipeline" class="text-2xl font-black text-cyan-400 mono mt-1">$0.00</p>
+          </div>
+          <div class="glass p-4 rounded-2xl border-l-4 border-emerald-400">
+            <span class="text-xs text-slate-400">Ventas Cerradas (Ganadas)</span>
+            <p id="kpi-crm-won" class="text-2xl font-black text-emerald-400 mono mt-1">$0.00</p>
+          </div>
+          <div class="glass p-4 rounded-2xl border-l-4 border-amber-400">
+            <span class="text-xs text-slate-400">Cotizaciones Emitidas</span>
+            <p id="kpi-crm-quotes" class="text-2xl font-black text-amber-400 mono mt-1">0</p>
+          </div>
+        </div>
+
+        <!-- Columnas Kanban -->
+        <div id="kanban-board" class="grid grid-cols-1 md:grid-cols-3 xl:grid-cols-5 gap-4"></div>
+      </section>
+
+      <!-- TAB 2: COTIZADOR Y SEGUIMIENTO DE COTIZACIONES -->
+      <section id="tab-quotes" class="space-y-6 hidden">
+        <div class="grid grid-cols-1 xl:grid-cols-12 gap-6">
+          <!-- Creador de Cotización (5 cols) -->
+          <div class="xl:col-span-5 glass rounded-3xl p-6 border border-indigo-500/30 space-y-4 text-xs">
+            <div class="border-b border-slate-800 pb-3">
+              <span class="text-[10px] font-mono uppercase text-indigo-400 font-bold">GENERADOR DE PROPUESTAS PDF</span>
+              <h3 class="text-lg font-extrabold text-white">Emitir Nueva Cotización Formal</h3>
+            </div>
+            <div>
+              <label class="text-slate-300 font-bold block mb-1">Seleccionar Cliente / Lead</label>
+              <select id="quote-lead-id" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2.5 text-white font-semibold"></select>
+            </div>
+            <div>
+              <label class="text-slate-300 font-bold block mb-1">Concepto / Servicio / Productos Cotizados</label>
+              <textarea id="quote-items-desc" rows="4" placeholder="1. Implementación Sistema Digital Personalizado - $950&#10;2. Capacitación de Equipo y Soporte - $250" class="w-full bg-slate-900 border border-slate-700 rounded-xl p-3 text-white"></textarea>
+            </div>
+            <div class="grid grid-cols-2 gap-3">
+              <div>
+                <label class="text-slate-300 font-bold block mb-1">Monto Total Cotizado</label>
+                <input id="quote-amount" type="number" step="0.01" value="1200" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-white font-mono">
+              </div>
+              <div>
+                <label class="text-slate-300 font-bold block mb-1">Validez de Oferta</label>
+                <input id="quote-validity" type="text" value="7 días calendario" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-white">
+              </div>
+            </div>
+            <div>
+              <label class="text-slate-300 font-bold block mb-1">Notas / Garantía / Condiciones de Pago</label>
+              <input id="quote-terms" type="text" value="50% anticipo de inicio y 50% contra entrega." class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-white">
+            </div>
+            <button onclick="createQuote()" class="w-full py-3.5 rounded-xl bg-gradient-to-r from-indigo-500 to-cyan-400 text-slate-950 font-black text-sm shadow-lg">
+              🖨️ Crear Cotización y Ver PDF Imprimible
+            </button>
+          </div>
+
+          <!-- Lista de Cotizaciones y Seguimiento (7 cols) -->
+          <div class="xl:col-span-7 glass rounded-3xl p-6 space-y-4">
+            <h3 class="text-lg font-extrabold text-white">Historial y Seguimiento de Cotizaciones</h3>
+            <div class="overflow-x-auto">
+              <table class="w-full text-left text-xs">
+                <thead class="bg-slate-900 text-slate-400 uppercase text-[10px] border-b border-slate-800">
+                  <tr>
+                    <th class="py-3 px-3">Cotización #</th>
+                    <th class="py-3 px-3">Cliente</th>
+                    <th class="py-3 px-3">Monto</th>
+                    <th class="py-3 px-3">Estado</th>
+                    <th class="py-3 px-3 text-right">Acciones</th>
+                  </tr>
+                </thead>
+                <tbody id="quotes-table-body" class="divide-y divide-slate-800/70"></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- TAB 3: BASE DE DATOS DE CLIENTES & AUTOMATIZACIÓN DE MENSAJES -->
+      <section id="tab-clients" class="space-y-6 hidden">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+          <div>
+            <span class="text-xs font-mono uppercase text-emerald-400 font-bold">DIRECTORIO & SEGUIMIENTO EN 1 CLIC</span>
+            <h2 class="text-2xl font-extrabold text-white">Base de Datos de Clientes y Plantillas de Automatización</h2>
+          </div>
+          <button onclick="exportClientsCSV()" class="px-4 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-white font-bold text-xs border border-slate-700">
+            📥 Exportar Base de Datos (CSV/Excel)
+          </button>
+        </div>
+
+        <div class="glass rounded-3xl overflow-hidden">
+          <div class="overflow-x-auto">
+            <table class="w-full text-left text-xs sm:text-sm">
+              <thead class="bg-slate-900 text-slate-400 uppercase text-[11px] font-bold border-b border-slate-800">
+                <tr>
+                  <th class="py-3.5 px-4">Cliente / Empresa</th>
+                  <th class="py-3.5 px-4">Contacto (WA / Email)</th>
+                  <th class="py-3.5 px-4">Origen</th>
+                  <th class="py-3.5 px-4">Etapa Actual</th>
+                  <th class="py-3.5 px-4">Valor</th>
+                  <th class="py-3.5 px-4 text-right">Disparar Automatización WhatsApp</th>
+                </tr>
+              </thead>
+              <tbody id="clients-table-body" class="divide-y divide-slate-800/70"></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- TAB 4: 4 USUARIOS Y ROLES -->
+      <section id="tab-users" class="space-y-6 hidden">
+        <div class="glass rounded-3xl p-6 border border-indigo-500/30 flex items-center justify-between">
+          <div>
+            <span class="text-xs font-mono uppercase text-indigo-400 font-bold">LICENCIA COMERCIAL 4 USUARIOS</span>
+            <h2 class="text-2xl font-extrabold text-white">Equipo de Ventas y Roles (1 Principal + 3 Ejecutivos)</h2>
+          </div>
+          <span id="crm-users-badge" class="px-4 py-2 rounded-xl bg-indigo-500/20 text-indigo-300 font-mono font-bold text-sm">4 / 4 Usuarios</span>
+        </div>
+        <div id="crm-users-grid" class="grid grid-cols-1 md:grid-cols-2 gap-6"></div>
+      </section>
+
+      <!-- TAB 5: PERSONALIZAR MARCA WHITE-LABEL -->
+      <section id="tab-settings" class="space-y-6 hidden">
+        <div class="glass rounded-3xl p-6 sm:p-8 space-y-6 max-w-4xl">
+          <div class="flex items-center justify-between border-b border-slate-800 pb-4">
+            <div>
+              <span class="text-xs font-mono uppercase text-indigo-400 font-bold">WHITE-LABEL BRANDING</span>
+              <h2 class="text-2xl font-extrabold text-white">Personalizar Logo, Empresa y Datos de Cotización</h2>
+            </div>
+            <button onclick="saveCRMSettings()" class="px-6 py-3 rounded-xl bg-indigo-500 text-white font-extrabold text-xs">
+              💾 Guardar Configuración
+            </button>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-6 items-center bg-slate-900/70 p-5 rounded-2xl border border-slate-800">
+            <div class="flex items-center gap-4">
+              <div id="crm-logo-preview" class="w-20 h-20 rounded-2xl bg-slate-950 border-2 border-indigo-500/40 flex items-center justify-center overflow-hidden shrink-0"></div>
+              <div class="space-y-2">
+                <label class="block text-xs font-bold text-white">Logo de tu Empresa</label>
+                <input type="file" accept="image/*" onchange="uploadCRMLogo(event)" class="text-xs text-slate-400 file:mr-2 file:py-1.5 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-bold file:bg-indigo-500 file:text-white cursor-pointer">
+                <button onclick="clearCRMLogo()" class="text-[11px] text-red-400 hover:underline block">Quitar logo</button>
+              </div>
+            </div>
+            <div class="md:col-span-2 grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs">
+              <div>
+                <label class="text-slate-300 font-bold block mb-1">Nombre de tu Empresa / Agencia</label>
+                <input id="set-crm-name" type="text" class="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2.5 text-white">
+              </div>
+              <div>
+                <label class="text-slate-300 font-bold block mb-1">Símbolo de Moneda</label>
+                <input id="set-crm-currency" type="text" class="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2.5 text-white mono">
+              </div>
+              <div>
+                <label class="text-slate-300 font-bold block mb-1">Teléfono Comercial</label>
+                <input id="set-crm-phone" type="text" class="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2.5 text-white">
+              </div>
+              <div>
+                <label class="text-slate-300 font-bold block mb-1">Datos Bancarios / Pie de Cotización</label>
+                <input id="set-crm-bank" type="text" class="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2.5 text-white">
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <!-- MODAL NUEVO LEAD -->
+  <div id="lead-modal" class="fixed inset-0 z-50 bg-black/80 hidden items-center justify-center p-4 no-print">
+    <div class="glass max-w-md w-full rounded-3xl p-6 border border-indigo-500/40 space-y-4 text-xs">
+      <div class="flex items-center justify-between border-b border-slate-800 pb-3">
+        <h3 class="text-lg font-extrabold text-white">Captar Nuevo Lead / Prospecto</h3>
+        <button onclick="closeLeadModal()" class="text-slate-400 hover:text-white text-xl">&times;</button>
+      </div>
+      <div class="space-y-3">
+        <div>
+          <label class="text-slate-400 font-bold block mb-1">Nombre del Cliente o Empresa</label>
+          <input id="lead-name" type="text" placeholder="Ej: Grupo Inmobiliario Delta" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-white">
+        </div>
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="text-slate-400 font-bold block mb-1">WhatsApp / Teléfono</label>
+            <input id="lead-phone" type="text" placeholder="50588889999" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-white mono">
+          </div>
+          <div>
+            <label class="text-slate-400 font-bold block mb-1">Correo Electrónico</label>
+            <input id="lead-email" type="email" placeholder="contacto@empresa.com" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-white">
+          </div>
+        </div>
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="text-slate-400 font-bold block mb-1">Valor Estimado ($)</label>
+            <input id="lead-value" type="number" value="850" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-white mono">
+          </div>
+          <div>
+            <label class="text-slate-400 font-bold block mb-1">Origen del Lead</label>
+            <select id="lead-source" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-white">
+              <option value="Instagram">📸 Instagram</option>
+              <option value="WhatsApp">💬 WhatsApp</option>
+              <option value="Landing Web">🌐 Landing Web</option>
+              <option value="Referido">🤝 Referido</option>
+            </select>
+          </div>
+        </div>
+        <div>
+          <label class="text-slate-400 font-bold block mb-1">Necesidad / Proyecto Solicitado</label>
+          <input id="lead-notes" type="text" placeholder="Interesado en automatización y cotización..." class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-white">
+        </div>
+      </div>
+      <div class="flex justify-end gap-2 pt-3 border-t border-slate-800">
+        <button onclick="closeLeadModal()" class="px-4 py-2 rounded-xl bg-slate-800 text-slate-300 font-bold">Cancelar</button>
+        <button onclick="saveLead()" class="px-6 py-2 rounded-xl bg-indigo-500 text-white font-extrabold">Guardar Lead</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL COTIZACIÓN PDF IMPRIMIBLE -->
+  <div id="quote-pdf-modal" class="fixed inset-0 z-50 bg-black/85 hidden items-center justify-center p-4 overflow-y-auto">
+    <div class="bg-slate-900 max-w-xl w-full rounded-3xl p-6 border border-indigo-500/40 space-y-4">
+      <div class="flex items-center justify-between no-print">
+        <span class="text-xs font-mono text-indigo-400 font-bold">📑 COTIZACIÓN OFICIAL LISTA</span>
+        <button onclick="closeQuoteModal()" class="text-slate-400 hover:text-white text-xl">&times;</button>
+      </div>
+      <div id="print-quote-area" class="bg-white text-slate-900 rounded-2xl p-8 space-y-4 text-xs"></div>
+      <div class="grid grid-cols-2 gap-2 no-print">
+        <button onclick="window.print()" class="py-3 rounded-xl bg-indigo-500 text-white font-extrabold text-xs">🖨️ Imprimir / Guardar PDF</button>
+        <button onclick="sendQuoteWhatsApp()" class="py-3 rounded-xl bg-emerald-400 text-slate-950 font-extrabold text-xs">📲 Enviar por WhatsApp</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const STORAGE_KEY = 'KINETIX_CRM_SUITE_V3';
+    const STAGES = ['Nuevo Lead', 'Contactado', 'Cotización Enviada', 'En Negociación', 'Cerrado Ganado'];
+    let currentUser = null;
+    let activeQuote = null;
+
+    const defaultState = {
+      settings: {
+        companyName: 'Kinetix Solutions & Consulting',
+        currency: '$',
+        phone: '+505 8888-9999',
+        bankInfo: 'Cuenta Corporativa BAC #360912834 · PayPal Disponible',
+        logo: ''
+      },
+      users: [
+        { id: 1, name: 'Director Comercial (Master)', role: 'ADMIN', pin: '1234', active: true, isMaster: true },
+        { id: 2, name: 'Ejecutivo Closer #1', role: 'CLOSER', pin: '1111', active: true, isMaster: false },
+        { id: 3, name: 'Especialista Leads (SDR)', role: 'SDR', pin: '2222', active: true, isMaster: false },
+        { id: 4, name: 'Soporte & Cotizaciones', role: 'SOPORTE', pin: '3333', active: true, isMaster: false }
+      ],
+      leads: [
+        { id: 201, name: 'Clínica Dental Sonrisa VIP', phone: '50588881111', email: 'direccion@sonrisavip.com', value: 1450, source: 'Instagram', stage: 'Cotización Enviada', notes: 'Requiere sistema de citas y expedientes para 4 doctores.', owner: 'Director Comercial' },
+        { id: 202, name: 'Distribuidora Automotriz Norte', phone: '50588882222', email: 'compras@autonorte.com', value: 2200, source: 'WhatsApp', stage: 'En Negociación', notes: 'Sistema de facturación POS y control de inventario multi-bodega.', owner: 'Ejecutivo Closer #1' },
+        { id: 203, name: 'Inmobiliaria Horizonte', phone: '50588883333', email: 'ventas@horizonte.com', value: 980, source: 'Landing Web', stage: 'Nuevo Lead', notes: 'Automatización de leads y cotizador web.', owner: 'Especialista Leads (SDR)' },
+        { id: 204, name: 'Restaurante & Lounge Fuego', phone: '50588884444', email: 'admin@fuego.com', value: 650, source: 'Referido', stage: 'Cerrado Ganado', notes: 'Implementación POS y control de stock.', owner: 'Director Comercial' }
+      ],
+      quotes: [
+        { id: 901, code: 'COT-1001', leadId: 201, clientName: 'Clínica Dental Sonrisa VIP', phone: '50588881111', desc: '1. Licencia Sistema Clínico & Agendamiento (4 Usuarios)\n2. Configuración de Recordatorios WhatsApp y Logo', amount: 1450, validity: '7 días', terms: '50% inicio y 50% entrega.', status: 'Enviada', date: '2026-10-25' }
+      ]
+    };
+
+    let state = loadState();
+
+    function loadState() {
+      try {
+        const raw = localStorage.getItem(STORAGE_KEY);
+        if (!raw) return JSON.parse(JSON.stringify(defaultState));
+        const parsed = JSON.parse(raw);
+        if (!parsed.users || parsed.users.length !== 4) parsed.users = defaultState.users;
+        return parsed;
+      } catch (e) {
+        return JSON.parse(JSON.stringify(defaultState));
+      }
+    }
+
+    function saveState() {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+      applyBranding();
+    }
+
+    function fmt(n) {
+      return (state.settings.currency || '$') + Number(n || 0).toFixed(2);
+    }
+
+    // Gestión de Modo Claro / Oscuro
+    function initTheme() {
+      const saved = localStorage.getItem('KINETIX_CRM_THEME') || 'dark';
+      applyAppTheme(saved);
+    }
+
+    function toggleAppTheme() {
+      const isLight = document.documentElement.classList.contains('light');
+      const nextTheme = isLight ? 'dark' : 'light';
+      applyAppTheme(nextTheme);
+      localStorage.setItem('KINETIX_CRM_THEME', nextTheme);
+    }
+
+    function applyAppTheme(theme) {
+      const ic = document.getElementById('theme-icon');
+      if (theme === 'light') {
+        document.documentElement.classList.remove('dark');
+        document.documentElement.classList.add('light');
+        if (ic) ic.textContent = '🌙';
+      } else {
+        document.documentElement.classList.remove('light');
+        document.documentElement.classList.add('dark');
+        if (ic) ic.textContent = '☀️';
+      }
+    }
+
+    function initApp() {
+      initTheme();
+      applyBranding();
+      populateLogin();
+    }
+
+    function applyBranding() {
+      const s = state.settings;
+      document.getElementById('login-company-name').textContent = s.companyName;
+      document.getElementById('sidebar-company-name').textContent = s.companyName;
+      const logoHTML = s.logo
+        ? `<img src="${s.logo}" class="w-full h-full object-cover">`
+        : `<span class="font-black text-indigo-400 mono text-sm">CRM</span>`;
+      document.getElementById('login-logo-box').innerHTML = logoHTML;
+      document.getElementById('sidebar-logo').innerHTML = logoHTML;
+      document.getElementById('crm-logo-preview').innerHTML = logoHTML;
+
+      const activeCount = state.users.filter(u => u.active).length;
+      document.getElementById('sidebar-user-count').textContent = `${activeCount}/4 Usuarios`;
+    }
+
+    function populateLogin() {
+      document.getElementById('login-user-select').innerHTML = state.users.filter(u => u.active).map(u => `<option value="${u.id}">${u.name} (${u.role})</option>`).join('');
+    }
+
+    function handleLogin() {
+      const uid = Number(document.getElementById('login-user-select').value);
+      const pin = document.getElementById('login-pin-input').value.trim();
+      const user = state.users.find(u => u.id === uid && u.active);
+      if (!user || user.pin !== pin) {
+        document.getElementById('login-error').classList.remove('hidden');
+        return;
+      }
+      document.getElementById('login-error').classList.add('hidden');
+      currentUser = user;
+      document.getElementById('login-pin-input').value = '';
+      document.getElementById('login-screen').classList.add('hidden');
+      document.getElementById('app-container').classList.remove('hidden');
+      document.getElementById('active-user-name').textContent = user.name;
+      document.getElementById('active-user-role').textContent = user.role;
+
+      const isAdmin = user.role === 'ADMIN';
+      document.getElementById('nav-users').classList.toggle('hidden', !isAdmin);
+      document.getElementById('nav-settings').classList.toggle('hidden', !isAdmin);
+
+      renderPipeline();
+      renderQuotes();
+      renderClients();
+      renderUsers();
+      loadSettingsForm();
+    }
+
+    function logout() {
+      currentUser = null;
+      populateLogin();
+      document.getElementById('app-container').classList.add('hidden');
+      document.getElementById('login-screen').classList.remove('hidden');
+    }
+
+    function switchTab(tab) {
+      ['pipeline', 'quotes', 'clients', 'users', 'settings'].forEach(t => {
+        document.getElementById(`tab-${t}`).classList.toggle('hidden', t !== tab);
+        const btn = document.getElementById(`nav-${t}`);
+        if (btn) {
+          btn.className = t === tab
+            ? 'nav-btn flex items-center gap-3 px-4 py-3 rounded-xl text-xs sm:text-sm font-bold transition whitespace-nowrap bg-indigo-500 text-white'
+            : 'nav-btn flex items-center gap-3 px-4 py-3 rounded-xl text-xs sm:text-sm font-semibold text-slate-300 hover:bg-slate-900 transition whitespace-nowrap';
+        }
+      });
+    }
+
+    function renderPipeline() {
+      const board = document.getElementById('kanban-board');
+      board.innerHTML = '';
+
+      let openVal = 0, wonVal = 0;
+      state.leads.forEach(l => {
+        if (l.stage === 'Cerrado Ganado') wonVal += Number(l.value);
+        else openVal += Number(l.value);
+      });
+
+      document.getElementById('kpi-crm-leads').textContent = state.leads.length;
+      document.getElementById('kpi-crm-pipeline').textContent = fmt(openVal);
+      document.getElementById('kpi-crm-won').textContent = fmt(wonVal);
+      document.getElementById('kpi-crm-quotes').textContent = state.quotes.length;
+
+      document.getElementById('quote-lead-id').innerHTML = state.leads.map(l => `<option value="${l.id}">${l.name} (${fmt(l.value)})</option>`).join('');
+
+      STAGES.forEach(stage => {
+        const items = state.leads.filter(l => l.stage === stage);
+        const col = document.createElement('div');
+        col.className = 'glass rounded-3xl p-4 space-y-3 border border-slate-800/90';
+        col.innerHTML = `
+          <div class="flex items-center justify-between border-b border-slate-800 pb-2.5">
+            <span class="text-xs font-extrabold uppercase tracking-wider ${stage === 'Cerrado Ganado' ? 'text-emerald-400' : 'text-white'}">${stage}</span>
+            <span class="px-2 py-0.5 rounded-full bg-slate-800 text-xs font-mono font-bold text-indigo-300">${items.length}</span>
+          </div>
+          <div class="space-y-2.5">
+            ${items.map(l => `
+              <div class="p-3.5 rounded-2xl bg-slate-900/95 border border-slate-800 hover:border-indigo-500/40 transition space-y-2 text-xs">
+                <div class="flex items-center justify-between">
+                  <span class="px-2 py-0.5 rounded bg-indigo-500/15 text-indigo-300 text-[10px] font-bold">${l.source}</span>
+                  <strong class="font-mono text-emerald-400">${fmt(l.value)}</strong>
+                </div>
+                <h4 class="font-bold text-white text-sm">${l.name}</h4>
+                <p class="text-[11px] text-slate-400 line-clamp-2">${l.notes}</p>
+                <div class="pt-2 border-t border-slate-800 flex items-center justify-between gap-1">
+                  <select onchange="moveLeadStage(${l.id}, this.value)" class="bg-slate-950 border border-slate-700 rounded-lg px-2 py-1 text-[10px] text-slate-200">
+                    ${STAGES.map(s => `<option value="${s}" ${s===l.stage?'selected':''}>${s}</option>`).join('')}
+                  </select>
+                  <button onclick="sendLeadFollowUp(${l.id}, 'hola')" class="px-2 py-1 rounded-lg bg-emerald-500/20 text-emerald-300 hover:bg-emerald-400 hover:text-slate-950 font-bold text-[10px]">📲 WA</button>
+                </div>
+              </div>
+            `).join('')}
+          </div>
+        `;
+        board.appendChild(col);
+      });
+    }
+
+    function moveLeadStage(lid, newStage) {
+      const l = state.leads.find(x => x.id === lid);
+      if (l) {
+        l.stage = newStage;
+        saveState();
+        renderPipeline();
+        renderClients();
+      }
+    }
+
+    function openLeadModal() {
+      document.getElementById('lead-modal').classList.remove('hidden');
+      document.getElementById('lead-modal').classList.add('flex');
+    }
+
+    function closeLeadModal() {
+      document.getElementById('lead-modal').classList.add('hidden');
+      document.getElementById('lead-modal').classList.remove('flex');
+    }
+
+    function saveLead() {
+      const name = document.getElementById('lead-name').value.trim();
+      if (!name) return alert('Ingresa el nombre del prospecto.');
+      state.leads.unshift({
+        id: Date.now(),
+        name,
+        phone: document.getElementById('lead-phone').value.trim(),
+        email: document.getElementById('lead-email').value.trim(),
+        value: Number(document.getElementById('lead-value').value) || 0,
+        source: document.getElementById('lead-source').value,
+        stage: 'Nuevo Lead',
+        notes: document.getElementById('lead-notes').value.trim() || 'Interesado en servicios',
+        owner: currentUser ? currentUser.name : 'Ejecutivo'
+      });
+      saveState();
+      renderPipeline();
+      renderClients();
+      closeLeadModal();
+    }
+
+    // COTIZACIONES
+    function createQuote() {
+      const lid = Number(document.getElementById('quote-lead-id').value);
+      const lead = state.leads.find(l => l.id === lid) || { name: 'Cliente Corporativo', phone: '' };
+      const q = {
+        id: Date.now(),
+        code: 'COT-' + (1001 + state.quotes.length),
+        leadId: lid,
+        clientName: lead.name,
+        phone: lead.phone,
+        desc: document.getElementById('quote-items-desc').value.trim() || 'Propuesta Comercial de Servicios',
+        amount: Number(document.getElementById('quote-amount').value) || 0,
+        validity: document.getElementById('quote-validity').value.trim(),
+        terms: document.getElementById('quote-terms').value.trim(),
+        status: 'Enviada',
+        date: new Date().toISOString().slice(0,10)
+      };
+      state.quotes.unshift(q);
+      if (lead.stage === 'Nuevo Lead' || lead.stage === 'Contactado') lead.stage = 'Cotización Enviada';
+      saveState();
+      renderPipeline();
+      renderQuotes();
+      showQuoteModal(q);
+    }
+
+    function renderQuotes() {
+      const tbody = document.getElementById('quotes-table-body');
+      tbody.innerHTML = state.quotes.map((q, idx) => `
+        <tr class="hover:bg-slate-900/50">
+          <td class="py-3 px-3 font-mono font-bold text-indigo-400">${q.code}</td>
+          <td class="py-3 px-3 font-bold text-white">${q.clientName}<span class="block text-[10px] text-slate-400 font-normal">${q.date}</span></td>
+          <td class="py-3 px-3 font-mono font-bold text-emerald-400">${fmt(q.amount)}</td>
+          <td class="py-3 px-3"><span class="px-2 py-0.5 rounded bg-indigo-500/20 text-indigo-300 text-[10px] font-bold">${q.status}</span></td>
+          <td class="py-3 px-3 text-right">
+            <button onclick="viewQuoteByIdx(${idx})" class="px-3 py-1 rounded-lg bg-indigo-500 text-white font-bold text-xs">📄 Ver PDF / WA</button>
+          </td>
+        </tr>
+      `).join('');
+    }
+
+    function viewQuoteByIdx(idx) {
+      if (state.quotes[idx]) showQuoteModal(state.quotes[idx]);
+    }
+
+    function showQuoteModal(q) {
+      activeQuote = q;
+      const s = state.settings;
+      const logoImg = s.logo ? `<img src="${s.logo}" class="h-14 object-contain">` : `<div class="w-12 h-12 rounded-xl bg-slate-900 text-white font-black flex items-center justify-center">CRM</div>`;
+      document.getElementById('print-quote-area').innerHTML = `
+        <div class="flex items-center justify-between border-b-2 border-slate-900 pb-4">
+          <div class="flex items-center gap-3">
+            ${logoImg}
+            <div>
+              <h2 class="text-lg font-black uppercase">${s.companyName}</h2>
+              <p class="text-xs text-slate-600">Tel: ${s.phone}</p>
+            </div>
+          </div>
+          <div class="text-right font-mono">
+            <strong class="text-sm">COTIZACIÓN OFICIAL: ${q.code}</strong>
+            <span class="block text-xs">Fecha: ${q.date} · Validez: ${q.validity}</span>
+          </div>
+        </div>
+        <div class="bg-slate-100 p-3 rounded-xl border border-slate-300">
+          <strong>PREPARADO PARA:</strong> <span class="text-sm font-bold">${q.clientName}</span>
+        </div>
+        <div class="space-y-2 min-h-[140px]">
+          <h4 class="font-black uppercase text-xs border-b border-slate-300 pb-1">Alcance y Desglose de la Propuesta:</h4>
+          <pre class="font-sans text-sm whitespace-pre-wrap leading-relaxed">${q.desc}</pre>
+        </div>
+        <div class="p-4 bg-slate-900 text-white rounded-xl flex items-center justify-between">
+          <span class="font-bold uppercase">Inversión Total Propuesta:</span>
+          <strong class="text-xl font-mono">${fmt(q.amount)}</strong>
+        </div>
+        <div class="text-[11px] text-slate-600 space-y-1 pt-2 border-t border-slate-300">
+          <p><strong>Condiciones Comerciales:</strong> ${q.terms}</p>
+          <p><strong>Información de Pago:</strong> ${s.bankInfo}</p>
+        </div>
+      `;
+      document.getElementById('quote-pdf-modal').classList.remove('hidden');
+      document.getElementById('quote-pdf-modal').classList.add('flex');
+    }
+
+    function closeQuoteModal() {
+      document.getElementById('quote-pdf-modal').classList.add('hidden');
+      document.getElementById('quote-pdf-modal').classList.remove('flex');
+    }
+
+    function sendQuoteWhatsApp() {
+      if (!activeQuote) return;
+      const s = state.settings;
+      const msg = encodeURIComponent(`Hola *${activeQuote.clientName}* 👋, te compartimos nuestra Cotización Formal *${activeQuote.code}* de *${s.companyName}*:\n\n${activeQuote.desc}\n\n*Inversión Total: ${fmt(activeQuote.amount)}*\nCondiciones: ${activeQuote.terms}\n\n¿Deseas que agendemos el inicio esta semana?`);
+      const phone = (activeQuote.phone || '').replace(/[^0-9]/g, '');
+      window.open(`https://wa.me/${phone}?text=${msg}`, '_blank');
+    }
+
+    // CLIENTES Y AUTOMATIZACIÓN DE MENSAJES
+    function renderClients() {
+      document.getElementById('clients-table-body').innerHTML = state.leads.map(l => `
+        <tr class="hover:bg-slate-900/50">
+          <td class="py-3.5 px-4 font-bold text-white">${l.name}<span class="block text-[11px] text-slate-400 font-normal">${l.notes}</span></td>
+          <td class="py-3.5 px-4 font-mono text-xs text-slate-300">${l.phone}<span class="block text-slate-500">${l.email}</span></td>
+          <td class="py-3.5 px-4"><span class="px-2 py-0.5 rounded bg-slate-800 text-xs">${l.source}</span></td>
+          <td class="py-3.5 px-4 font-semibold text-indigo-300">${l.stage}</td>
+          <td class="py-3.5 px-4 font-mono font-bold text-emerald-400">${fmt(l.value)}</td>
+          <td class="py-3.5 px-4 text-right space-x-1">
+            <button onclick="sendLeadFollowUp(${l.id}, 'intro')" class="px-2.5 py-1 rounded-lg bg-emerald-500/20 text-emerald-300 hover:bg-emerald-400 hover:text-slate-950 text-xs font-bold">1. Bienvenida</button>
+            <button onclick="sendLeadFollowUp(${l.id}, 'followup')" class="px-2.5 py-1 rounded-lg bg-indigo-500/20 text-indigo-300 hover:bg-indigo-400 hover:text-slate-950 text-xs font-bold">2. Seguimiento</button>
+            <button onclick="sendLeadFollowUp(${l.id}, 'close')" class="px-2.5 py-1 rounded-lg bg-amber-500/20 text-amber-300 hover:bg-amber-400 hover:text-slate-950 text-xs font-bold">3. Cierre</button>
+          </td>
+        </tr>
+      `).join('');
+    }
+
+    function sendLeadFollowUp(lid, type) {
+      const l = state.leads.find(x => x.id === lid);
+      if (!l) return;
+      const s = state.settings;
+      const templates = {
+        hola: `Hola *${l.name}* 👋, te saluda ${currentUser ? currentUser.name : 'el equipo'} de *${s.companyName}*. ¿Cómo podemos ayudarte a impulsar tu proyecto?`,
+        intro: `Hola *${l.name}* 👋, recibimos tu solicitud en *${s.companyName}* sobre: _"${l.notes}"_. Ya estamos preparando tu propuesta personalizada.`,
+        followup: `Hola *${l.name}*, te escribo de *${s.companyName}* para saber si pudiste revisar la propuesta por *${fmt(l.value)}* y si tienes alguna consulta para iniciar.`,
+        close: `Hola *${l.name}* ⚡, nos queda el último espacio de implementación de esta semana en *${s.companyName}*. Confírmame por esta vía para reservar tu cupo hoy mismo.`
+      };
+      const msg = encodeURIComponent(templates[type] || templates.hola);
+      const phone = (l.phone || '').replace(/[^0-9]/g, '');
+      window.open(`https://wa.me/${phone}?text=${msg}`, '_blank');
+    }
+
+    function exportClientsCSV() {
+      let csv = 'Cliente,Telefono,Email,Origen,Etapa,Valor\n';
+      state.leads.forEach(l => {
+        csv += `"${l.name}","${l.phone}","${l.email}","${l.source}","${l.stage}",${l.value}\n`;
+      });
+      const blob = new Blob([csv], { type: 'text/csv' });
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = 'Base_Clientes_CRM.csv';
+      a.click();
+    }
+
+    // 4 USUARIOS
+    function renderUsers() {
+      const activeCount = state.users.filter(u => u.active).length;
+      document.getElementById('crm-users-badge').textContent = `Usuarios Activos: ${activeCount} / 4`;
+      document.getElementById('crm-users-grid').innerHTML = state.users.map((u, idx) => `
+        <div class="glass rounded-3xl p-6 border ${u.isMaster ? 'border-indigo-500/50' : 'border-slate-800'} space-y-4 text-xs">
+          <div class="flex items-center justify-between">
+            <div>
+              <span class="text-[10px] font-mono uppercase ${u.isMaster ? 'text-indigo-400' : 'text-cyan-400'} font-bold">
+                ${u.isMaster ? '👑 USUARIO PRINCIPAL (DIRECTOR)' : `EJECUTIVO ADICIONAL #${idx}`}
+              </span>
+              <h4 class="text-base font-bold text-white">${u.name}</h4>
+            </div>
+            ${u.isMaster ? '<span class="px-2.5 py-1 rounded bg-indigo-500/20 text-indigo-300 font-bold">Principal</span>' : `
+              <label class="flex items-center gap-2 cursor-pointer">
+                <input type="checkbox" ${u.active ? 'checked' : ''} onchange="updateCRMUser(${u.id}, 'active', this.checked)" class="accent-indigo-400 w-4 h-4">
+                <span>${u.active ? 'Activo' : 'Inactivo'}</span>
+              </label>
+            `}
+          </div>
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-2 border-t border-slate-800">
+            <div>
+              <label class="text-slate-400 block mb-1">Nombre del Ejecutivo</label>
+              <input type="text" value="${u.name}" onchange="updateCRMUser(${u.id}, 'name', this.value)" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-white font-semibold">
+            </div>
+            <div>
+              <label class="text-slate-400 block mb-1">Rol Comercial</label>
+              <select ${u.isMaster ? 'disabled' : ''} onchange="updateCRMUser(${u.id}, 'role', this.value)" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-white font-semibold">
+                <option value="ADMIN" ${u.role==='ADMIN'?'selected':''}>ADMIN (Director Comercial)</option>
+                <option value="CLOSER" ${u.role==='CLOSER'?'selected':''}>CLOSER (Ventas & Cierres)</option>
+                <option value="SDR" ${u.role==='SDR'?'selected':''}>SDR (Prospección)</option>
+                <option value="SOPORTE" ${u.role==='SOPORTE'?'selected':''}>SOPORTE & COTIZACIONES</option>
+              </select>
+            </div>
+            <div>
+              <label class="text-slate-400 block mb-1">PIN Acceso</label>
+              <input type="text" value="${u.pin}" onchange="updateCRMUser(${u.id}, 'pin', this.value)" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-indigo-400 font-mono font-bold text-center">
+            </div>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function updateCRMUser(uid, field, val) {
+      const u = state.users.find(x => x.id === uid);
+      if (u) {
+        u[field] = val;
+        saveState();
+        renderUsers();
+      }
+    }
+
+    function loadSettingsForm() {
+      const s = state.settings;
+      document.getElementById('set-crm-name').value = s.companyName;
+      document.getElementById('set-crm-currency').value = s.currency;
+      document.getElementById('set-crm-phone').value = s.phone;
+      document.getElementById('set-crm-bank').value = s.bankInfo;
+    }
+
+    function saveCRMSettings() {
+      state.settings.companyName = document.getElementById('set-crm-name').value.trim() || 'Mi Empresa';
+      state.settings.currency = document.getElementById('set-crm-currency').value.trim() || '$';
+      state.settings.phone = document.getElementById('set-crm-phone').value.trim();
+      state.settings.bankInfo = document.getElementById('set-crm-bank').value.trim();
+      saveState();
+      renderPipeline();
+      alert('✅ Configuración de marca del CRM guardada.');
+    }
+
+    function uploadCRMLogo(e) {
+      const file = e.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = evt => {
+        state.settings.logo = evt.target.result;
+        saveState();
+      };
+      reader.readAsDataURL(file);
+    }
+
+    function clearCRMLogo() {
+      state.settings.logo = '';
+      saveState();
+    }
+
+    function installAppPrompt() {
+      alert('📲 MODO APLICACIÓN INSTALABLE:\n\n• En PC (Chrome/Edge): Haz clic en el icono de instalar aplicación en la barra de direcciones.\n• En Android / iPhone / Tablet: Abre el menú del navegador y elige "Agregar a pantalla de inicio".');
+    }
+
+    initApp();
+  </script>
+</body>
+</html>
