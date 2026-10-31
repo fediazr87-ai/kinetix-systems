@@ -12,20 +12,38 @@
     body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #070b13; color: #f1f5f9; }
     .mono { font-family: 'JetBrains Mono', monospace; }
     .glass { background: rgba(15, 23, 42, 0.85); backdrop-filter: blur(14px); border: 1px solid rgba(255,255,255,0.08); }
-    /* Soporte Modo Claro */
+    /* Soporte Modo Claro Impecable y de Alto Contraste */
     html.light body { background-color: #f8fafc !important; color: #0f172a !important; }
-    html.light .glass { background: #ffffff !important; border-color: #e2e8f0 !important; box-shadow: 0 4px 14px rgba(0,0,0,0.05) !important; }
+    html.light .glass { background: #ffffff !important; border-color: #e2e8f0 !important; box-shadow: 0 4px 20px rgba(0,0,0,0.04) !important; }
     html.light aside { background-color: #ffffff !important; border-color: #e2e8f0 !important; }
     html.light .bg-slate-950 { background-color: #ffffff !important; }
     html.light .bg-slate-900 { background-color: #f1f5f9 !important; }
-    html.light .bg-slate-900\/70, html.light .bg-slate-900\/90 { background-color: #f8fafc !important; }
-    html.light .border-slate-800, html.light .border-slate-700, html.light .border-slate-800\/80, html.light .border-slate-800\/90 { border-color: #e2e8f0 !important; }
+    html.light .bg-slate-900\/50, html.light .bg-slate-900\/70, html.light .bg-slate-900\/80, html.light .bg-slate-900\/90, html.light .bg-slate-900\/95 { background-color: #f8fafc !important; }
+    html.light .bg-slate-800 { background-color: #e2e8f0 !important; color: #0f172a !important; }
+    html.light .bg-slate-700 { background-color: #cbd5e1 !important; color: #0f172a !important; }
+    html.light .border-slate-800, html.light .border-slate-700, html.light .border-slate-800\/50, html.light .border-slate-800\/80, html.light .border-slate-800\/90 { border-color: #e2e8f0 !important; }
     html.light .text-white { color: #0f172a !important; }
+    html.light .text-slate-100 { color: #0f172a !important; }
     html.light .text-slate-200 { color: #1e293b !important; }
-    html.light .text-slate-300, html.light .text-slate-400 { color: #475569 !important; }
+    html.light .text-slate-300 { color: #334155 !important; }
+    html.light .text-slate-400 { color: #475569 !important; }
+    html.light .text-slate-500 { color: #64748b !important; }
+    html.light .text-emerald-400 { color: #059669 !important; }
+    html.light .text-cyan-400 { color: #0284c7 !important; }
+    html.light .text-amber-400 { color: #d97706 !important; }
+    html.light .text-purple-400 { color: #7c3aed !important; }
+    html.light .text-red-400 { color: #dc2626 !important; }
+    html.light .bg-emerald-500\/10, html.light .bg-emerald-500\/15, html.light .bg-emerald-500\/20 { background-color: rgba(16, 185, 129, 0.12) !important; border-color: rgba(16, 185, 129, 0.35) !important; }
+    html.light .bg-cyan-500\/10, html.light .bg-cyan-500\/15, html.light .bg-cyan-500\/20 { background-color: rgba(6, 182, 212, 0.12) !important; border-color: rgba(6, 182, 212, 0.35) !important; }
+    html.light .bg-red-500\/10, html.light .bg-red-500\/15, html.light .bg-red-500\/20 { background-color: rgba(239, 68, 68, 0.12) !important; border-color: rgba(239, 68, 68, 0.35) !important; }
     html.light input, html.light select, html.light textarea { background-color: #ffffff !important; color: #0f172a !important; border-color: #cbd5e1 !important; }
-    html.light .bg-\[\#060911\], html.light .bg-\[\#070b13\] { background-color: #f8fafc !important; }
+    html.light input::placeholder, html.light textarea::placeholder { color: #94a3b8 !important; }
+    html.light .bg-\[\#060911\], html.light .bg-\[\#070b13\], html.light .bg-\[\#080c15\] { background-color: #f8fafc !important; }
     html.light tr:hover { background-color: #f1f5f9 !important; }
+    html.light th { color: #334155 !important; background-color: #f1f5f9 !important; }
+    html.light td { color: #0f172a !important; }
+    html.light .nav-btn:not(.bg-cyan-500) { color: #475569 !important; }
+    html.light .nav-btn:not(.bg-cyan-500):hover { background-color: #f1f5f9 !important; color: #0f172a !important; }
     @media print {
       body * { visibility: hidden !important; }
       #print-rx-area, #print-rx-area * { visibility: visible !important; }
@@ -567,7 +585,8 @@
 
     // Gestión de Modo Claro / Oscuro
     function initTheme() {
-      const saved = localStorage.getItem('KINETIX_MED_THEME') || 'dark';
+      const urlTheme = new URLSearchParams(window.location.search).get('theme');
+      const saved = urlTheme || localStorage.getItem('KINETIX_MED_THEME') || 'light';
       applyAppTheme(saved);
     }
 
