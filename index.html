@@ -697,15 +697,25 @@
         </div>
       </div>
 
-      <!-- Paso 1: Pagar en PayPal -->
+      <!-- Opciones de Pago Automatizado -->
       <div class="space-y-3">
-        <a id="chk-paypal-btn" href="#" target="_blank" rel="noopener noreferrer" class="w-full py-4 rounded-2xl bg-gradient-to-r from-emerald-400 via-teal-300 to-cyan-400 text-slate-950 font-black text-base shadow-xl hover:scale-[1.01] transition flex items-center justify-center gap-2 text-center">
-          <span>Pagar $89 USD con PayPal y Recibir Instalador &rarr;</span>
+        <a id="chk-hotmart-btn" href="https://pay.hotmart.com/K108327655X" target="_blank" rel="noopener noreferrer" class="w-full py-4 rounded-2xl bg-gradient-to-r from-emerald-400 via-teal-300 to-cyan-400 text-slate-950 font-black text-base shadow-xl hover:scale-[1.01] transition flex items-center justify-center gap-2 text-center cursor-pointer">
+          <span>Pagar $89 USD con Hotmart (Tarjetas, Cuotas, Efectivo) &rarr;</span>
         </a>
-        <div class="p-3.5 rounded-xl bg-slate-900 border border-slate-800 text-[11px] text-center text-slate-400 space-y-1">
-          <p class="text-emerald-400 font-semibold">🔒 Transacción Segura Directa en PayPal ($89 USD)</p>
-          <p>Al completar el pago serás redirigido inmediatamente a la entrega automática de tu instalador y tu licencia para 4 usuarios.</p>
+        <div class="p-3.5 rounded-xl bg-slate-900 border border-slate-800 text-[11px] text-center text-slate-400 space-y-1.5">
+          <p class="text-emerald-400 font-bold">🔒 Pago Seguro Local Hotmart • Entrega Inmediata del Instalador</p>
+          <p class="text-slate-300">Acepta tarjetas de débito/crédito en cuotas, efectivo local (OXXO, Efecty, etc.) y transferencias en tu moneda.</p>
         </div>
+
+        <div class="relative flex py-1 items-center">
+          <div class="flex-grow border-t border-slate-800"></div>
+          <span class="flex-shrink mx-3 text-[10px] text-slate-500 uppercase font-bold tracking-wider">O si prefieres pagar con PayPal</span>
+          <div class="flex-grow border-t border-slate-800"></div>
+        </div>
+
+        <a id="chk-paypal-btn" href="#" target="_blank" rel="noopener noreferrer" class="w-full py-3 rounded-xl bg-slate-900 hover:bg-slate-800 border border-slate-700 text-slate-200 font-bold text-xs transition flex items-center justify-center gap-2 text-center cursor-pointer">
+          <span>Pagar con PayPal Internacional ($89 USD) &rarr;</span>
+        </a>
       </div>
     </div>
   </div>
@@ -739,8 +749,14 @@
 
   <script>
     // =========================================================================
-    // CONFIGURACIÓN CENTRAL DE ENLACES DE PAGO PAYPAL ($89 USD CADA SISTEMA)
+    // CONFIGURACIÓN CENTRAL DE ENLACES DE PAGO ($89 USD CADA SISTEMA)
     // =========================================================================
+    const HOTMART_LINKS = {
+      pos: "https://pay.hotmart.com/K108327655X", // Enlace Hotmart $89 USD - POS & Inventarios
+      med: "https://pay.hotmart.com/K108327655X", // Se actualizará al crear producto Clínica en Hotmart
+      crm: "https://pay.hotmart.com/K108327655X"  // Se actualizará al crear producto CRM en Hotmart
+    };
+
     const PAYPAL_LINKS = {
       pos: "https://www.paypal.com/ncp/payment/6N33BA6V5CXM4", // Enlace PayPal $89 USD - Sistema Facturación, POS e Inventarios
       med: "https://www.paypal.com/ncp/payment/D7L3CB8AWY75Y", // Enlace PayPal $89 USD - Sistema Expedientes Clínicos, Consultas y Citas
@@ -810,6 +826,7 @@
       selectedProductKey = key;
       document.getElementById('chk-title').textContent = p.name;
       document.getElementById('chk-desc').textContent = p.shortDesc;
+      document.getElementById('chk-hotmart-btn').href = HOTMART_LINKS[key] || HOTMART_LINKS.pos;
       document.getElementById('chk-paypal-btn').href = PAYPAL_LINKS[key] || PAYPAL_LINKS.pos;
       const modal = document.getElementById('checkout-modal');
       modal.classList.remove('hidden');
