@@ -490,12 +490,12 @@
         </div>
       </section>
 
-      <!-- TAB 4: MÓDULO INTEGRAL DE GASTOS, COMPRAS, CUENTAS POR COBRAR (CxC) Y CUENTAS POR PAGAR (CxP) -->
+      <!-- TAB 4: MÓDULO INTEGRAL DE GASTOS, COMPRAS, CUENTAS POR COBRAR (CxC), CUENTAS POR PAGAR (CxP) Y PROVEEDORES -->
       <section id="tab-expenses" class="space-y-6 hidden">
         <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
           <div>
-            <span class="text-xs font-mono uppercase text-amber-500 font-bold">MÓDULO FINANCIERO & CONTROL ADMINISTRATIVO</span>
-            <h2 class="text-2xl font-extrabold text-white">Gastos, Compras, Cuentas por Cobrar y Cuentas por Pagar</h2>
+            <span class="text-xs font-mono uppercase text-amber-500 font-bold">MÓDULO FINANCIERO, PROVEEDORES & CONTROL ADMINISTRATIVO</span>
+            <h2 class="text-2xl font-extrabold text-white">Gastos, Compras, Proveedores, CxC y CxP</h2>
           </div>
           <div class="flex flex-wrap gap-2">
             <button onclick="openExpenseModal()" class="px-3.5 py-2.5 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-extrabold text-xs transition flex items-center gap-1.5 shadow-lg cursor-pointer">
@@ -503,6 +503,9 @@
             </button>
             <button onclick="openPurchaseModal()" class="px-3.5 py-2.5 rounded-xl bg-cyan-400 hover:bg-cyan-300 text-slate-950 font-extrabold text-xs transition flex items-center gap-1.5 shadow-lg cursor-pointer">
               🛍️ Registrar Compra
+            </button>
+            <button onclick="openSupplierModal()" class="px-3.5 py-2.5 rounded-xl bg-indigo-500 hover:bg-indigo-400 text-white font-extrabold text-xs transition flex items-center gap-1.5 shadow-lg cursor-pointer">
+              🏢 + Registrar Proveedor
             </button>
             <button onclick="openAccountModal('CXC')" class="px-3.5 py-2.5 rounded-xl bg-emerald-400 hover:bg-emerald-300 text-slate-950 font-extrabold text-xs transition flex items-center gap-1.5 shadow-lg cursor-pointer">
               📥 + Cuenta por Cobrar
@@ -536,6 +539,7 @@
             <button id="fintab-all" onclick="switchFinanceSubTab('all')" class="px-3 py-1.5 rounded-xl bg-amber-500 text-slate-950 font-extrabold text-xs transition">Vista General</button>
             <button id="fintab-gastos" onclick="switchFinanceSubTab('gastos')" class="px-3 py-1.5 rounded-xl bg-slate-800 text-slate-300 font-bold text-xs transition">💸 Gastos</button>
             <button id="fintab-compras" onclick="switchFinanceSubTab('compras')" class="px-3 py-1.5 rounded-xl bg-slate-800 text-slate-300 font-bold text-xs transition">🛍️ Compras</button>
+            <button id="fintab-proveedores" onclick="switchFinanceSubTab('proveedores')" class="px-3 py-1.5 rounded-xl bg-slate-800 text-slate-300 font-bold text-xs transition">🏢 Proveedores</button>
             <button id="fintab-cxc" onclick="switchFinanceSubTab('cxc')" class="px-3 py-1.5 rounded-xl bg-slate-800 text-slate-300 font-bold text-xs transition">📥 Cuentas por Cobrar</button>
             <button id="fintab-cxp" onclick="switchFinanceSubTab('cxp')" class="px-3 py-1.5 rounded-xl bg-slate-800 text-slate-300 font-bold text-xs transition">📤 Cuentas por Pagar</button>
           </div>
@@ -578,6 +582,7 @@
                   <th class="py-3 px-4">Fecha</th>
                   <th class="py-3 px-4">Concepto del Gasto</th>
                   <th class="py-3 px-4">Categoría</th>
+                  <th class="py-3 px-4">Proveedor Asignado</th>
                   <th class="py-3 px-4">Autorizado por</th>
                   <th class="py-3 px-4 text-right">Monto</th>
                   <th class="py-3 px-4 text-right">Acción</th>
@@ -599,7 +604,7 @@
               <thead class="bg-slate-900/80 text-slate-400 uppercase font-mono border-b border-slate-800">
                 <tr>
                   <th class="py-3 px-4">Factura / Fecha</th>
-                  <th class="py-3 px-4">Proveedor</th>
+                  <th class="py-3 px-4">Proveedor / Categoría</th>
                   <th class="py-3 px-4">Productos / Detalle</th>
                   <th class="py-3 px-4">Condición</th>
                   <th class="py-3 px-4 text-right">Total Compra</th>
@@ -607,6 +612,35 @@
                 </tr>
               </thead>
               <tbody id="purchases-table-body" class="divide-y divide-slate-800/70"></tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- SECCIÓN 2B: DIRECTORIO Y REGISTRO DE PROVEEDORES COMERCIALES -->
+        <div id="fin-sec-proveedores" class="glass rounded-3xl p-6 border border-indigo-500/30 space-y-4">
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+            <div>
+              <h3 class="text-sm font-extrabold text-white uppercase tracking-wider">🏢 Directorio de Proveedores por Categoría (Retail / Comercio)</h3>
+              <p class="text-[11px] text-slate-400">Proveedores vinculados automáticamente a cada categoría al registrar gastos, compras o cuentas por pagar.</p>
+            </div>
+            <div class="flex items-center gap-2">
+              <input id="supplier-dir-search" type="text" oninput="renderExpenses()" placeholder="🔍 Buscar proveedor, RUC o categoría..." class="bg-slate-900 border border-slate-700 rounded-xl px-3 py-1.5 text-xs text-white w-56">
+              <button onclick="openSupplierModal()" class="px-3 py-1.5 rounded-xl bg-indigo-500 hover:bg-indigo-400 text-white font-extrabold text-xs">+ Nuevo Proveedor</button>
+            </div>
+          </div>
+          <div class="overflow-x-auto">
+            <table class="w-full text-left text-xs">
+              <thead class="bg-slate-900/80 text-slate-400 uppercase font-mono border-b border-slate-800">
+                <tr>
+                  <th class="py-3 px-4">Empresa / Proveedor</th>
+                  <th class="py-3 px-4">Categoría Asignada</th>
+                  <th class="py-3 px-4">RUC / NIT Fiscal</th>
+                  <th class="py-3 px-4">Teléfono / WhatsApp</th>
+                  <th class="py-3 px-4">Ejecutivo / Contacto</th>
+                  <th class="py-3 px-4 text-right">Acción</th>
+                </tr>
+              </thead>
+              <tbody id="suppliers-table-body" class="divide-y divide-slate-800/70"></tbody>
             </table>
           </div>
         </div>
@@ -829,19 +863,19 @@
 
   <!-- MODAL PARA REGISTRAR NUEVO GASTO -->
   <div id="expense-modal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4 hidden no-print">
-    <div class="glass w-full max-w-md rounded-3xl border border-amber-500/30 p-6 space-y-5 shadow-2xl bg-slate-900">
-      <div class="flex items-center justify-between border-b border-slate-800 pb-4">
+    <div class="glass w-full max-w-md rounded-3xl border border-amber-500/30 p-6 space-y-4 shadow-2xl bg-slate-900">
+      <div class="flex items-center justify-between border-b border-slate-800 pb-3">
         <div class="flex items-center gap-2">
           <span class="p-2 rounded-xl bg-amber-500/20 text-amber-400 text-lg">💸</span>
           <div>
             <h3 class="font-extrabold text-white text-base">Registrar Nuevo Gasto Operativo</h3>
-            <span class="text-[11px] text-slate-400">Deducción de caja operativa o gasto del negocio</span>
+            <span class="text-[11px] text-slate-400">Deducción de caja operativa con proveedor vinculado por categoría</span>
           </div>
         </div>
         <button onclick="closeExpenseModal()" class="text-slate-400 hover:text-white text-xl cursor-pointer">&times;</button>
       </div>
 
-      <div class="space-y-4 text-xs">
+      <div class="space-y-3.5 text-xs">
         <div>
           <label class="block font-semibold text-slate-300 mb-1">Concepto o Descripción:</label>
           <input type="text" id="exp-concept" value="Compra de Insumos y Limpieza" class="w-full bg-slate-950 border border-slate-700 rounded-xl px-3.5 py-2.5 text-white focus:outline-none focus:border-amber-400 font-semibold" placeholder="Ej. Pago Recibo de Luz">
@@ -858,13 +892,13 @@
         </div>
         <div class="grid grid-cols-2 gap-3">
           <div>
-            <label class="block font-semibold text-slate-300 mb-1">Categoría:</label>
-            <select id="exp-category" class="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2.5 text-white focus:outline-none focus:border-amber-400">
+            <label class="block font-semibold text-slate-300 mb-1">Categoría del Gasto:</label>
+            <select id="exp-category" onchange="onExpenseCategoryChange()" class="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2.5 text-white focus:outline-none focus:border-amber-400 font-semibold">
               <option value="Insumos">Insumos & Operación</option>
               <option value="Servicios Básicos">Servicios (Luz/Agua/Internet)</option>
               <option value="Alquiler / Local">Alquiler / Local</option>
               <option value="Nómina / Comisiones">Nómina / Personal</option>
-              <option value="Proveedores">Pago a Proveedor</option>
+              <option value="Proveedores">Pago a Proveedor / Mercancía</option>
               <option value="Caja Chica">Caja Chica</option>
             </select>
           </div>
@@ -872,6 +906,19 @@
             <label class="block font-semibold text-slate-300 mb-1">Autorizado por:</label>
             <input type="text" id="exp-cashier" value="Admin Principal" readonly class="w-full bg-slate-950/70 border border-slate-800 rounded-xl px-3 py-2.5 text-slate-400">
           </div>
+        </div>
+
+        <!-- Selector y Buscador de Proveedor Asignado por Categoría -->
+        <div class="p-3 rounded-2xl bg-slate-950/80 border border-amber-500/30 space-y-2">
+          <div class="flex items-center justify-between">
+            <label class="font-bold text-amber-400 text-[11px] flex items-center gap-1">🏢 Proveedor Asignado / Seleccionar o Buscar:</label>
+            <button type="button" onclick="openSupplierModal('EXPENSE')" class="text-[11px] font-bold text-indigo-400 hover:underline cursor-pointer">+ Nuevo Proveedor</button>
+          </div>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
+            <input type="text" id="exp-supplier-search" oninput="populateExpenseSuppliers()" placeholder="🔍 Filtrar proveedor o RUC..." class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-white">
+            <select id="exp-supplier-select" onchange="onExpenseSupplierSelect()" class="w-full bg-slate-900 border border-amber-500/40 rounded-xl px-3 py-2 text-white font-semibold"></select>
+          </div>
+          <input type="text" id="exp-supplier" placeholder="Nombre del proveedor seleccionado o escribe uno..." class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-emerald-300 font-bold">
         </div>
       </div>
 
@@ -900,10 +947,37 @@
         <button onclick="closePurchaseModal()" class="text-slate-400 hover:text-white text-xl cursor-pointer">&times;</button>
       </div>
 
+      <!-- Categoría y Buscador/Selector de Proveedor Asignado -->
+      <div class="p-3.5 rounded-2xl bg-slate-950/80 border border-cyan-500/30 space-y-2.5">
+        <div class="flex items-center justify-between">
+          <span class="font-bold text-cyan-400 text-[11px]">🏢 Selección de Categoría y Proveedor Registrado:</span>
+          <button type="button" onclick="openSupplierModal('PURCHASE')" class="text-[11px] font-bold text-indigo-400 hover:underline cursor-pointer">+ Registrar Nuevo Proveedor</button>
+        </div>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+          <div>
+            <label class="block text-[11px] text-slate-400 mb-1">Categoría de Compra / Rubro:</label>
+            <select id="pur-category" onchange="onPurchaseCategoryChange()" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-white font-semibold">
+              <option value="Proveedores">📦 Mercancía / Inventario General</option>
+              <option value="Insumos">🧴 Insumos & Empaques</option>
+              <option value="Servicios Básicos">⚡ Servicios & Suministros</option>
+              <option value="ALL">📋 Todas las Categorías</option>
+            </select>
+          </div>
+          <div>
+            <label class="block text-[11px] text-slate-400 mb-1">Buscar Proveedor (Nombre o RUC):</label>
+            <input type="text" id="pur-supplier-search" oninput="populatePurchaseSuppliers()" placeholder="🔍 Buscar en lista de proveedores..." class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-white">
+          </div>
+          <div class="sm:col-span-2">
+            <label class="block text-[11px] text-slate-400 mb-1">Proveedor Asignado / Lista de Proveedores:</label>
+            <select id="pur-supplier-select" onchange="onPurchaseSupplierSelect()" class="w-full bg-slate-900 border border-cyan-500/40 rounded-xl px-3 py-2 text-white font-bold"></select>
+          </div>
+        </div>
+      </div>
+
       <div class="grid grid-cols-2 gap-3">
         <div>
-          <label class="block font-semibold text-slate-300 mb-1">Proveedor / Distribuidor:</label>
-          <input type="text" id="pur-supplier" placeholder="Ej: Distribuidora Central S.A." class="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-white font-semibold">
+          <label class="block font-semibold text-slate-300 mb-1">Proveedor Confirmado:</label>
+          <input type="text" id="pur-supplier" placeholder="Ej: Distribuidora Central S.A." class="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-emerald-300 font-bold">
         </div>
         <div>
           <label class="block font-semibold text-slate-300 mb-1">N° Factura / Referencia:</label>
@@ -947,6 +1021,60 @@
     </div>
   </div>
 
+  <!-- MODAL PARA REGISTRAR NUEVO PROVEEDOR -->
+  <div id="supplier-modal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4 hidden no-print">
+    <div class="glass w-full max-w-md rounded-3xl border border-indigo-500/40 p-6 space-y-4 shadow-2xl bg-slate-900 text-xs">
+      <div class="flex items-center justify-between border-b border-slate-800 pb-3">
+        <div class="flex items-center gap-2">
+          <span class="p-2 rounded-xl bg-indigo-500/20 text-indigo-400 text-lg">🏢</span>
+          <div>
+            <h3 class="font-extrabold text-white text-base">Registrar Proveedor Comercial</h3>
+            <span class="text-[11px] text-slate-400">Se asignará automáticamente al elegir su categoría en Gastos o Compras</span>
+          </div>
+        </div>
+        <button onclick="closeSupplierModal()" class="text-slate-400 hover:text-white text-xl cursor-pointer">&times;</button>
+      </div>
+      <input type="hidden" id="sup-origin" value="">
+      <div class="space-y-3">
+        <div>
+          <label class="block font-semibold text-slate-300 mb-1">Nombre de la Empresa / Proveedor:</label>
+          <input type="text" id="sup-name" placeholder="Ej: Distribuidora Nacional S.A." class="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-white font-bold">
+        </div>
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block font-semibold text-slate-300 mb-1">Categoría Asignada:</label>
+            <select id="sup-category" class="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-white font-semibold">
+              <option value="Proveedores">Pago a Proveedor / Mercancía</option>
+              <option value="Insumos">Insumos & Operación</option>
+              <option value="Servicios Básicos">Servicios (Luz/Agua/Internet)</option>
+              <option value="Alquiler / Local">Alquiler / Local</option>
+              <option value="Nómina / Comisiones">Nómina / Personal</option>
+              <option value="Caja Chica">Caja Chica</option>
+            </select>
+          </div>
+          <div>
+            <label class="block font-semibold text-slate-300 mb-1">RUC / NIT / ID Fiscal:</label>
+            <input type="text" id="sup-ruc" placeholder="J03100012345" class="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-white font-mono">
+          </div>
+        </div>
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block font-semibold text-slate-300 mb-1">Teléfono / WhatsApp:</label>
+            <input type="text" id="sup-phone" placeholder="+505 8888-0000" class="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-white font-mono">
+          </div>
+          <div>
+            <label class="block font-semibold text-slate-300 mb-1">Ejecutivo / Contacto:</label>
+            <input type="text" id="sup-contact" placeholder="Ej: Lic. Carlos Gómez" class="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-white">
+          </div>
+        </div>
+      </div>
+      <div class="flex items-center gap-3 pt-2">
+        <button onclick="closeSupplierModal()" class="w-1/2 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold">Cancelar</button>
+        <button onclick="saveSupplierRecord()" class="w-1/2 py-2.5 rounded-xl bg-indigo-500 hover:bg-indigo-400 text-white font-extrabold shadow-lg">Guardar Proveedor</button>
+      </div>
+    </div>
+  </div>
+
   <!-- MODAL PARA REGISTRAR CUENTA POR COBRAR (CxC) O CUENTA POR PAGAR (CxP) -->
   <div id="account-modal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4 hidden no-print">
     <div class="glass w-full max-w-md rounded-3xl border border-emerald-500/40 p-6 space-y-4 shadow-2xl bg-slate-900 text-xs">
@@ -956,6 +1084,10 @@
       </div>
       <input type="hidden" id="acc-type" value="CXC">
       <div class="space-y-3">
+        <div id="acc-supplier-picker-box" class="hidden p-3 rounded-2xl bg-slate-950/80 border border-rose-500/30 space-y-2">
+          <label class="block font-bold text-rose-400 text-[11px]">🏢 Seleccionar Proveedor Registrado:</label>
+          <select id="acc-supplier-select" onchange="onAccountSupplierSelect()" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-white font-semibold"></select>
+        </div>
         <div>
           <label id="acc-entity-label" class="block font-semibold text-slate-300 mb-1">Nombre del Cliente / Deudor:</label>
           <input type="text" id="acc-entity" placeholder="Ej: Comercializadora San José" class="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-white font-semibold">
@@ -1116,13 +1248,22 @@
           profit: 41.98
         }
       ],
+      suppliers: [
+        { id: 601, name: 'Suministros & Empaques Comerciales S.A.', category: 'Insumos', ruc: 'J03100054321', phone: '+505 8888-2020', contact: 'Lic. Roberto Silva' },
+        { id: 602, name: 'Distribuidora Mayorista Central', category: 'Proveedores', ruc: 'J03100012345', phone: '+505 8888-1010', contact: 'Carlos Gómez (Ventas)' },
+        { id: 603, name: 'Importadora Tecnológica Global', category: 'Proveedores', ruc: 'J03100098765', phone: '+505 8888-3030', contact: 'Ing. Ana Martínez' },
+        { id: 604, name: 'Empresa de Energía & Telecomunicaciones', category: 'Servicios Básicos', ruc: 'J03100011223', phone: '+505 2222-4040', contact: 'Atención Corporativa' },
+        { id: 605, name: 'Inmobiliaria Comercial Centro', category: 'Alquiler / Local', ruc: 'J03100044556', phone: '+505 8888-5050', contact: 'Administración Local' },
+        { id: 606, name: 'Supermercado & Caja Chica Express', category: 'Caja Chica', ruc: 'J03100077889', phone: '+505 8888-6060', contact: 'Sucursal Central' },
+        { id: 607, name: 'Planilla Interna & Comisiones de Venta', category: 'Nómina / Comisiones', ruc: 'INTERNO-RRHH', phone: '+505 8888-0000', contact: 'Recursos Humanos' }
+      ],
       expenses: [
-        { id: 1, date: todayISO() + ' 10:15 AM', dateISO: todayISO(), concept: 'Pago de Suministros y Bolsas Empaque', category: 'Insumos', by: 'Administrador Principal', amount: 25.00 },
-        { id: 2, date: daysAgoISO(1) + ' 08:30 AM', dateISO: daysAgoISO(1), concept: 'Pago Servicio de Internet y Energía', category: 'Servicios Básicos', by: 'Cajero Turno 1', amount: 42.00 }
+        { id: 1, date: todayISO() + ' 10:15 AM', dateISO: todayISO(), concept: 'Pago de Suministros y Bolsas Empaque', category: 'Insumos', supplier: 'Suministros & Empaques Comerciales S.A.', by: 'Administrador Principal', amount: 25.00 },
+        { id: 2, date: daysAgoISO(1) + ' 08:30 AM', dateISO: daysAgoISO(1), concept: 'Pago Servicio de Internet y Energía', category: 'Servicios Básicos', supplier: 'Empresa de Energía & Telecomunicaciones', by: 'Cajero Turno 1', amount: 42.00 }
       ],
       purchases: [
-        { id: 301, ref: 'FAC-PRV-089', date: todayISO(), dateISO: todayISO(), supplier: 'Distribuidora Mayorista Central', desc: 'Reabastecimiento Café Premium y Bebidas (25 uds)', condition: 'Contado', amount: 85.00, by: 'Administrador Principal' },
-        { id: 302, ref: 'FAC-PRV-090', date: daysAgoISO(2), dateISO: daysAgoISO(2), supplier: 'Importadora Tecnológica Global', desc: 'Lote Audífonos Inalámbricos y Accesorios', condition: 'Crédito (CxP)', amount: 210.00, by: 'Administrador Principal' }
+        { id: 301, ref: 'FAC-PRV-089', date: todayISO(), dateISO: todayISO(), supplier: 'Distribuidora Mayorista Central', category: 'Proveedores', desc: 'Reabastecimiento Café Premium y Bebidas (25 uds)', condition: 'Contado', amount: 85.00, by: 'Administrador Principal' },
+        { id: 302, ref: 'FAC-PRV-090', date: daysAgoISO(2), dateISO: daysAgoISO(2), supplier: 'Importadora Tecnológica Global', category: 'Proveedores', desc: 'Lote Audífonos Inalámbricos y Accesorios', condition: 'Crédito (CxP)', amount: 210.00, by: 'Administrador Principal' }
       ],
       receivables: [
         { id: 401, ref: 'FAC-CRED-01', date: todayISO(), dateISO: todayISO(), due: daysAheadISO(15), client: 'Oficinas Corporativas Prisma', phone: '50588884444', concept: 'Pedido empresarial al crédito 15 días', total: 145.00, paid: 45.00 },
@@ -1130,7 +1271,7 @@
       ],
       payables: [
         { id: 501, ref: 'FAC-PRV-090', date: daysAgoISO(2), dateISO: daysAgoISO(2), due: daysAheadISO(20), supplier: 'Importadora Tecnológica Global', phone: '50588889999', concept: 'Lote Audífonos Inalámbricos y Accesorios', total: 210.00, paid: 60.00 },
-        { id: 502, ref: 'FAC-PRV-075', date: daysAgoISO(5), dateISO: daysAgoISO(5), due: daysAheadISO(10), supplier: 'Empaques & Suministros del Norte', phone: '50588887777', concept: 'Bolsas impresas con logo y papelería térmica', total: 95.00, paid: 0.00 }
+        { id: 502, ref: 'FAC-PRV-075', date: daysAgoISO(5), dateISO: daysAgoISO(5), due: daysAheadISO(10), supplier: 'Suministros & Empaques Comerciales S.A.', phone: '50588882020', concept: 'Bolsas impresas con logo y papelería térmica', total: 95.00, paid: 0.00 }
       ]
     };
 
@@ -1154,6 +1295,7 @@
         if (!raw) return JSON.parse(JSON.stringify(defaultState));
         const parsed = JSON.parse(raw);
         if (!parsed.users || parsed.users.length !== 4) parsed.users = defaultState.users;
+        if (!parsed.suppliers || parsed.suppliers.length === 0) parsed.suppliers = JSON.parse(JSON.stringify(defaultState.suppliers));
         if (!parsed.expenses) parsed.expenses = JSON.parse(JSON.stringify(defaultState.expenses));
         if (!parsed.purchases) parsed.purchases = JSON.parse(JSON.stringify(defaultState.purchases));
         if (!parsed.receivables) parsed.receivables = JSON.parse(JSON.stringify(defaultState.receivables));
@@ -1331,7 +1473,7 @@
 
     function switchFinanceSubTab(sub) {
       currentFinanceSubTab = sub;
-      ['all', 'gastos', 'compras', 'cxc', 'cxp'].forEach(k => {
+      ['all', 'gastos', 'compras', 'proveedores', 'cxc', 'cxp'].forEach(k => {
         const btn = document.getElementById('fintab-' + k);
         if (btn) {
           btn.className = k === sub
@@ -1341,14 +1483,126 @@
       });
       document.getElementById('fin-sec-gastos').classList.toggle('hidden', sub !== 'all' && sub !== 'gastos');
       document.getElementById('fin-sec-compras').classList.toggle('hidden', sub !== 'all' && sub !== 'compras');
+      const secProv = document.getElementById('fin-sec-proveedores');
+      if (secProv) secProv.classList.toggle('hidden', sub !== 'all' && sub !== 'proveedores');
       document.getElementById('fin-sec-cxc').classList.toggle('hidden', sub !== 'all' && sub !== 'cxc');
       document.getElementById('fin-sec-cxp').classList.toggle('hidden', sub !== 'all' && sub !== 'cxp');
+    }
+
+    // DIRECTORIO Y VINCULACIÓN DE PROVEEDORES POR CATEGORÍA
+    function openSupplierModal(origin = '') {
+      document.getElementById('sup-origin').value = origin;
+      document.getElementById('sup-name').value = '';
+      document.getElementById('sup-ruc').value = '';
+      document.getElementById('sup-phone').value = '';
+      document.getElementById('sup-contact').value = '';
+      if (origin === 'EXPENSE') {
+        const cat = document.getElementById('exp-category').value;
+        if (cat) document.getElementById('sup-category').value = cat;
+      } else if (origin === 'PURCHASE') {
+        const cat = document.getElementById('pur-category').value;
+        if (cat && cat !== 'ALL') document.getElementById('sup-category').value = cat;
+      }
+      document.getElementById('supplier-modal').classList.remove('hidden');
+    }
+
+    function closeSupplierModal() {
+      document.getElementById('supplier-modal').classList.add('hidden');
+    }
+
+    function saveSupplierRecord() {
+      const name = document.getElementById('sup-name').value.trim();
+      const category = document.getElementById('sup-category').value;
+      const ruc = document.getElementById('sup-ruc').value.trim() || 'S/RUC';
+      const phone = document.getElementById('sup-phone').value.trim() || '';
+      const contact = document.getElementById('sup-contact').value.trim() || 'Contacto Comercial';
+      const origin = document.getElementById('sup-origin').value;
+      if (!name) { alert('Ingresa el nombre del proveedor o empresa.'); return; }
+
+      state.suppliers = state.suppliers || [];
+      const newSup = { id: Date.now(), name, category, ruc, phone, contact };
+      state.suppliers.unshift(newSup);
+      saveState();
+      renderExpenses();
+      closeSupplierModal();
+
+      if (origin === 'EXPENSE') {
+        document.getElementById('exp-category').value = category;
+        populateExpenseSuppliers(newSup.name);
+      } else if (origin === 'PURCHASE') {
+        document.getElementById('pur-category').value = category;
+        populatePurchaseSuppliers(newSup.name);
+      }
+    }
+
+    function deleteSupplierRecord(id) {
+      if (!confirm('¿Eliminar este proveedor del directorio?')) return;
+      state.suppliers = (state.suppliers || []).filter(s => s.id !== id);
+      saveState();
+      renderExpenses();
+    }
+
+    function populateExpenseSuppliers(forceSelectName = '') {
+      const cat = document.getElementById('exp-category').value;
+      const q = (document.getElementById('exp-supplier-search').value || '').toLowerCase().trim();
+      const sel = document.getElementById('exp-supplier-select');
+      if (!sel) return;
+
+      const allSups = (state.suppliers || []).filter(s => {
+        if (!q) return true;
+        return (s.name || '').toLowerCase().includes(q) || (s.ruc || '').toLowerCase().includes(q) || (s.category || '').toLowerCase().includes(q);
+      });
+
+      const assigned = allSups.filter(s => s.category === cat);
+      const others = allSups.filter(s => s.category !== cat);
+
+      let html = '';
+      if (assigned.length > 0) {
+        html += `<optgroup label="⭐ Proveedor Asignado a ${cat}">` +
+          assigned.map(s => `<option value="${s.name}">⭐ ${s.name} (${s.ruc || 'Asignado'})</option>`).join('') +
+          `</optgroup>`;
+      }
+      if (others.length > 0) {
+        html += `<optgroup label="📋 Otros Proveedores Registrados">` +
+          others.map(s => `<option value="${s.name}">${s.name} [${s.category}]</option>`).join('') +
+          `</optgroup>`;
+      }
+      html += `<option value=" General / Sin Proveedor">-- Otro / Escribir Manualmente --</option>`;
+      sel.innerHTML = html;
+
+      if (forceSelectName) {
+        sel.value = forceSelectName;
+        document.getElementById('exp-supplier').value = forceSelectName;
+      } else if (assigned.length > 0) {
+        sel.value = assigned[0].name;
+        document.getElementById('exp-supplier').value = assigned[0].name;
+      } else if (others.length > 0) {
+        sel.value = others[0].name;
+        document.getElementById('exp-supplier').value = others[0].name;
+      }
+    }
+
+    function onExpenseCategoryChange() {
+      populateExpenseSuppliers();
+    }
+
+    function onExpenseSupplierSelect() {
+      const val = document.getElementById('exp-supplier-select').value;
+      if (val && !val.includes('Escribir Manualmente')) {
+        document.getElementById('exp-supplier').value = val.trim();
+      } else {
+        document.getElementById('exp-supplier').value = '';
+        document.getElementById('exp-supplier').focus();
+      }
     }
 
     function openExpenseModal() {
       const who = document.getElementById('exp-cashier');
       if (who && currentUser) who.value = currentUser.name;
       document.getElementById('exp-date').value = todayISO();
+      const searchEl = document.getElementById('exp-supplier-search');
+      if (searchEl) searchEl.value = '';
+      populateExpenseSuppliers();
       document.getElementById('expense-modal').classList.remove('hidden');
     }
 
@@ -1360,6 +1614,7 @@
       const concept = document.getElementById('exp-concept').value.trim() || 'Gasto operativo';
       const amount = Number(document.getElementById('exp-amount').value) || 0;
       const dateISO = document.getElementById('exp-date').value || todayISO();
+      const supplier = (document.getElementById('exp-supplier') ? document.getElementById('exp-supplier').value.trim() : '') || 'Proveedor General';
       if (amount <= 0) { alert('Ingresa un monto válido para el gasto.'); return; }
       const now = new Date();
       const hh = String(now.getHours() % 12 || 12).padStart(2, '0');
@@ -1372,6 +1627,7 @@
         dateISO,
         concept,
         category: document.getElementById('exp-category').value,
+        supplier,
         by: document.getElementById('exp-cashier').value || (currentUser ? currentUser.name : 'Admin'),
         amount
       });
@@ -1389,10 +1645,67 @@
       renderSales();
     }
 
-    // COMPRAS A PROVEEDORES
+    // COMPRAS A PROVEEDORES CON FILTRO POR CATEGORÍA Y BÚSQUEDA
+    function populatePurchaseSuppliers(forceSelectName = '') {
+      const cat = document.getElementById('pur-category') ? document.getElementById('pur-category').value : 'Proveedores';
+      const q = (document.getElementById('pur-supplier-search') ? document.getElementById('pur-supplier-search').value : '').toLowerCase().trim();
+      const sel = document.getElementById('pur-supplier-select');
+      if (!sel) return;
+
+      const allSups = (state.suppliers || []).filter(s => {
+        if (!q) return true;
+        return (s.name || '').toLowerCase().includes(q) || (s.ruc || '').toLowerCase().includes(q) || (s.category || '').toLowerCase().includes(q);
+      });
+
+      const assigned = cat === 'ALL' ? allSups : allSups.filter(s => s.category === cat);
+      const others = cat === 'ALL' ? [] : allSups.filter(s => s.category !== cat);
+
+      let html = '';
+      if (assigned.length > 0) {
+        html += `<optgroup label="⭐ Proveedores Asignados (${cat === 'ALL' ? 'Todos' : cat})">` +
+          assigned.map(s => `<option value="${s.name}">⭐ ${s.name} (${s.ruc || 'Activo'})</option>`).join('') +
+          `</optgroup>`;
+      }
+      if (others.length > 0) {
+        html += `<optgroup label="📋 Otros Proveedores Registrados">` +
+          others.map(s => `<option value="${s.name}">${s.name} [${s.category}]</option>`).join('') +
+          `</optgroup>`;
+      }
+      html += `<option value="-- Manual --">-- Otro Proveedor (Escribir Manualmente) --</option>`;
+      sel.innerHTML = html;
+
+      if (forceSelectName) {
+        sel.value = forceSelectName;
+        document.getElementById('pur-supplier').value = forceSelectName;
+      } else if (assigned.length > 0) {
+        sel.value = assigned[0].name;
+        document.getElementById('pur-supplier').value = assigned[0].name;
+      } else if (others.length > 0) {
+        sel.value = others[0].name;
+        document.getElementById('pur-supplier').value = others[0].name;
+      }
+    }
+
+    function onPurchaseCategoryChange() {
+      populatePurchaseSuppliers();
+    }
+
+    function onPurchaseSupplierSelect() {
+      const val = document.getElementById('pur-supplier-select').value;
+      if (val && val !== '-- Manual --') {
+        document.getElementById('pur-supplier').value = val;
+      } else {
+        document.getElementById('pur-supplier').value = '';
+        document.getElementById('pur-supplier').focus();
+      }
+    }
+
     function openPurchaseModal() {
       document.getElementById('pur-date').value = todayISO();
       document.getElementById('pur-ref').value = 'CMP-' + String((state.purchases || []).length + 101);
+      const searchEl = document.getElementById('pur-supplier-search');
+      if (searchEl) searchEl.value = '';
+      populatePurchaseSuppliers();
       const sel = document.getElementById('pur-product-id');
       sel.innerHTML = '<option value="">-- Compra General / Sin vincular a SKU específico --</option>' +
         state.products.map(p => `<option value="${p.id}">${p.sku} - ${p.name} (Costo: ${fmt(p.cost)} | Stock: ${p.stock})</option>`).join('');
@@ -1425,6 +1738,7 @@
 
     function savePurchase() {
       const supplier = document.getElementById('pur-supplier').value.trim() || 'Proveedor General';
+      const category = document.getElementById('pur-category') ? document.getElementById('pur-category').value : 'Proveedores';
       const ref = document.getElementById('pur-ref').value.trim() || 'CMP-001';
       const dateISO = document.getElementById('pur-date').value || todayISO();
       const condition = document.getElementById('pur-condition').value;
@@ -1448,6 +1762,7 @@
         date: dateISO,
         dateISO,
         supplier,
+        category,
         desc,
         condition,
         amount,
@@ -1456,6 +1771,7 @@
 
       // Si es a crédito, generar automáticamente en Cuentas por Pagar (CxP)
       if (condition.includes('Crédito')) {
+        const supObj = (state.suppliers || []).find(s => s.name === supplier);
         state.payables = state.payables || [];
         state.payables.unshift({
           id: Date.now() + 1,
@@ -1464,7 +1780,7 @@
           dateISO,
           due: daysAheadISO(15),
           supplier,
-          phone: '',
+          phone: supObj ? supObj.phone : '',
           concept: desc,
           total: amount,
           paid: 0
@@ -1488,17 +1804,40 @@
     }
 
     // CUENTAS POR COBRAR (CxC) Y CUENTAS POR PAGAR (CxP)
+    function onAccountSupplierSelect() {
+      const val = document.getElementById('acc-supplier-select').value;
+      const sup = (state.suppliers || []).find(s => s.name === val);
+      if (sup) {
+        document.getElementById('acc-entity').value = sup.name;
+        document.getElementById('acc-phone').value = sup.phone || '';
+      }
+    }
+
     function openAccountModal(type) {
       document.getElementById('acc-type').value = type;
       document.getElementById('acc-date').value = todayISO();
       document.getElementById('acc-due').value = daysAheadISO(15);
       document.getElementById('acc-paid').value = '0.00';
+      const supBox = document.getElementById('acc-supplier-picker-box');
       if (type === 'CXC') {
+        if (supBox) supBox.classList.add('hidden');
         document.getElementById('acc-modal-title').textContent = '📥 Registrar Cuenta por Cobrar (Cliente)';
         document.getElementById('acc-entity-label').textContent = 'Nombre del Cliente / Deudor:';
+        document.getElementById('acc-entity').value = '';
+        document.getElementById('acc-phone').value = '';
         document.getElementById('acc-ref').value = 'CXC-' + String((state.receivables || []).length + 101);
         document.getElementById('acc-concept').value = 'Venta o servicio otorgado al crédito';
       } else {
+        if (supBox) {
+          supBox.classList.remove('hidden');
+          const sel = document.getElementById('acc-supplier-select');
+          sel.innerHTML = (state.suppliers || []).map(s => `<option value="${s.name}">${s.name} [${s.category}]</option>`).join('') +
+            `<option value="">-- Otro Proveedor --</option>`;
+          if ((state.suppliers || []).length > 0) {
+            document.getElementById('acc-entity').value = state.suppliers[0].name;
+            document.getElementById('acc-phone').value = state.suppliers[0].phone || '';
+          }
+        }
         document.getElementById('acc-modal-title').textContent = '📤 Registrar Cuenta por Pagar (Proveedor)';
         document.getElementById('acc-entity-label').textContent = 'Nombre del Proveedor / Acreedor:';
         document.getElementById('acc-ref').value = 'CXP-' + String((state.payables || []).length + 101);
@@ -1584,12 +1923,15 @@
         filteredExpenses.forEach(e => {
           totalExp += Number(e.amount);
           if (e.category === 'Caja Chica' || e.category === 'Insumos') cajaExp += Number(e.amount);
+          const defaultSup = ((state.suppliers || []).find(s => s.category === e.category) || {}).name || 'Proveedor General';
+          const supName = e.supplier || defaultSup;
           const tr = document.createElement('tr');
           tr.className = 'hover:bg-slate-800/30';
           tr.innerHTML = `
             <td class="py-3 px-4 font-mono text-slate-400">${e.date}</td>
             <td class="py-3 px-4 font-bold text-white">${e.concept}</td>
             <td class="py-3 px-4"><span class="px-2 py-0.5 rounded ${badge[e.category] || 'bg-slate-500/20 text-slate-300'} text-[10px] font-bold">${e.category}</span></td>
+            <td class="py-3 px-4 font-semibold text-indigo-300">🏢 ${supName}</td>
             <td class="py-3 px-4 text-slate-300">${e.by}</td>
             <td class="py-3 px-4 text-right font-black text-amber-400 mono">${fmt(e.amount)}</td>
             <td class="py-3 px-4 text-right">
@@ -1612,7 +1954,7 @@
           tr.className = 'hover:bg-slate-800/30';
           tr.innerHTML = `
             <td class="py-3 px-4 font-mono text-cyan-400 font-bold">${p.ref}<span class="block text-[10px] text-slate-400 font-normal">${p.date}</span></td>
-            <td class="py-3 px-4 font-bold text-white">${p.supplier}</td>
+            <td class="py-3 px-4 font-bold text-white">🏢 ${p.supplier}<span class="block text-[10px] text-indigo-400 font-semibold">${p.category || 'Mercancía / Proveedores'}</span></td>
             <td class="py-3 px-4 text-slate-300">${p.desc}</td>
             <td class="py-3 px-4"><span class="px-2 py-0.5 rounded ${isCred ? 'bg-rose-500/20 text-rose-300' : 'bg-emerald-500/20 text-emerald-300'} text-[10px] font-bold">${p.condition}</span></td>
             <td class="py-3 px-4 text-right font-black text-cyan-400 mono">${fmt(p.amount)}</td>
@@ -1621,6 +1963,25 @@
             </td>`;
           tbodyPur.appendChild(tr);
         });
+      }
+
+      // 2B. Directorio de Proveedores Registrados
+      const tbodySup = document.getElementById('suppliers-table-body');
+      if (tbodySup) {
+        const qSup = (document.getElementById('supplier-dir-search') ? document.getElementById('supplier-dir-search').value : '').toLowerCase().trim();
+        const sups = (state.suppliers || []).filter(s => !qSup || (s.name || '').toLowerCase().includes(qSup) || (s.ruc || '').toLowerCase().includes(qSup) || (s.category || '').toLowerCase().includes(qSup));
+        tbodySup.innerHTML = sups.map(s => `
+          <tr class="hover:bg-slate-800/30">
+            <td class="py-3 px-4 font-bold text-white">🏢 ${s.name}</td>
+            <td class="py-3 px-4"><span class="px-2.5 py-0.5 rounded bg-indigo-500/20 text-indigo-300 text-[10px] font-bold">${s.category}</span></td>
+            <td class="py-3 px-4 font-mono text-slate-300">${s.ruc || 'S/RUC'}</td>
+            <td class="py-3 px-4 font-mono text-emerald-400">${s.phone || '-'}</td>
+            <td class="py-3 px-4 text-slate-300">${s.contact || '-'}</td>
+            <td class="py-3 px-4 text-right">
+              <button onclick="deleteSupplierRecord(${s.id})" class="px-2 py-1 rounded bg-red-500/15 text-red-300 hover:bg-red-500 hover:text-white text-xs font-bold">&times;</button>
+            </td>
+          </tr>
+        `).join('');
       }
 
       // 3. Cuentas por Cobrar (CxC)

@@ -373,6 +373,7 @@
               <button onclick="openCRMFinanceModal('GASTO')" class="px-3.5 py-2.5 rounded-xl bg-rose-500 hover:bg-rose-400 text-white font-extrabold text-xs transition">+ Registrar Gasto / Ads</button>
               <button onclick="openCRMFinanceModal('CXC')" class="px-3.5 py-2.5 rounded-xl bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-extrabold text-xs transition">+ Cuenta por Cobrar (Cliente)</button>
               <button onclick="openCRMFinanceModal('CXP')" class="px-3.5 py-2.5 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-extrabold text-xs transition">+ Cuenta por Pagar</button>
+              <button onclick="openCRMSupplierModal()" class="px-3.5 py-2.5 rounded-xl bg-indigo-500 hover:bg-indigo-400 text-white font-extrabold text-xs transition">🏢 + Registrar Proveedor / Partner</button>
               <button onclick="exportCRMFinanceCSV()" class="px-3.5 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-emerald-300 font-bold text-xs border border-emerald-500/30 transition">📥 Exportar Excel (.CSV)</button>
             </div>
           </div>
@@ -457,6 +458,35 @@
                 </tr>
               </thead>
               <tbody id="crm-finances-tbody" class="divide-y divide-slate-800/70"></tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- DIRECTORIO DE PROVEEDORES COMERCIALES, PLATAFORMAS ADS, SAAS & PARTNERS -->
+        <div class="glass rounded-3xl overflow-hidden border border-slate-800">
+          <div class="p-4 border-b border-slate-800 flex flex-wrap items-center justify-between gap-3">
+            <div>
+              <h3 class="font-bold text-sm uppercase tracking-wider text-indigo-400">🏢 Directorio de Proveedores B2B, Plataformas Ads, SaaS & Partners</h3>
+              <p class="text-[11px] text-slate-400">Proveedores asignados por categoría comercial para auto-completar al registrar Gastos, Compras de Licencias o Cuentas por Pagar.</p>
+            </div>
+            <div class="flex items-center gap-2">
+              <input id="crm-sup-dir-search" type="text" oninput="renderCRMSuppliers()" placeholder="🔍 Buscar proveedor, plataforma o RUC..." class="bg-slate-900 border border-slate-700 rounded-xl px-3 py-1.5 text-xs text-white w-56">
+              <button onclick="openCRMSupplierModal()" class="px-3 py-1.5 rounded-xl bg-indigo-500 hover:bg-indigo-400 text-white font-extrabold text-xs">+ Nuevo Proveedor B2B</button>
+            </div>
+          </div>
+          <div class="overflow-x-auto">
+            <table class="w-full text-left text-xs">
+              <thead class="bg-slate-900/90 text-slate-400 uppercase font-mono">
+                <tr>
+                  <th class="py-3 px-4">Proveedor / Plataforma / Partner</th>
+                  <th class="py-3 px-4">Categoría Comercial Asignada</th>
+                  <th class="py-3 px-4">ID Fiscal / RUC</th>
+                  <th class="py-3 px-4">Contacto / Ejecutivo</th>
+                  <th class="py-3 px-4">Servicio / Suministro</th>
+                  <th class="py-3 px-4 text-right">Acciones</th>
+                </tr>
+              </thead>
+              <tbody id="crm-suppliers-tbody" class="divide-y divide-slate-800/70"></tbody>
             </table>
           </div>
         </div>
@@ -601,19 +631,31 @@
           </div>
           <div>
             <label class="text-slate-400 font-bold block mb-1">Categoría Comercial</label>
-            <select id="crm-fin-category" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-white">
+            <select id="crm-fin-category" onchange="onCRMFinCategoryChange()" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-white">
               <option value="Cierre de Proyecto / Licencia">Cierre de Proyecto / Licencia</option>
               <option value="Anticipo 50% Cotización">Anticipo 50% Cotización</option>
               <option value="Iguala Mensual / Retainer">Iguala Mensual / Retainer</option>
               <option value="Publicidad Meta / Google Ads">Publicidad Meta / Google Ads</option>
               <option value="Comisiones de Ventas (Closers)">Comisiones de Ventas (Closers)</option>
               <option value="Suscripciones Software / Servidores">Suscripciones Software / Servidores</option>
-              <option value="Otros Movimientos">Otros Movimientos</option>
+              <option value="Producción & Marketing">Producción & Marketing</option>
+              <option value="Operación & Servicios Corporativos">Operación & Servicios Corporativos</option>
             </select>
           </div>
         </div>
+        <div id="crm-fin-supplier-box" class="bg-slate-900/90 border border-slate-800 rounded-2xl p-3 space-y-2 hidden">
+          <div class="flex items-center justify-between">
+            <label class="text-indigo-400 font-bold block">🏢 Proveedor / Plataforma Asignada o Buscar</label>
+            <button type="button" onclick="openCRMSupplierModal()" class="text-[11px] text-emerald-400 hover:underline font-bold">+ Nuevo Proveedor B2B</button>
+          </div>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
+            <input id="crm-fin-sup-search" type="text" oninput="populateCRMFinanceSuppliers()" placeholder="🔍 Buscar proveedor, Ads o RUC..." class="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-1.5 text-white text-xs">
+            <select id="crm-fin-sup-select" onchange="onCRMFinanceSupplierSelect()" class="w-full bg-slate-950 border border-indigo-500/40 rounded-xl px-3 py-1.5 text-white font-semibold text-xs"></select>
+          </div>
+          <input id="crm-fin-supplier" type="text" placeholder="Nombre del Proveedor / Plataforma seleccionada" class="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-1.5 text-indigo-300 font-bold text-xs">
+        </div>
         <div>
-          <label class="text-slate-400 font-bold block mb-1">Concepto / Cliente / Proveedor</label>
+          <label class="text-slate-400 font-bold block mb-1">Concepto / Cliente / Detalle</label>
           <input id="crm-fin-concept" type="text" placeholder="Ej: Anticipo 50% COT-1001 - Clínica Dental Sonrisa VIP" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-white">
         </div>
         <div class="grid grid-cols-2 gap-3">
@@ -636,6 +678,56 @@
       <div class="flex justify-end gap-2 pt-3 border-t border-slate-800">
         <button onclick="closeCRMFinanceModal()" class="px-4 py-2 rounded-xl bg-slate-800 text-slate-300 font-bold">Cancelar</button>
         <button onclick="saveCRMFinanceRecord()" class="px-5 py-2 rounded-xl bg-emerald-500 text-slate-950 font-extrabold">Guardar Registro</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL REGISTRAR PROVEEDOR COMERCIAL / B2B / ADS -->
+  <div id="crm-supplier-modal" class="fixed inset-0 z-50 bg-black/80 hidden items-center justify-center p-4 no-print">
+    <div class="glass max-w-md w-full rounded-3xl p-6 border border-indigo-500/40 space-y-4 text-xs">
+      <div class="flex items-center justify-between border-b border-slate-800 pb-3">
+        <h3 class="text-lg font-extrabold text-white">🏢 Registrar Proveedor B2B / Plataforma / Partner</h3>
+        <button onclick="closeCRMSupplierModal()" class="text-slate-400 hover:text-white text-xl">&times;</button>
+      </div>
+      <div class="space-y-3">
+        <div>
+          <label class="text-slate-400 font-bold block mb-1">Nombre del Proveedor / Plataforma / Partner</label>
+          <input id="crm-sup-name" type="text" placeholder="Ej: Meta Platforms Ireland / AWS Cloud Services" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-white font-bold">
+        </div>
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="text-slate-400 font-bold block mb-1">Categoría Comercial Asignada</label>
+            <select id="crm-sup-category" class="w-full bg-slate-900 border border-indigo-500/40 rounded-xl px-3 py-2 text-white font-semibold">
+              <option value="Publicidad Meta / Google Ads">Publicidad Meta / Google Ads</option>
+              <option value="Suscripciones Software / Servidores">Suscripciones Software / Servidores</option>
+              <option value="Comisiones de Ventas (Closers)">Comisiones de Ventas (Closers)</option>
+              <option value="Producción & Marketing">Producción & Marketing</option>
+              <option value="Operación & Servicios Corporativos">Operación & Servicios Corporativos</option>
+            </select>
+          </div>
+          <div>
+            <label class="text-slate-400 font-bold block mb-1">ID Fiscal / RUC / VAT</label>
+            <input id="crm-sup-ruc" type="text" placeholder="Ej: IE9692928F" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-white mono">
+          </div>
+        </div>
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="text-slate-400 font-bold block mb-1">Teléfono / Soporte</label>
+            <input id="crm-sup-phone" type="text" placeholder="Ej: +1 650-543-4800" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-white">
+          </div>
+          <div>
+            <label class="text-slate-400 font-bold block mb-1">Ejecutivo / Cuenta</label>
+            <input id="crm-sup-contact" type="text" placeholder="Ej: Business Manager" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-white">
+          </div>
+        </div>
+        <div>
+          <label class="text-slate-400 font-bold block mb-1">Servicio / Licencias Suministradas</label>
+          <input id="crm-sup-notes" type="text" placeholder="Ej: Pauta Digital B2B, Servidores VPS, API WhatsApp..." class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-white">
+        </div>
+      </div>
+      <div class="flex justify-end gap-2 pt-3 border-t border-slate-800">
+        <button onclick="closeCRMSupplierModal()" class="px-4 py-2 rounded-xl bg-slate-800 text-slate-300 font-bold">Cancelar</button>
+        <button onclick="saveCRMSupplierRecord()" class="px-5 py-2 rounded-xl bg-indigo-500 text-white font-extrabold">Guardar Proveedor</button>
       </div>
     </div>
   </div>
@@ -673,9 +765,16 @@
       finances: [
         { id: 801, date: todayISO, type: 'INGRESO', category: 'Cierre de Proyecto / Licencia', concept: 'Cierre Implementación POS - Restaurante & Lounge Fuego', amount: 650.00, balance: 0, method: 'Transferencia', status: 'PAGADO' },
         { id: 802, date: todayISO, type: 'INGRESO', category: 'Anticipo 50% Cotización', concept: 'Anticipo 50% COT-1001 - Clínica Dental Sonrisa VIP', amount: 725.00, balance: 0, method: 'Tarjeta / Link', status: 'PAGADO' },
-        { id: 803, date: todayISO, type: 'GASTO', category: 'Publicidad Meta / Google Ads', concept: 'Campaña Generación de Leads B2B Meta Ads', amount: 185.00, balance: 0, method: 'Tarjeta / Link', status: 'PAGADO' },
+        { id: 803, date: todayISO, type: 'GASTO', category: 'Publicidad Meta / Google Ads', supplier: 'Meta Platforms / Facebook Ads Business', concept: 'Campaña Generación de Leads B2B Meta Ads', amount: 185.00, balance: 0, method: 'Tarjeta / Link', status: 'PAGADO' },
         { id: 804, date: todayISO, type: 'CXC', category: 'Cierre de Proyecto / Licencia', concept: 'Saldo 50% Contra Entrega - Clínica Dental Sonrisa VIP', amount: 725.00, balance: 725.00, method: 'Crédito / Pendiente', status: 'PENDIENTE' },
-        { id: 805, date: todayISO, type: 'CXP', category: 'Comisiones de Ventas (Closers)', concept: 'Comisión Cierre POS - Ejecutivo Closer #1', amount: 95.00, balance: 95.00, method: 'Crédito / Pendiente', status: 'PENDIENTE' }
+        { id: 805, date: todayISO, type: 'CXP', category: 'Comisiones de Ventas (Closers)', supplier: 'Partner Closer Senior - Carlos Mendoza', concept: 'Comisión Cierre POS - Ejecutivo Closer #1', amount: 95.00, balance: 95.00, method: 'Crédito / Pendiente', status: 'PENDIENTE' }
+      ],
+      suppliers: [
+        { id: 951, name: 'Meta Platforms / Facebook Ads Business', category: 'Publicidad Meta / Google Ads', ruc: 'IE9692928F', phone: '+1 650-543-4800', contact: 'Meta Business Suite', notes: 'Pauta Digital B2B Instagram & Facebook Lead Ads' },
+        { id: 952, name: 'Google Cloud & Google Ads Corp', category: 'Publicidad Meta / Google Ads', ruc: 'US-770493581', phone: '+1 866-246-6453', contact: 'Google Ads Billing', notes: 'Campañas Search B2B y YouTube Ads' },
+        { id: 953, name: 'Amazon Web Services (AWS) & Cloud SaaS', category: 'Suscripciones Software / Servidores', ruc: 'AWS-91228391', phone: '+1 206-266-1000', contact: 'Soporte Cloud Enterprise', notes: 'Servidores VPS, Hosting, API WhatsApp Cloud' },
+        { id: 954, name: 'Partner Closer Senior - Carlos Mendoza', category: 'Comisiones de Ventas (Closers)', ruc: '001-190490-0032K', phone: '+505 8899-1122', contact: 'Carlos Mendoza (Closer B2B)', notes: 'Comisiones por cierre de cuentas corporativas' },
+        { id: 955, name: 'Estudio Creativo & Audiovisual Kinetix Media', category: 'Producción & Marketing', ruc: 'J0310000881234', phone: '+505 8765-4321', contact: 'Valeria Rivas (Productora)', notes: 'Producción de Reels, Creativos y Landing Pages' }
       ]
     };
 
@@ -688,6 +787,7 @@
         const parsed = JSON.parse(raw);
         if (!parsed.users || parsed.users.length !== 4) parsed.users = defaultState.users;
         if (!Array.isArray(parsed.finances)) parsed.finances = JSON.parse(JSON.stringify(defaultState.finances));
+        if (!Array.isArray(parsed.suppliers) || parsed.suppliers.length === 0) parsed.suppliers = JSON.parse(JSON.stringify(defaultState.suppliers));
         return parsed;
       } catch (e) {
         return JSON.parse(JSON.stringify(defaultState));
@@ -1115,7 +1215,7 @@
       document.getElementById('crm-fin-modal-type').value = type;
       const titles = {
         INGRESO: '💵 Registrar Ingreso / Cierre Comercial',
-        GASTO: '💸 Registrar Gasto / Inversión en Ads',
+        GASTO: '💸 Registrar Gasto / Inversión en Ads / Compra SaaS',
         CXC: '📥 Registrar Cuenta por Cobrar (Cliente)',
         CXP: '📤 Registrar Cuenta por Pagar (Comisión / Proveedor)'
       };
@@ -1123,8 +1223,142 @@
       document.getElementById('crm-fin-date').value = new Date().toISOString().slice(0, 10);
       document.getElementById('crm-fin-concept').value = '';
       document.getElementById('crm-fin-amount').value = '';
+
+      const catSelect = document.getElementById('crm-fin-category');
+      const supBox = document.getElementById('crm-fin-supplier-box');
+      const isSupplierFlow = (type === 'GASTO' || type === 'CXP');
+      if (isSupplierFlow) {
+        catSelect.value = type === 'GASTO' ? 'Publicidad Meta / Google Ads' : 'Comisiones de Ventas (Closers)';
+        if (supBox) supBox.classList.remove('hidden');
+        const searchEl = document.getElementById('crm-fin-sup-search');
+        if (searchEl) searchEl.value = '';
+        onCRMFinCategoryChange();
+      } else {
+        catSelect.value = 'Cierre de Proyecto / Licencia';
+        if (supBox) supBox.classList.add('hidden');
+        const supInput = document.getElementById('crm-fin-supplier');
+        if (supInput) supInput.value = '';
+      }
+
       document.getElementById('crm-finance-modal').classList.remove('hidden');
       document.getElementById('crm-finance-modal').classList.add('flex');
+    }
+
+    function onCRMFinCategoryChange() {
+      const type = document.getElementById('crm-fin-modal-type').value;
+      const cat = document.getElementById('crm-fin-category').value;
+      const supCategories = ['Publicidad Meta / Google Ads', 'Comisiones de Ventas (Closers)', 'Suscripciones Software / Servidores', 'Producción & Marketing', 'Operación & Servicios Corporativos'];
+      const supBox = document.getElementById('crm-fin-supplier-box');
+      if (type === 'GASTO' || type === 'CXP' || supCategories.includes(cat)) {
+        if (supBox) supBox.classList.remove('hidden');
+        populateCRMFinanceSuppliers();
+      } else {
+        if (supBox) supBox.classList.add('hidden');
+      }
+    }
+
+    function populateCRMFinanceSuppliers() {
+      const cat = (document.getElementById('crm-fin-category') || {}).value || '';
+      const q = ((document.getElementById('crm-fin-sup-search') || {}).value || '').toLowerCase().trim();
+      const select = document.getElementById('crm-fin-sup-select');
+      const supInput = document.getElementById('crm-fin-supplier');
+      if (!select) return;
+
+      const all = state.suppliers || [];
+      const filtered = all.filter(s => !q || (s.name || '').toLowerCase().includes(q) || (s.category || '').toLowerCase().includes(q) || (s.ruc || '').toLowerCase().includes(q) || (s.notes || '').toLowerCase().includes(q));
+      const catMatches = filtered.filter(s => s.category === cat);
+      const others = filtered.filter(s => s.category !== cat);
+
+      let html = '';
+      if (catMatches.length) {
+        html += `<optgroup label="⭐ Proveedor Asignado a ${cat}">` + catMatches.map(s => `<option value="${s.id}">⭐ ${s.name} (${s.ruc || s.category})</option>`).join('') + `</optgroup>`;
+      }
+      if (others.length) {
+        html += `<optgroup label="📋 Todos los Proveedores B2B Registrados">` + others.map(s => `<option value="${s.id}">${s.name} — [${s.category}]</option>`).join('') + `</optgroup>`;
+      }
+      if (!html) {
+        html = `<option value="">-- Sin coincidencias (escribe manual) --</option>`;
+      }
+      select.innerHTML = html;
+
+      const chosen = catMatches[0] || others[0];
+      if (chosen) {
+        select.value = String(chosen.id);
+        if (supInput) supInput.value = chosen.name;
+      }
+    }
+
+    function onCRMFinanceSupplierSelect() {
+      const id = Number((document.getElementById('crm-fin-sup-select') || {}).value);
+      const sup = (state.suppliers || []).find(s => s.id === id);
+      const supInput = document.getElementById('crm-fin-supplier');
+      if (sup && supInput) supInput.value = sup.name;
+    }
+
+    function openCRMSupplierModal() {
+      document.getElementById('crm-sup-name').value = '';
+      document.getElementById('crm-sup-ruc').value = '';
+      document.getElementById('crm-sup-phone').value = '';
+      document.getElementById('crm-sup-contact').value = '';
+      document.getElementById('crm-sup-notes').value = '';
+      document.getElementById('crm-supplier-modal').classList.remove('hidden');
+      document.getElementById('crm-supplier-modal').classList.add('flex');
+    }
+
+    function closeCRMSupplierModal() {
+      document.getElementById('crm-supplier-modal').classList.add('hidden');
+      document.getElementById('crm-supplier-modal').classList.remove('flex');
+    }
+
+    function saveCRMSupplierRecord() {
+      const name = document.getElementById('crm-sup-name').value.trim();
+      const category = document.getElementById('crm-sup-category').value;
+      const ruc = document.getElementById('crm-sup-ruc').value.trim() || 'S/R';
+      const phone = document.getElementById('crm-sup-phone').value.trim() || '-';
+      const contact = document.getElementById('crm-sup-contact').value.trim() || 'Ejecutivo Comercial';
+      const notes = document.getElementById('crm-sup-notes').value.trim() || 'Servicios / Licencias B2B';
+      if (!name) return alert('Ingresa el nombre del proveedor o plataforma.');
+
+      if (!Array.isArray(state.suppliers)) state.suppliers = [];
+      state.suppliers.unshift({
+        id: Date.now(),
+        name,
+        category,
+        ruc,
+        phone,
+        contact,
+        notes
+      });
+      saveState();
+      closeCRMSupplierModal();
+      renderCRMSuppliers();
+      populateCRMFinanceSuppliers();
+    }
+
+    function deleteCRMSupplier(id) {
+      if (!confirm('¿Eliminar este proveedor B2B del directorio?')) return;
+      state.suppliers = (state.suppliers || []).filter(s => s.id !== id);
+      saveState();
+      renderCRMSuppliers();
+    }
+
+    function renderCRMSuppliers() {
+      const tbody = document.getElementById('crm-suppliers-tbody');
+      if (!tbody) return;
+      const q = ((document.getElementById('crm-sup-dir-search') || {}).value || '').toLowerCase().trim();
+      const list = (state.suppliers || []).filter(s => !q || (s.name || '').toLowerCase().includes(q) || (s.category || '').toLowerCase().includes(q) || (s.ruc || '').toLowerCase().includes(q) || (s.notes || '').toLowerCase().includes(q));
+      tbody.innerHTML = list.length ? list.map(s => `
+        <tr class="hover:bg-slate-900/50">
+          <td class="py-3 px-4 font-bold text-white">🏢 ${s.name}</td>
+          <td class="py-3 px-4"><span class="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-indigo-500/20 text-indigo-300 border border-indigo-500/30">${s.category}</span></td>
+          <td class="py-3 px-4 font-mono text-slate-300">${s.ruc || '-'}</td>
+          <td class="py-3 px-4 text-slate-300">${s.contact || '-'} · <span class="font-mono text-slate-400">${s.phone || ''}</span></td>
+          <td class="py-3 px-4 text-slate-400">${s.notes || '-'}</td>
+          <td class="py-3 px-4 text-right">
+            <button onclick="deleteCRMSupplier(${s.id})" class="px-2 py-1 rounded-lg bg-slate-800 hover:bg-rose-500/20 text-slate-400 hover:text-rose-300 text-xs">🗑️</button>
+          </td>
+        </tr>
+      `).join('') : `<tr><td colspan="6" class="py-6 text-center text-slate-500">No se encontraron proveedores comerciales.</td></tr>`;
     }
 
     function closeCRMFinanceModal() {
@@ -1136,10 +1370,14 @@
       const type = document.getElementById('crm-fin-modal-type').value;
       const date = document.getElementById('crm-fin-date').value || new Date().toISOString().slice(0, 10);
       const category = document.getElementById('crm-fin-category').value;
-      const concept = document.getElementById('crm-fin-concept').value.trim();
+      const supplier = ((document.getElementById('crm-fin-supplier') || {}).value || '').trim();
+      const rawConcept = document.getElementById('crm-fin-concept').value.trim();
       const amount = Number(document.getElementById('crm-fin-amount').value) || 0;
       const method = document.getElementById('crm-fin-method').value;
-      if (!concept || amount <= 0) return alert('Ingresa el concepto y un monto válido mayor a 0.');
+      if (!rawConcept || amount <= 0) return alert('Ingresa el concepto y un monto válido mayor a 0.');
+
+      const useSupplier = (type === 'GASTO' || type === 'CXP') && supplier;
+      const concept = useSupplier && !rawConcept.includes(supplier) ? `${rawConcept} (${supplier})` : rawConcept;
 
       const isCredit = (type === 'CXC' || type === 'CXP');
       state.finances.unshift({
@@ -1147,6 +1385,7 @@
         date,
         type,
         category,
+        supplier: useSupplier ? supplier : '',
         concept,
         amount,
         balance: isCredit ? amount : 0,
@@ -1237,7 +1476,7 @@
           <td class="py-3.5 px-4 font-mono text-slate-300">${f.date}</td>
           <td class="py-3.5 px-4"><span class="px-2.5 py-0.5 rounded-full text-[10px] font-bold border ${badgeMap[f.type] || ''}">${f.type}</span></td>
           <td class="py-3.5 px-4 text-slate-300">${f.category}</td>
-          <td class="py-3.5 px-4 font-bold text-white">${f.concept}</td>
+          <td class="py-3.5 px-4 font-bold text-white">${f.concept}${f.supplier ? `<span class="block text-[10px] font-semibold text-indigo-400">🏢 Proveedor: ${f.supplier}</span>` : ''}</td>
           <td class="py-3.5 px-4 text-slate-400">${f.method} · <strong class="text-white">${f.status}</strong></td>
           <td class="py-3.5 px-4 font-mono font-bold ${f.type==='INGRESO'||f.type==='CXC'?'text-emerald-400':'text-rose-400'}">${fmt(f.amount)}</td>
           <td class="py-3.5 px-4 font-mono font-bold ${f.balance > 0 ? 'text-amber-400' : 'text-slate-500'}">${fmt(f.balance || 0)}</td>
@@ -1247,6 +1486,7 @@
           </td>
         </tr>
       `).join('') : `<tr><td colspan="8" class="py-8 text-center text-slate-500">No hay movimientos financieros en el rango de fechas seleccionado.</td></tr>`;
+      renderCRMSuppliers();
     }
 
     function exportCRMFinanceCSV() {

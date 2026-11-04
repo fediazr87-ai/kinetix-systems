@@ -405,7 +405,10 @@
               ➕ Registrar Ingreso Clínico
             </button>
             <button onclick="openMedFinanceModal('GASTO')" class="px-4 py-2.5 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-extrabold text-xs transition shadow-lg">
-              💸 Registrar Gasto / Insumos
+              💸 Registrar Gasto / Compra Insumos
+            </button>
+            <button onclick="openMedSupplierModal()" class="px-3.5 py-2.5 rounded-xl bg-indigo-500 hover:bg-indigo-400 text-white font-extrabold text-xs transition shadow-lg">
+              🏥 + Registrar Proveedor Médico
             </button>
             <button onclick="openMedFinanceModal('CXC')" class="px-3.5 py-2.5 rounded-xl bg-cyan-500/20 border border-cyan-500/40 text-cyan-300 font-bold text-xs transition">
               📥 + Cuenta por Cobrar
@@ -492,6 +495,35 @@
                 </tr>
               </thead>
               <tbody id="med-finances-table-body" class="divide-y divide-slate-800/70"></tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Directorio de Proveedores Médicos, Laboratorios e Insumos -->
+        <div class="glass rounded-3xl overflow-hidden border border-indigo-500/30">
+          <div class="p-4 border-b border-slate-800 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+            <div>
+              <h3 class="text-sm font-extrabold text-white uppercase tracking-wider">🏥 Directorio de Proveedores Médicos, Laboratorios e Insumos</h3>
+              <p class="text-[11px] text-slate-400">Proveedores asignados por categoría clínica para selección rápida en Gastos, Compras y Cuentas por Pagar.</p>
+            </div>
+            <div class="flex items-center gap-2">
+              <input id="med-sup-dir-search" type="text" oninput="renderClinicFinances()" placeholder="🔍 Buscar laboratorio, distribuidora o rubro..." class="bg-slate-900 border border-slate-700 rounded-xl px-3 py-1.5 text-xs text-white w-56">
+              <button onclick="openMedSupplierModal()" class="px-3 py-1.5 rounded-xl bg-indigo-500 hover:bg-indigo-400 text-white font-extrabold text-xs">+ Nuevo Proveedor Médico</button>
+            </div>
+          </div>
+          <div class="overflow-x-auto">
+            <table class="w-full text-left text-xs">
+              <thead class="bg-slate-900/90 text-slate-400 uppercase font-mono border-b border-slate-800">
+                <tr>
+                  <th class="py-3 px-4">Proveedor Médico / Laboratorio</th>
+                  <th class="py-3 px-4">Categoría Asignada</th>
+                  <th class="py-3 px-4">RUC / Registro Sanitario</th>
+                  <th class="py-3 px-4">Teléfono / WhatsApp</th>
+                  <th class="py-3 px-4">Visitador / Contacto</th>
+                  <th class="py-3 px-4 text-right">Acción</th>
+                </tr>
+              </thead>
+              <tbody id="med-suppliers-table-body" class="divide-y divide-slate-800/70"></tbody>
             </table>
           </div>
         </div>
@@ -676,24 +708,18 @@
       </div>
       <input type="hidden" id="med-fin-type" value="INGRESO">
       <div class="space-y-3">
-        <div>
-          <label id="med-fin-entity-label" class="text-slate-300 font-bold block mb-1">Paciente / Cliente / Proveedor</label>
-          <input id="med-fin-entity" type="text" placeholder="Ej: Sofía Valentina Morales / Lab Clínico Central" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-white font-semibold">
-        </div>
-        <div>
-          <label class="text-slate-300 font-bold block mb-1">Concepto (Consulta, Procedimiento o Insumo)</label>
-          <input id="med-fin-concept" type="text" placeholder="Ej: Consulta Especialidad + Ultrasonido / Compra Reactivos" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-white">
-        </div>
         <div class="grid grid-cols-2 gap-3">
           <div>
             <label class="text-slate-300 font-bold block mb-1">Categoría / Giro Clínico</label>
-            <select id="med-fin-category" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-white">
+            <select id="med-fin-category" onchange="onMedFinCategoryChange()" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-white font-semibold">
+              <option value="Insumos Médicos & Material">💉 Insumos Médicos & Material</option>
+              <option value="Laboratorio Externo">🧪 Laboratorio Externo</option>
+              <option value="Medicamentos & Reactivos">💊 Medicamentos & Reactivos</option>
+              <option value="Equipos & Mantenimiento Médico">🔬 Equipos & Mantenimiento Médico</option>
+              <option value="Renta / Servicios / Nómina">🏥 Renta / Servicios / Nómina</option>
               <option value="Consulta Médica">🩺 Consulta Médica</option>
               <option value="Procedimiento / Cirugía Menor">🔬 Procedimiento / Ecografía</option>
               <option value="Odontología / Ortodoncia">🦷 Odontología / Estética</option>
-              <option value="Insumos Médicos & Material">💉 Insumos Médicos & Material</option>
-              <option value="Laboratorio Externo">🧪 Laboratorio Externo</option>
-              <option value="Renta / Servicios / Nómina">🏥 Renta / Servicios / Nómina</option>
             </select>
           </div>
           <div>
@@ -705,6 +731,27 @@
               <option value="Crédito / Pendiente">📝 Crédito / Pendiente</option>
             </select>
           </div>
+        </div>
+
+        <!-- Selector y Buscador de Proveedor Médico Asignado por Categoría -->
+        <div id="med-fin-supplier-box" class="p-3 rounded-2xl bg-slate-950/85 border border-amber-500/30 space-y-2">
+          <div class="flex items-center justify-between">
+            <label class="font-bold text-amber-400 text-[11px]">🏥 Proveedor Médico Asignado / Buscar en Lista:</label>
+            <button type="button" onclick="openMedSupplierModal('FINANCE')" class="text-[11px] font-bold text-indigo-400 hover:underline cursor-pointer">+ Nuevo Proveedor</button>
+          </div>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
+            <input type="text" id="med-fin-sup-search" oninput="populateMedFinanceSuppliers()" placeholder="🔍 Buscar proveedor o lab..." class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-white">
+            <select id="med-fin-sup-select" onchange="onMedFinanceSupplierSelect()" class="w-full bg-slate-900 border border-amber-500/40 rounded-xl px-3 py-2 text-white font-semibold"></select>
+          </div>
+        </div>
+
+        <div>
+          <label id="med-fin-entity-label" class="text-slate-300 font-bold block mb-1">Paciente / Cliente / Proveedor Confirmado</label>
+          <input id="med-fin-entity" type="text" placeholder="Ej: Sofía Valentina Morales / Lab Clínico Central" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-emerald-300 font-bold">
+        </div>
+        <div>
+          <label class="text-slate-300 font-bold block mb-1">Concepto (Consulta, Procedimiento o Compra de Insumos)</label>
+          <input id="med-fin-concept" type="text" placeholder="Ej: Consulta Especialidad + Ultrasonido / Compra Reactivos" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-white">
         </div>
         <div class="grid grid-cols-2 gap-3">
           <div>
@@ -724,6 +771,53 @@
       <div class="flex justify-end gap-2 pt-3 border-t border-slate-800">
         <button onclick="closeMedFinanceModal()" class="px-4 py-2 rounded-xl bg-slate-800 text-slate-300 font-bold">Cancelar</button>
         <button onclick="saveMedFinanceRecord()" class="px-6 py-2 rounded-xl bg-emerald-400 text-slate-950 font-extrabold">Guardar Registro</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL REGISTRAR NUEVO PROVEEDOR MÉDICO / LABORATORIO -->
+  <div id="med-supplier-modal" class="fixed inset-0 z-50 bg-black/80 hidden items-center justify-center p-4 no-print">
+    <div class="glass max-w-md w-full rounded-3xl p-6 border border-indigo-500/40 space-y-4 text-xs">
+      <div class="flex items-center justify-between border-b border-slate-800 pb-3">
+        <h3 class="text-lg font-extrabold text-white">🏥 Registrar Proveedor Médico / Laboratorio</h3>
+        <button onclick="closeMedSupplierModal()" class="text-slate-400 hover:text-white text-xl">&times;</button>
+      </div>
+      <input type="hidden" id="med-sup-origin" value="">
+      <div class="space-y-3">
+        <div>
+          <label class="text-slate-300 font-bold block mb-1">Nombre del Laboratorio / Distribuidora Médica</label>
+          <input id="med-sup-name" type="text" placeholder="Ej: Distribuidora Médica BioSalud S.A." class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-white font-bold">
+        </div>
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="text-slate-300 font-bold block mb-1">Categoría Clínica Asignada</label>
+            <select id="med-sup-category" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-white font-semibold">
+              <option value="Insumos Médicos & Material">💉 Insumos Médicos & Material</option>
+              <option value="Laboratorio Externo">🧪 Laboratorio Externo</option>
+              <option value="Medicamentos & Reactivos">💊 Medicamentos & Reactivos</option>
+              <option value="Equipos & Mantenimiento Médico">🔬 Equipos & Mantenimiento Médico</option>
+              <option value="Renta / Servicios / Nómina">🏥 Renta / Servicios / Nómina</option>
+            </select>
+          </div>
+          <div>
+            <label class="text-slate-300 font-bold block mb-1">RUC / Registro Sanitario</label>
+            <input id="med-sup-ruc" type="text" placeholder="REG-SAN-4091" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-white font-mono">
+          </div>
+        </div>
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="text-slate-300 font-bold block mb-1">Teléfono / WhatsApp</label>
+            <input id="med-sup-phone" type="text" placeholder="+505 8888-2222" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-white font-mono">
+          </div>
+          <div>
+            <label class="text-slate-300 font-bold block mb-1">Visitador Médico / Contacto</label>
+            <input id="med-sup-contact" type="text" placeholder="Ej: Lic. Andrea Morales" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-white">
+          </div>
+        </div>
+      </div>
+      <div class="flex justify-end gap-2 pt-3 border-t border-slate-800">
+        <button onclick="closeMedSupplierModal()" class="px-4 py-2 rounded-xl bg-slate-800 text-slate-300 font-bold">Cancelar</button>
+        <button onclick="saveMedSupplierRecord()" class="px-6 py-2 rounded-xl bg-indigo-500 text-white font-extrabold">Guardar Proveedor Médico</button>
       </div>
     </div>
   </div>
@@ -801,10 +895,17 @@
         { id: 502, patientId: 2, date: medTodayISO(), time: '10:30', specialty: 'Ginecología', doctor: 'Dra. Especialista Asociada', reason: 'Control prenatal mensual + Ecografía', status: 'Agendada', reminded: false },
         { id: 503, patientId: 3, date: medTodayISO(), time: '14:00', specialty: 'Clínica Dental', doctor: 'Dr. Director Principal', reason: 'Revisión odontológica y profilaxis', status: 'En Sala', reminded: true }
       ],
+      suppliers: [
+        { id: 601, name: 'Distribuidora Médica BioSalud S.A.', category: 'Insumos Médicos & Material', ruc: 'REG-SAN-10294', phone: '+505 8888-2010', contact: 'Lic. Andrea Morales' },
+        { id: 602, name: 'Laboratorio Dental & Patología ProLab', category: 'Laboratorio Externo', ruc: 'REG-LAB-50921', phone: '+505 8888-3020', contact: 'Dr. Javier Solís' },
+        { id: 603, name: 'Farmacéutica & Reactivos MedPharma', category: 'Medicamentos & Reactivos', ruc: 'REG-FAR-88412', phone: '+505 8888-4030', contact: 'Visitador Carlos Ruiz' },
+        { id: 604, name: 'TecnoMed Equipos & Mantenimiento Biomédico', category: 'Equipos & Mantenimiento Médico', ruc: 'J03100066554', phone: '+505 8888-5040', contact: 'Ing. Marco Estrada' },
+        { id: 605, name: 'Administración Torre Médica & Bioseguridad', category: 'Renta / Servicios / Nómina', ruc: 'J03100011998', phone: '+505 2222-6050', contact: 'Gerencia Torre Médica' }
+      ],
       finances: [
         { id: 701, date: medTodayISO(), type: 'INGRESO', entity: 'Sofía Valentina Morales', concept: 'Consulta Pediátrica + Control Vacunas', category: 'Consulta Médica', method: 'Efectivo', amount: 55.00, paid: 55.00 },
         { id: 702, date: medTodayISO(), type: 'INGRESO', entity: 'María Fernanda Castellanos', concept: 'Control Prenatal + Ecografía Obstétrica', category: 'Procedimiento / Cirugía Menor', method: 'Tarjeta', amount: 90.00, paid: 90.00 },
-        { id: 703, date: medTodayISO(), type: 'GASTO', entity: 'Distribuidora Médica BioSalud', concept: 'Compra de guantes, jeringas, gel de ultrasonido y antisépticos', category: 'Insumos Médicos & Material', method: 'Transferencia / Seguro', amount: 45.00, paid: 45.00 },
+        { id: 703, date: medTodayISO(), type: 'GASTO', entity: 'Distribuidora Médica BioSalud S.A.', concept: 'Compra de guantes, jeringas, gel de ultrasonido y antisépticos', category: 'Insumos Médicos & Material', method: 'Transferencia / Seguro', amount: 45.00, paid: 45.00 },
         { id: 704, date: medDaysAgoISO(1), type: 'CXC', entity: 'Carlos Roberto Mendoza', concept: 'Tratamiento Odontológico Integral (2da Sesión)', category: 'Odontología / Ortodoncia', method: 'Crédito / Pendiente', amount: 180.00, paid: 80.00 },
         { id: 705, date: medDaysAgoISO(2), type: 'CXP', entity: 'Laboratorio Dental & Patología ProLab', concept: 'Procesamiento de muestras y coronas de porcelana', category: 'Laboratorio Externo', method: 'Crédito / Pendiente', amount: 130.00, paid: 30.00 }
       ]
@@ -818,6 +919,7 @@
         if (!raw) return JSON.parse(JSON.stringify(defaultState));
         const parsed = JSON.parse(raw);
         if (!parsed.users || parsed.users.length !== 4) parsed.users = defaultState.users;
+        if (!parsed.suppliers || parsed.suppliers.length === 0) parsed.suppliers = JSON.parse(JSON.stringify(defaultState.suppliers));
         if (!parsed.finances) parsed.finances = JSON.parse(JSON.stringify(defaultState.finances));
         return parsed;
       } catch (e) {
@@ -1033,7 +1135,7 @@
       if (dashNetEl) dashNetEl.textContent = `Neto: ${medFmt(incSum - expSum)}`;
     }
 
-    // MÓDULO FINANZAS CLÍNICAS (INGRESOS, GASTOS, CXC Y CXP)
+    // MÓDULO FINANZAS CLÍNICAS Y PROVEEDORES MÉDICOS (INGRESOS, GASTOS, CXC Y CXP)
     function setMedFinDatePreset(mode) {
       const fromEl = document.getElementById('med-fin-from');
       const toEl = document.getElementById('med-fin-to');
@@ -1045,6 +1147,111 @@
       renderClinicFinances();
     }
 
+    function openMedSupplierModal(origin = '') {
+      document.getElementById('med-sup-origin').value = origin;
+      document.getElementById('med-sup-name').value = '';
+      document.getElementById('med-sup-ruc').value = '';
+      document.getElementById('med-sup-phone').value = '';
+      document.getElementById('med-sup-contact').value = '';
+      if (origin === 'FINANCE') {
+        const cat = document.getElementById('med-fin-category').value;
+        if (cat) document.getElementById('med-sup-category').value = cat;
+      }
+      document.getElementById('med-supplier-modal').classList.remove('hidden');
+      document.getElementById('med-supplier-modal').classList.add('flex');
+    }
+
+    function closeMedSupplierModal() {
+      document.getElementById('med-supplier-modal').classList.add('hidden');
+      document.getElementById('med-supplier-modal').classList.remove('flex');
+    }
+
+    function saveMedSupplierRecord() {
+      const name = document.getElementById('med-sup-name').value.trim();
+      const category = document.getElementById('med-sup-category').value;
+      const ruc = document.getElementById('med-sup-ruc').value.trim() || 'REG-SAN';
+      const phone = document.getElementById('med-sup-phone').value.trim() || '';
+      const contact = document.getElementById('med-sup-contact').value.trim() || 'Visitador Médico';
+      const origin = document.getElementById('med-sup-origin').value;
+      if (!name) return alert('Ingresa el nombre del proveedor médico o laboratorio.');
+
+      state.suppliers = state.suppliers || [];
+      const newSup = { id: Date.now(), name, category, ruc, phone, contact };
+      state.suppliers.unshift(newSup);
+      saveState();
+      renderClinicFinances();
+      closeMedSupplierModal();
+
+      if (origin === 'FINANCE') {
+        document.getElementById('med-fin-category').value = category;
+        populateMedFinanceSuppliers(newSup.name);
+      }
+    }
+
+    function deleteMedSupplierRecord(id) {
+      if (!confirm('¿Eliminar este proveedor médico del directorio?')) return;
+      state.suppliers = (state.suppliers || []).filter(s => s.id !== id);
+      saveState();
+      renderClinicFinances();
+    }
+
+    function populateMedFinanceSuppliers(forceSelectName = '') {
+      const type = document.getElementById('med-fin-type').value;
+      const cat = document.getElementById('med-fin-category').value;
+      const q = (document.getElementById('med-fin-sup-search') ? document.getElementById('med-fin-sup-search').value : '').toLowerCase().trim();
+      const sel = document.getElementById('med-fin-sup-select');
+      if (!sel) return;
+
+      const allSups = (state.suppliers || []).filter(s => {
+        if (!q) return true;
+        return (s.name || '').toLowerCase().includes(q) || (s.ruc || '').toLowerCase().includes(q) || (s.category || '').toLowerCase().includes(q);
+      });
+
+      const assigned = allSups.filter(s => s.category === cat);
+      const others = allSups.filter(s => s.category !== cat);
+
+      let html = '';
+      if (assigned.length > 0) {
+        html += `<optgroup label="⭐ Proveedor Médico Asignado (${cat})">` +
+          assigned.map(s => `<option value="${s.name}">⭐ ${s.name} (${s.ruc || 'Activo'})</option>`).join('') +
+          `</optgroup>`;
+      }
+      if (others.length > 0) {
+        html += `<optgroup label="🏥 Otros Proveedores Clínicos / Laboratorios">` +
+          others.map(s => `<option value="${s.name}">${s.name} [${s.category}]</option>`).join('') +
+          `</optgroup>`;
+      }
+      html += `<option value="-- Manual --">-- Escribir Manualmente --</option>`;
+      sel.innerHTML = html;
+
+      if (type === 'GASTO' || type === 'CXP') {
+        if (forceSelectName) {
+          sel.value = forceSelectName;
+          document.getElementById('med-fin-entity').value = forceSelectName;
+        } else if (assigned.length > 0) {
+          sel.value = assigned[0].name;
+          document.getElementById('med-fin-entity').value = assigned[0].name;
+        } else if (others.length > 0) {
+          sel.value = others[0].name;
+          document.getElementById('med-fin-entity').value = others[0].name;
+        }
+      }
+    }
+
+    function onMedFinCategoryChange() {
+      populateMedFinanceSuppliers();
+    }
+
+    function onMedFinanceSupplierSelect() {
+      const val = document.getElementById('med-fin-sup-select').value;
+      if (val && val !== '-- Manual --') {
+        document.getElementById('med-fin-entity').value = val;
+      } else {
+        document.getElementById('med-fin-entity').value = '';
+        document.getElementById('med-fin-entity').focus();
+      }
+    }
+
     function openMedFinanceModal(type) {
       document.getElementById('med-fin-type').value = type;
       document.getElementById('med-fin-date').value = medTodayISO();
@@ -1052,9 +1259,25 @@
       const paidRow = document.getElementById('med-fin-paid-row');
       paidRow.classList.toggle('hidden', type !== 'CXC' && type !== 'CXP');
 
+      const supBox = document.getElementById('med-fin-supplier-box');
+      const isSupplierType = (type === 'GASTO' || type === 'CXP');
+      if (supBox) supBox.classList.toggle('hidden', !isSupplierType);
+
+      if (isSupplierType) {
+        document.getElementById('med-fin-category').value = type === 'CXP' ? 'Laboratorio Externo' : 'Insumos Médicos & Material';
+        document.getElementById('med-fin-entity-label').textContent = 'Proveedor Médico / Laboratorio Confirmado:';
+        const searchEl = document.getElementById('med-fin-sup-search');
+        if (searchEl) searchEl.value = '';
+        populateMedFinanceSuppliers();
+      } else {
+        document.getElementById('med-fin-category').value = 'Consulta Médica';
+        document.getElementById('med-fin-entity-label').textContent = 'Nombre del Paciente / Cliente:';
+        document.getElementById('med-fin-entity').value = (state.patients[0] && state.patients[0].name) || '';
+      }
+
       const titles = {
         'INGRESO': '➕ Registrar Ingreso Clínico (Consulta / Procedimiento)',
-        'GASTO': '💸 Registrar Gasto de Clínica (Insumos / Laboratorio / Operación)',
+        'GASTO': '💸 Registrar Gasto / Compra de Insumos Clínicos',
         'CXC': '📥 Registrar Cuenta por Cobrar (Paciente / Aseguradora)',
         'CXP': '📤 Registrar Cuenta por Pagar (Proveedor Médico / Laboratorio)'
       };
@@ -1182,6 +1405,25 @@
         `;
         tbody.appendChild(tr);
       });
+
+      // Renderizar Directorio de Proveedores Médicos
+      const supTbody = document.getElementById('med-suppliers-table-body');
+      if (supTbody) {
+        const qSup = (document.getElementById('med-sup-dir-search') ? document.getElementById('med-sup-dir-search').value : '').toLowerCase().trim();
+        const sups = (state.suppliers || []).filter(s => !qSup || (s.name || '').toLowerCase().includes(qSup) || (s.category || '').toLowerCase().includes(qSup) || (s.ruc || '').toLowerCase().includes(qSup));
+        supTbody.innerHTML = sups.map(s => `
+          <tr class="hover:bg-slate-900/50">
+            <td class="py-3 px-4 font-bold text-white">🏥 ${s.name}</td>
+            <td class="py-3 px-4"><span class="px-2.5 py-0.5 rounded bg-indigo-500/20 text-indigo-300 text-[10px] font-bold">${s.category}</span></td>
+            <td class="py-3 px-4 font-mono text-slate-300">${s.ruc || '-'}</td>
+            <td class="py-3 px-4 font-mono text-emerald-400">${s.phone || '-'}</td>
+            <td class="py-3 px-4 text-slate-300">${s.contact || '-'}</td>
+            <td class="py-3 px-4 text-right">
+              <button onclick="deleteMedSupplierRecord(${s.id})" class="px-2 py-1 rounded bg-red-500/15 text-red-300 hover:bg-red-500 hover:text-white text-xs font-bold">&times;</button>
+            </td>
+          </tr>
+        `).join('');
+      }
 
       document.getElementById('med-kpi-income').textContent = medFmt(incTotal);
       document.getElementById('med-kpi-income-today').textContent = `Ingresos de Hoy: ${medFmt(incToday)}`;
