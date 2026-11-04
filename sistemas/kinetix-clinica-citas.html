@@ -59,6 +59,31 @@
       }
       .no-print { display: none !important; }
     }
+  
+    /* === KINETIX LIGHT MODE CONTRAST PATCH (todas las letras legibles en modo claro) === */
+    html.light .text-emerald-300, html.light .text-emerald-400, html.light .text-emerald-500 { color: #047857 !important; }
+    html.light .text-teal-300, html.light .text-teal-400, html.light .text-teal-500 { color: #0f766e !important; }
+    html.light .text-cyan-300, html.light .text-cyan-400, html.light .text-cyan-500 { color: #0e7490 !important; }
+    html.light .text-sky-300, html.light .text-sky-400, html.light .text-sky-500 { color: #0369a1 !important; }
+    html.light .text-blue-300, html.light .text-blue-400, html.light .text-blue-500 { color: #1d4ed8 !important; }
+    html.light .text-indigo-300, html.light .text-indigo-400, html.light .text-indigo-500 { color: #4338ca !important; }
+    html.light .text-purple-300, html.light .text-purple-400, html.light .text-purple-500 { color: #6d28d9 !important; }
+    html.light .text-violet-300, html.light .text-violet-400, html.light .text-violet-500 { color: #6d28d9 !important; }
+    html.light .text-rose-300, html.light .text-rose-400, html.light .text-rose-500 { color: #be123c !important; }
+    html.light .text-red-300, html.light .text-red-400, html.light .text-red-500 { color: #b91c1c !important; }
+    html.light .text-orange-300, html.light .text-orange-400, html.light .text-orange-500 { color: #c2410c !important; }
+    html.light .text-amber-300, html.light .text-amber-400, html.light .text-amber-500 { color: #b45309 !important; }
+    html.light .text-yellow-300, html.light .text-yellow-400, html.light .text-yellow-500 { color: #854d0e !important; }
+    html.light .text-slate-600 { color: #475569 !important; }
+    html.light .hover\:text-slate-950:hover { color: #020617 !important; }
+    html.light .bg-indigo-500\/10, html.light .bg-indigo-500\/15, html.light .bg-indigo-500\/20 { background-color: rgba(99, 102, 241, 0.12) !important; }
+    html.light .bg-blue-500\/10, html.light .bg-blue-500\/15, html.light .bg-blue-500\/20 { background-color: rgba(59, 130, 246, 0.12) !important; }
+    html.light .bg-amber-500\/10, html.light .bg-amber-500\/15, html.light .bg-amber-500\/20 { background-color: rgba(245, 158, 11, 0.16) !important; }
+    html.light .bg-rose-500\/10, html.light .bg-rose-500\/15, html.light .bg-rose-500\/20 { background-color: rgba(244, 63, 94, 0.12) !important; }
+    body .nav-btn.bg-indigo-500, body .nav-btn.bg-purple-500, html.light body .nav-btn.bg-indigo-500, html.light body .nav-btn.bg-purple-500 { color: #ffffff !important; }
+    html.light body .nav-btn.bg-emerald-500, html.light body .nav-btn.bg-cyan-500 { color: #022c22 !important; }
+    html.light button.bg-indigo-500, html.light .bg-indigo-500 { color: #ffffff; }
+    /* === FIN PATCH === */
   </style>
 </head>
 <body class="min-h-screen flex flex-col selection:bg-cyan-500 selection:text-black">
@@ -140,6 +165,9 @@
           <button id="nav-reminders" onclick="switchTab('reminders')" class="nav-btn flex items-center gap-3 px-4 py-3 rounded-xl text-xs sm:text-sm font-semibold text-slate-300 hover:bg-slate-900 transition whitespace-nowrap">
             <span>📲</span> <span>Recordatorios (WA/SMS/Mail)</span>
           </button>
+          <button id="nav-finances" onclick="switchTab('finances')" class="nav-btn flex items-center gap-3 px-4 py-3 rounded-xl text-xs sm:text-sm font-semibold text-slate-300 hover:bg-slate-900 transition whitespace-nowrap">
+            <span>💰</span> <span>Finanzas, Ingresos & Gastos</span>
+          </button>
           <button id="nav-users" onclick="switchTab('users')" class="nav-btn flex items-center gap-3 px-4 py-3 rounded-xl text-xs sm:text-sm font-semibold text-slate-300 hover:bg-slate-900 transition whitespace-nowrap">
             <span>👥</span> <span>4 Usuarios & Roles</span>
           </button>
@@ -168,40 +196,77 @@
     <!-- MAIN CONTENT -->
     <main class="flex-1 p-4 md:p-6 overflow-y-auto no-print">
 
-      <!-- TAB 1: AGENDA, CITAS & RESERVAS -->
+      <!-- TAB 1: AGENDA, CITAS & RESERVAS + DASHBOARD CLÍNICO Y FINANCIERO -->
       <section id="tab-agenda" class="space-y-6">
-        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
           <div>
-            <span class="text-xs font-mono uppercase text-cyan-400 font-bold">SISTEMA ANTI-AUSENTISMO & AGENDAMIENTO</span>
-            <h2 class="text-2xl font-extrabold text-white">Agenda de Citas, Consultas y Reservas</h2>
+            <span class="text-xs font-mono uppercase text-cyan-400 font-bold">SISTEMA ANTI-AUSENTISMO, AGENDAMIENTO & REPORTES</span>
+            <h2 class="text-2xl font-extrabold text-white">Dashboard de Agenda, Consultas y Finanzas Clínicas</h2>
           </div>
           <div class="flex flex-wrap gap-2">
             <button onclick="openAppointmentModal()" class="px-4 py-2.5 rounded-xl bg-cyan-400 hover:bg-cyan-300 text-slate-950 font-extrabold text-xs transition shadow-lg">
               + Agendar Nueva Cita / Reserva
             </button>
-            <button onclick="switchTab('reminders')" class="px-4 py-2.5 rounded-xl bg-emerald-500/20 border border-emerald-500/40 text-emerald-300 font-bold text-xs transition">
-              📲 Enviar Recordatorios del Día
+            <button onclick="exportClinicAgendaCSV()" class="px-3.5 py-2.5 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-extrabold text-xs transition shadow-lg">
+              📥 Descargar Agenda Excel
+            </button>
+            <button onclick="exportClinicFinanceCSV()" class="px-3.5 py-2.5 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-extrabold text-xs transition shadow-lg">
+              📊 Reporte Ingresos/Gastos Excel
+            </button>
+            <button onclick="switchTab('reminders')" class="px-3.5 py-2.5 rounded-xl bg-emerald-500/20 border border-emerald-500/40 text-emerald-300 font-bold text-xs transition">
+              📲 Recordatorios WA
             </button>
           </div>
         </div>
 
-        <!-- KPIs Agenda -->
-        <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
+        <!-- Barra de Filtro por Fechas o Rangos en el Dashboard Clínico -->
+        <div class="glass p-4 rounded-2xl border border-slate-800 flex flex-col xl:flex-row xl:items-center justify-between gap-3 text-xs">
+          <div class="flex flex-wrap items-center gap-2">
+            <span class="font-bold text-slate-300 uppercase font-mono">📅 Filtrar Dashboard por Fecha / Rango:</span>
+            <div class="flex items-center gap-1.5 bg-slate-900 border border-slate-700 rounded-xl px-3 py-1.5">
+              <span class="text-slate-400">Desde:</span>
+              <input id="agenda-date-from" type="date" onchange="renderAgenda()" class="bg-transparent text-white font-mono focus:outline-none">
+            </div>
+            <div class="flex items-center gap-1.5 bg-slate-900 border border-slate-700 rounded-xl px-3 py-1.5">
+              <span class="text-slate-400">Hasta:</span>
+              <input id="agenda-date-to" type="date" onchange="renderAgenda()" class="bg-transparent text-white font-mono focus:outline-none">
+            </div>
+            <button onclick="setAgendaDatePreset('TODAY')" class="px-2.5 py-1.5 rounded-lg bg-cyan-500/20 text-cyan-300 hover:bg-cyan-400 hover:text-slate-950 font-bold transition">Hoy</button>
+            <button onclick="setAgendaDatePreset('WEEK')" class="px-2.5 py-1.5 rounded-lg bg-slate-800 text-slate-300 hover:bg-slate-700 font-semibold transition">7 Días</button>
+            <button onclick="setAgendaDatePreset('MONTH')" class="px-2.5 py-1.5 rounded-lg bg-slate-800 text-slate-300 hover:bg-slate-700 font-semibold transition">Este Mes</button>
+            <button onclick="setAgendaDatePreset('ALL')" class="px-2.5 py-1.5 rounded-lg bg-slate-800 text-emerald-300 hover:bg-slate-700 font-semibold transition">Todo</button>
+          </div>
+          <button onclick="switchTab('finances')" class="text-xs font-bold text-amber-400 hover:underline">
+            💰 Ver Módulo de Finanzas Clínicas (Ingresos y Gastos) &rarr;
+          </button>
+        </div>
+
+        <!-- KPIs Agenda + Finanzas Clínicas en Dashboard -->
+        <div class="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-4">
           <div class="glass p-4 rounded-2xl border-l-4 border-cyan-400">
-            <span class="text-xs text-slate-400">Total Citas Programadas</span>
+            <span class="text-[11px] text-slate-400">Citas en Rango</span>
             <p id="kpi-app-total" class="text-2xl font-black text-white mono mt-1">0</p>
           </div>
           <div class="glass p-4 rounded-2xl border-l-4 border-emerald-400">
-            <span class="text-xs text-slate-400">Citas Confirmadas</span>
+            <span class="text-[11px] text-slate-400">Citas Confirmadas</span>
             <p id="kpi-app-confirmed" class="text-2xl font-black text-emerald-400 mono mt-1">0</p>
           </div>
           <div class="glass p-4 rounded-2xl border-l-4 border-amber-400">
-            <span class="text-xs text-slate-400">En Sala / Pendientes</span>
+            <span class="text-[11px] text-slate-400">En Sala / Pendientes</span>
             <p id="kpi-app-waiting" class="text-2xl font-black text-amber-400 mono mt-1">0</p>
           </div>
           <div class="glass p-4 rounded-2xl border-l-4 border-teal-400">
-            <span class="text-xs text-slate-400">Recordatorios Enviados</span>
+            <span class="text-[11px] text-slate-400">Recordatorios Enviados</span>
             <p id="kpi-app-reminded" class="text-2xl font-black text-teal-400 mono mt-1">0</p>
+          </div>
+          <div class="glass p-4 rounded-2xl border-l-4 border-emerald-500">
+            <span class="text-[11px] text-slate-400">Ingresos Clínicos (Rango)</span>
+            <p id="kpi-med-dash-inc" class="text-2xl font-black text-emerald-400 mono mt-1">$0.00</p>
+          </div>
+          <div class="glass p-4 rounded-2xl border-l-4 border-rose-500">
+            <span class="text-[11px] text-slate-400">Gastos / Balance Neto</span>
+            <p id="kpi-med-dash-exp" class="text-sm font-black text-rose-400 mono mt-1">Gastos: $0.00</p>
+            <p id="kpi-med-dash-net" class="text-sm font-black text-cyan-400 mono">Neto: $0.00</p>
           </div>
         </div>
 
@@ -325,6 +390,110 @@
           </div>
 
           <div class="space-y-3" id="reminders-list"></div>
+        </div>
+      </section>
+
+      <!-- TAB 4.5: MÓDULO DE FINANZAS CLÍNICAS (INGRESOS, GASTOS, CxC PACIENTES Y CxP PROVEEDORES) -->
+      <section id="tab-finances" class="space-y-6 hidden">
+        <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
+          <div>
+            <span class="text-xs font-mono uppercase text-emerald-400 font-bold">CONTROL FINANCIERO MÉDICO, CLÍNICO & DE SERVICIOS</span>
+            <h2 class="text-2xl font-extrabold text-white">Finanzas: Ingresos por Consultas, Gastos de Clínica y Cuentas</h2>
+          </div>
+          <div class="flex flex-wrap gap-2">
+            <button onclick="openMedFinanceModal('INGRESO')" class="px-4 py-2.5 rounded-xl bg-emerald-400 hover:bg-emerald-300 text-slate-950 font-extrabold text-xs transition shadow-lg">
+              ➕ Registrar Ingreso Clínico
+            </button>
+            <button onclick="openMedFinanceModal('GASTO')" class="px-4 py-2.5 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-extrabold text-xs transition shadow-lg">
+              💸 Registrar Gasto / Insumos
+            </button>
+            <button onclick="openMedFinanceModal('CXC')" class="px-3.5 py-2.5 rounded-xl bg-cyan-500/20 border border-cyan-500/40 text-cyan-300 font-bold text-xs transition">
+              📥 + Cuenta por Cobrar
+            </button>
+            <button onclick="openMedFinanceModal('CXP')" class="px-3.5 py-2.5 rounded-xl bg-rose-500/20 border border-rose-500/40 text-rose-300 font-bold text-xs transition">
+              📤 + Cuenta por Pagar
+            </button>
+            <button onclick="exportClinicFinanceCSV()" class="px-4 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-white border border-slate-700 font-bold text-xs transition">
+              📥 Descargar Reporte Excel
+            </button>
+          </div>
+        </div>
+
+        <!-- Barra de Filtro por Fechas o Rangos -->
+        <div class="glass p-4 rounded-2xl border border-slate-800 flex flex-col xl:flex-row xl:items-center justify-between gap-3 text-xs">
+          <div class="flex flex-wrap items-center gap-2">
+            <span class="font-bold text-slate-300 uppercase font-mono">📅 Filtrar por Fecha / Rango:</span>
+            <div class="flex items-center gap-1.5 bg-slate-900 border border-slate-700 rounded-xl px-3 py-1.5">
+              <span class="text-slate-400">Desde:</span>
+              <input id="med-fin-from" type="date" onchange="renderClinicFinances()" class="bg-transparent text-white font-mono focus:outline-none">
+            </div>
+            <div class="flex items-center gap-1.5 bg-slate-900 border border-slate-700 rounded-xl px-3 py-1.5">
+              <span class="text-slate-400">Hasta:</span>
+              <input id="med-fin-to" type="date" onchange="renderClinicFinances()" class="bg-transparent text-white font-mono focus:outline-none">
+            </div>
+            <button onclick="setMedFinDatePreset('TODAY')" class="px-2.5 py-1.5 rounded-lg bg-emerald-500/20 text-emerald-300 hover:bg-emerald-500 hover:text-slate-950 font-bold transition">Hoy</button>
+            <button onclick="setMedFinDatePreset('WEEK')" class="px-2.5 py-1.5 rounded-lg bg-slate-800 text-slate-300 hover:bg-slate-700 font-semibold transition">7 Días</button>
+            <button onclick="setMedFinDatePreset('MONTH')" class="px-2.5 py-1.5 rounded-lg bg-slate-800 text-slate-300 hover:bg-slate-700 font-semibold transition">Este Mes</button>
+            <button onclick="setMedFinDatePreset('ALL')" class="px-2.5 py-1.5 rounded-lg bg-slate-800 text-cyan-300 hover:bg-slate-700 font-semibold transition">Todo</button>
+          </div>
+          <div class="flex items-center gap-2">
+            <select id="med-fin-type-filter" onchange="renderClinicFinances()" class="bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-white font-semibold">
+              <option value="ALL">Todos los Movimientos</option>
+              <option value="INGRESO">Solo Ingresos (Consultas/Tratamientos)</option>
+              <option value="GASTO">Solo Gastos (Insumos/Laboratorio/Operación)</option>
+              <option value="CXC">Cuentas por Cobrar (Pacientes/Seguros)</option>
+              <option value="CXP">Cuentas por Pagar (Proveedores/Laboratorios)</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- KPIs Financieros Clínicos -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+          <div class="glass p-5 rounded-2xl border-l-4 border-emerald-400">
+            <span class="text-xs text-slate-400">Ingresos por Consultas y Servicios</span>
+            <p id="med-kpi-income" class="text-2xl font-black text-emerald-400 mono mt-1">$0.00</p>
+            <span id="med-kpi-income-today" class="text-[11px] text-slate-400 font-mono">Hoy: $0.00</span>
+          </div>
+          <div class="glass p-5 rounded-2xl border-l-4 border-amber-400">
+            <span class="text-xs text-slate-400">Gastos (Insumos, Lab, Operación)</span>
+            <p id="med-kpi-expense" class="text-2xl font-black text-amber-400 mono mt-1">$0.00</p>
+            <span id="med-kpi-exp-count" class="text-[11px] text-slate-400 font-mono">0 registros de gasto</span>
+          </div>
+          <div class="glass p-5 rounded-2xl border-l-4 border-cyan-400">
+            <span class="text-xs text-slate-400">Utilidad Neta de la Clínica</span>
+            <p id="med-kpi-net" class="text-2xl font-black text-cyan-400 mono mt-1">$0.00</p>
+            <span class="text-[11px] text-slate-400 font-mono">Ingresos − Gastos</span>
+          </div>
+          <div class="glass p-5 rounded-2xl border-l-4 border-rose-400">
+            <span class="text-xs text-slate-400">Cuentas Pendientes (CxC / CxP)</span>
+            <p id="med-kpi-cxc" class="text-sm font-black text-emerald-400 mono mt-1">Por Cobrar (Pacientes): $0.00</p>
+            <p id="med-kpi-cxp" class="text-sm font-black text-rose-400 mono">Por Pagar (Proveedores): $0.00</p>
+          </div>
+        </div>
+
+        <!-- Tabla de Movimientos Financieros Clínicos -->
+        <div class="glass rounded-3xl overflow-hidden border border-slate-800">
+          <div class="p-4 border-b border-slate-800 flex items-center justify-between">
+            <h3 class="text-sm font-extrabold text-white uppercase tracking-wider">📋 Historial de Ingresos, Gastos y Cuentas por Fecha</h3>
+            <span id="med-fin-range-badge" class="text-xs font-mono text-cyan-400">Todas las fechas</span>
+          </div>
+          <div class="overflow-x-auto">
+            <table class="w-full text-left text-xs">
+              <thead class="bg-slate-900/90 text-slate-400 uppercase font-mono border-b border-slate-800">
+                <tr>
+                  <th class="py-3.5 px-4">Fecha</th>
+                  <th class="py-3.5 px-4">Tipo</th>
+                  <th class="py-3.5 px-4">Paciente / Proveedor</th>
+                  <th class="py-3.5 px-4">Concepto / Tratamiento / Insumo</th>
+                  <th class="py-3.5 px-4">Categoría / Especialidad</th>
+                  <th class="py-3.5 px-4">Método / Estado</th>
+                  <th class="py-3.5 px-4 text-right">Monto / Saldo</th>
+                  <th class="py-3.5 px-4 text-right">Acciones</th>
+                </tr>
+              </thead>
+              <tbody id="med-finances-table-body" class="divide-y divide-slate-800/70"></tbody>
+            </table>
+          </div>
         </div>
       </section>
 
@@ -498,6 +667,67 @@
     </div>
   </div>
 
+  <!-- MODAL REGISTRAR INGRESO / GASTO / CUENTA CLÍNICA -->
+  <div id="med-finance-modal" class="fixed inset-0 z-50 bg-black/80 hidden items-center justify-center p-4 no-print">
+    <div class="glass max-w-md w-full rounded-3xl p-6 border border-emerald-500/40 space-y-4 text-xs">
+      <div class="flex items-center justify-between border-b border-slate-800 pb-3">
+        <h3 id="med-fin-modal-title" class="text-lg font-extrabold text-white">Registrar Ingreso Clínico</h3>
+        <button onclick="closeMedFinanceModal()" class="text-slate-400 hover:text-white text-xl">&times;</button>
+      </div>
+      <input type="hidden" id="med-fin-type" value="INGRESO">
+      <div class="space-y-3">
+        <div>
+          <label id="med-fin-entity-label" class="text-slate-300 font-bold block mb-1">Paciente / Cliente / Proveedor</label>
+          <input id="med-fin-entity" type="text" placeholder="Ej: Sofía Valentina Morales / Lab Clínico Central" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-white font-semibold">
+        </div>
+        <div>
+          <label class="text-slate-300 font-bold block mb-1">Concepto (Consulta, Procedimiento o Insumo)</label>
+          <input id="med-fin-concept" type="text" placeholder="Ej: Consulta Especialidad + Ultrasonido / Compra Reactivos" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-white">
+        </div>
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="text-slate-300 font-bold block mb-1">Categoría / Giro Clínico</label>
+            <select id="med-fin-category" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-white">
+              <option value="Consulta Médica">🩺 Consulta Médica</option>
+              <option value="Procedimiento / Cirugía Menor">🔬 Procedimiento / Ecografía</option>
+              <option value="Odontología / Ortodoncia">🦷 Odontología / Estética</option>
+              <option value="Insumos Médicos & Material">💉 Insumos Médicos & Material</option>
+              <option value="Laboratorio Externo">🧪 Laboratorio Externo</option>
+              <option value="Renta / Servicios / Nómina">🏥 Renta / Servicios / Nómina</option>
+            </select>
+          </div>
+          <div>
+            <label class="text-slate-300 font-bold block mb-1">Método de Pago</label>
+            <select id="med-fin-method" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-white">
+              <option value="Efectivo">💵 Efectivo</option>
+              <option value="Tarjeta">💳 Tarjeta POS</option>
+              <option value="Transferencia / Seguro">🏦 Transferencia / Seguro</option>
+              <option value="Crédito / Pendiente">📝 Crédito / Pendiente</option>
+            </select>
+          </div>
+        </div>
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="text-slate-300 font-bold block mb-1">Fecha</label>
+            <input id="med-fin-date" type="date" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-white font-mono">
+          </div>
+          <div>
+            <label class="text-slate-300 font-bold block mb-1">Monto Total ($)</label>
+            <input id="med-fin-amount" type="number" step="0.01" value="65.00" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-emerald-400 font-black font-mono">
+          </div>
+        </div>
+        <div id="med-fin-paid-row" class="hidden">
+          <label class="text-slate-300 font-bold block mb-1">Abono Inicial ($)</label>
+          <input id="med-fin-paid" type="number" step="0.01" value="0.00" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-white font-mono">
+        </div>
+      </div>
+      <div class="flex justify-end gap-2 pt-3 border-t border-slate-800">
+        <button onclick="closeMedFinanceModal()" class="px-4 py-2 rounded-xl bg-slate-800 text-slate-300 font-bold">Cancelar</button>
+        <button onclick="saveMedFinanceRecord()" class="px-6 py-2 rounded-xl bg-emerald-400 text-slate-950 font-extrabold">Guardar Registro</button>
+      </div>
+    </div>
+  </div>
+
   <!-- MODAL RECETA / HISTORIAL IMPRIMIBLE -->
   <div id="rx-modal" class="fixed inset-0 z-50 bg-black/85 hidden items-center justify-center p-4 overflow-y-auto">
     <div class="bg-slate-900 max-w-xl w-full rounded-3xl p-6 border border-cyan-500/40 space-y-4">
@@ -516,6 +746,15 @@
   <script>
     const STORAGE_KEY = 'KINETIX_MED_SUITE_V3';
     let currentUser = null;
+
+    function medTodayISO() {
+      return new Date().toISOString().slice(0, 10);
+    }
+    function medDaysAgoISO(days) {
+      const d = new Date();
+      d.setDate(d.getDate() - days);
+      return d.toISOString().slice(0, 10);
+    }
 
     const defaultState = {
       settings: {
@@ -558,9 +797,16 @@
         }
       ],
       appointments: [
-        { id: 501, patientId: 1, date: new Date().toISOString().slice(0,10), time: '09:00', specialty: 'Pediatría', doctor: 'Dr. Director Principal', reason: 'Control de crecimiento y desarrollo', status: 'Confirmada', reminded: true },
-        { id: 502, patientId: 2, date: new Date().toISOString().slice(0,10), time: '10:30', specialty: 'Ginecología', doctor: 'Dra. Especialista Asociada', reason: 'Control prenatal mensual + Ecografía', status: 'Agendada', reminded: false },
-        { id: 503, patientId: 3, date: new Date().toISOString().slice(0,10), time: '14:00', specialty: 'Clínica Dental', doctor: 'Dr. Director Principal', reason: 'Revisión odontológica y profilaxis', status: 'En Sala', reminded: true }
+        { id: 501, patientId: 1, date: medTodayISO(), time: '09:00', specialty: 'Pediatría', doctor: 'Dr. Director Principal', reason: 'Control de crecimiento y desarrollo', status: 'Confirmada', reminded: true },
+        { id: 502, patientId: 2, date: medTodayISO(), time: '10:30', specialty: 'Ginecología', doctor: 'Dra. Especialista Asociada', reason: 'Control prenatal mensual + Ecografía', status: 'Agendada', reminded: false },
+        { id: 503, patientId: 3, date: medTodayISO(), time: '14:00', specialty: 'Clínica Dental', doctor: 'Dr. Director Principal', reason: 'Revisión odontológica y profilaxis', status: 'En Sala', reminded: true }
+      ],
+      finances: [
+        { id: 701, date: medTodayISO(), type: 'INGRESO', entity: 'Sofía Valentina Morales', concept: 'Consulta Pediátrica + Control Vacunas', category: 'Consulta Médica', method: 'Efectivo', amount: 55.00, paid: 55.00 },
+        { id: 702, date: medTodayISO(), type: 'INGRESO', entity: 'María Fernanda Castellanos', concept: 'Control Prenatal + Ecografía Obstétrica', category: 'Procedimiento / Cirugía Menor', method: 'Tarjeta', amount: 90.00, paid: 90.00 },
+        { id: 703, date: medTodayISO(), type: 'GASTO', entity: 'Distribuidora Médica BioSalud', concept: 'Compra de guantes, jeringas, gel de ultrasonido y antisépticos', category: 'Insumos Médicos & Material', method: 'Transferencia / Seguro', amount: 45.00, paid: 45.00 },
+        { id: 704, date: medDaysAgoISO(1), type: 'CXC', entity: 'Carlos Roberto Mendoza', concept: 'Tratamiento Odontológico Integral (2da Sesión)', category: 'Odontología / Ortodoncia', method: 'Crédito / Pendiente', amount: 180.00, paid: 80.00 },
+        { id: 705, date: medDaysAgoISO(2), type: 'CXP', entity: 'Laboratorio Dental & Patología ProLab', concept: 'Procesamiento de muestras y coronas de porcelana', category: 'Laboratorio Externo', method: 'Crédito / Pendiente', amount: 130.00, paid: 30.00 }
       ]
     };
 
@@ -572,6 +818,7 @@
         if (!raw) return JSON.parse(JSON.stringify(defaultState));
         const parsed = JSON.parse(raw);
         if (!parsed.users || parsed.users.length !== 4) parsed.users = defaultState.users;
+        if (!parsed.finances) parsed.finances = JSON.parse(JSON.stringify(defaultState.finances));
         return parsed;
       } catch (e) {
         return JSON.parse(JSON.stringify(defaultState));
@@ -581,6 +828,17 @@
     function saveState() {
       localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
       applyBranding();
+    }
+
+    function medFmt(n) {
+      return '$' + Number(n || 0).toFixed(2);
+    }
+
+    function medInDateRange(d, fromISO, toISO) {
+      const dt = d || medTodayISO();
+      if (fromISO && dt < fromISO) return false;
+      if (toISO && dt > toISO) return false;
+      return true;
     }
 
     // Gestión de Modo Claro / Oscuro
@@ -661,6 +919,7 @@
       populatePatientSelects();
       renderSpecialtyFields();
       renderReminders();
+      renderClinicFinances();
       renderUsers();
       loadClinicSettings();
     }
@@ -683,8 +942,9 @@
     }
 
     function switchTab(tab) {
-      ['agenda', 'patients', 'consult', 'reminders', 'users', 'settings'].forEach(t => {
-        document.getElementById(`tab-${t}`).classList.toggle('hidden', t !== tab);
+      ['agenda', 'patients', 'consult', 'reminders', 'finances', 'users', 'settings'].forEach(t => {
+        const el = document.getElementById(`tab-${t}`);
+        if (el) el.classList.toggle('hidden', t !== tab);
         const btn = document.getElementById(`nav-${t}`);
         if (btn) {
           btn.className = t === tab
@@ -692,16 +952,33 @@
             : 'nav-btn flex items-center gap-3 px-4 py-3 rounded-xl text-xs sm:text-sm font-semibold text-slate-300 hover:bg-slate-900 transition whitespace-nowrap';
         }
       });
+      if (tab === 'agenda') renderAgenda();
+      if (tab === 'finances') renderClinicFinances();
     }
 
-    // AGENDA Y CITAS
+    // AGENDA Y CITAS + FILTRO POR FECHAS Y KPI FINANCIERO EN DASHBOARD
+    function setAgendaDatePreset(mode) {
+      const fromEl = document.getElementById('agenda-date-from');
+      const toEl = document.getElementById('agenda-date-to');
+      const t = medTodayISO();
+      if (mode === 'TODAY') { fromEl.value = t; toEl.value = t; }
+      else if (mode === 'WEEK') { fromEl.value = medDaysAgoISO(7); toEl.value = t; }
+      else if (mode === 'MONTH') { fromEl.value = t.slice(0, 8) + '01'; toEl.value = t; }
+      else { fromEl.value = ''; toEl.value = ''; }
+      renderAgenda();
+    }
+
     function renderAgenda() {
       const tbody = document.getElementById('agenda-table-body');
       tbody.innerHTML = '';
 
+      const fromISO = document.getElementById('agenda-date-from') ? document.getElementById('agenda-date-from').value : '';
+      const toISO = document.getElementById('agenda-date-to') ? document.getElementById('agenda-date-to').value : '';
+
+      const filteredApps = (state.appointments || []).filter(a => medInDateRange(a.date, fromISO, toISO));
       let conf = 0, wait = 0, rem = 0;
 
-      state.appointments.forEach(a => {
+      filteredApps.forEach(a => {
         if (a.status === 'Confirmada' || a.status === 'Atendida') conf++;
         if (a.status === 'Agendada' || a.status === 'En Sala') wait++;
         if (a.reminded) rem++;
@@ -739,10 +1016,213 @@
         tbody.appendChild(tr);
       });
 
-      document.getElementById('kpi-app-total').textContent = state.appointments.length;
+      const filteredFin = (state.finances || []).filter(f => medInDateRange(f.date, fromISO, toISO));
+      const incSum = filteredFin.filter(f => f.type === 'INGRESO').reduce((a, f) => a + Number(f.amount || 0), 0);
+      const expSum = filteredFin.filter(f => f.type === 'GASTO').reduce((a, f) => a + Number(f.amount || 0), 0);
+
+      document.getElementById('kpi-app-total').textContent = filteredApps.length;
       document.getElementById('kpi-app-confirmed').textContent = conf;
       document.getElementById('kpi-app-waiting').textContent = wait;
       document.getElementById('kpi-app-reminded').textContent = rem;
+
+      const dashIncEl = document.getElementById('kpi-med-dash-inc');
+      if (dashIncEl) dashIncEl.textContent = medFmt(incSum);
+      const dashExpEl = document.getElementById('kpi-med-dash-exp');
+      if (dashExpEl) dashExpEl.textContent = `Gastos: ${medFmt(expSum)}`;
+      const dashNetEl = document.getElementById('kpi-med-dash-net');
+      if (dashNetEl) dashNetEl.textContent = `Neto: ${medFmt(incSum - expSum)}`;
+    }
+
+    // MÓDULO FINANZAS CLÍNICAS (INGRESOS, GASTOS, CXC Y CXP)
+    function setMedFinDatePreset(mode) {
+      const fromEl = document.getElementById('med-fin-from');
+      const toEl = document.getElementById('med-fin-to');
+      const t = medTodayISO();
+      if (mode === 'TODAY') { fromEl.value = t; toEl.value = t; }
+      else if (mode === 'WEEK') { fromEl.value = medDaysAgoISO(7); toEl.value = t; }
+      else if (mode === 'MONTH') { fromEl.value = t.slice(0, 8) + '01'; toEl.value = t; }
+      else { fromEl.value = ''; toEl.value = ''; }
+      renderClinicFinances();
+    }
+
+    function openMedFinanceModal(type) {
+      document.getElementById('med-fin-type').value = type;
+      document.getElementById('med-fin-date').value = medTodayISO();
+      document.getElementById('med-fin-paid').value = '0.00';
+      const paidRow = document.getElementById('med-fin-paid-row');
+      paidRow.classList.toggle('hidden', type !== 'CXC' && type !== 'CXP');
+
+      const titles = {
+        'INGRESO': '➕ Registrar Ingreso Clínico (Consulta / Procedimiento)',
+        'GASTO': '💸 Registrar Gasto de Clínica (Insumos / Laboratorio / Operación)',
+        'CXC': '📥 Registrar Cuenta por Cobrar (Paciente / Aseguradora)',
+        'CXP': '📤 Registrar Cuenta por Pagar (Proveedor Médico / Laboratorio)'
+      };
+      document.getElementById('med-fin-modal-title').textContent = titles[type] || titles['INGRESO'];
+      document.getElementById('med-finance-modal').classList.remove('hidden');
+      document.getElementById('med-finance-modal').classList.add('flex');
+    }
+
+    function closeMedFinanceModal() {
+      document.getElementById('med-finance-modal').classList.add('hidden');
+      document.getElementById('med-finance-modal').classList.remove('flex');
+    }
+
+    function saveMedFinanceRecord() {
+      const type = document.getElementById('med-fin-type').value;
+      const entity = document.getElementById('med-fin-entity').value.trim() || (type === 'INGRESO' || type === 'CXC' ? 'Paciente General' : 'Proveedor Clínico');
+      const concept = document.getElementById('med-fin-concept').value.trim() || 'Movimiento clínico';
+      const category = document.getElementById('med-fin-category').value;
+      const method = document.getElementById('med-fin-method').value;
+      const date = document.getElementById('med-fin-date').value || medTodayISO();
+      const amount = Number(document.getElementById('med-fin-amount').value) || 0;
+      const paid = (type === 'CXC' || type === 'CXP')
+        ? Math.min(amount, Math.max(0, Number(document.getElementById('med-fin-paid').value) || 0))
+        : amount;
+
+      if (amount <= 0) { alert('Ingresa un monto válido.'); return; }
+
+      state.finances = state.finances || [];
+      state.finances.unshift({
+        id: Date.now(),
+        date,
+        type,
+        entity,
+        concept,
+        category,
+        method,
+        amount,
+        paid
+      });
+      saveState();
+      renderClinicFinances();
+      renderAgenda();
+      closeMedFinanceModal();
+    }
+
+    function settleMedAccount(id) {
+      const item = (state.finances || []).find(f => f.id === id);
+      if (!item) return;
+      const pending = Math.max(0, Number(item.amount) - Number(item.paid || 0));
+      if (pending <= 0) { alert('Esta cuenta ya está liquidada.'); return; }
+      const val = prompt(`Saldo pendiente con "${item.entity}": ${medFmt(pending)}\nIngresa el monto a abonar o liquidar ($):`, pending.toFixed(2));
+      if (val === null) return;
+      const abono = Number(val);
+      if (isNaN(abono) || abono <= 0) return;
+      item.paid = Math.min(Number(item.amount), Number(item.paid || 0) + abono);
+      saveState();
+      renderClinicFinances();
+      renderAgenda();
+    }
+
+    function deleteMedFinance(id) {
+      if (!confirm('¿Eliminar este registro financiero?')) return;
+      state.finances = (state.finances || []).filter(f => f.id !== id);
+      saveState();
+      renderClinicFinances();
+      renderAgenda();
+    }
+
+    function renderClinicFinances() {
+      const tbody = document.getElementById('med-finances-table-body');
+      if (!tbody) return;
+      tbody.innerHTML = '';
+
+      const fromISO = document.getElementById('med-fin-from') ? document.getElementById('med-fin-from').value : '';
+      const toISO = document.getElementById('med-fin-to') ? document.getElementById('med-fin-to').value : '';
+      const typeFilter = document.getElementById('med-fin-type-filter') ? document.getElementById('med-fin-type-filter').value : 'ALL';
+      const tISO = medTodayISO();
+
+      const allInRange = (state.finances || []).filter(f => medInDateRange(f.date, fromISO, toISO));
+      const list = allInRange.filter(f => typeFilter === 'ALL' || f.type === typeFilter);
+
+      let incTotal = 0, incToday = 0, expTotal = 0, expCount = 0, cxcTotal = 0, cxpTotal = 0;
+
+      allInRange.forEach(f => {
+        if (f.type === 'INGRESO') {
+          incTotal += Number(f.amount);
+          if (f.date === tISO) incToday += Number(f.amount);
+        } else if (f.type === 'GASTO') {
+          expTotal += Number(f.amount);
+          expCount++;
+        } else if (f.type === 'CXC') {
+          cxcTotal += Math.max(0, Number(f.amount) - Number(f.paid || 0));
+        } else if (f.type === 'CXP') {
+          cxpTotal += Math.max(0, Number(f.amount) - Number(f.paid || 0));
+        }
+      });
+
+      list.forEach(f => {
+        const isAcc = f.type === 'CXC' || f.type === 'CXP';
+        const bal = Math.max(0, Number(f.amount) - Number(f.paid || 0));
+        const badgeMap = {
+          'INGRESO': 'bg-emerald-500/20 text-emerald-300',
+          'GASTO': 'bg-amber-500/20 text-amber-300',
+          'CXC': 'bg-cyan-500/20 text-cyan-300',
+          'CXP': 'bg-rose-500/20 text-rose-300'
+        };
+        const amtColor = f.type === 'INGRESO' ? 'text-emerald-400'
+          : f.type === 'GASTO' ? 'text-amber-400'
+          : f.type === 'CXC' ? 'text-cyan-400' : 'text-rose-400';
+
+        const tr = document.createElement('tr');
+        tr.className = 'hover:bg-slate-900/50';
+        tr.innerHTML = `
+          <td class="py-3 px-4 font-mono text-slate-400">${f.date}</td>
+          <td class="py-3 px-4"><span class="px-2 py-0.5 rounded text-[10px] font-bold ${badgeMap[f.type] || ''}">${f.type}</span></td>
+          <td class="py-3 px-4 font-bold text-white">${f.entity}</td>
+          <td class="py-3 px-4 text-slate-200">${f.concept}</td>
+          <td class="py-3 px-4 text-slate-400">${f.category}</td>
+          <td class="py-3 px-4"><span class="px-2 py-0.5 rounded bg-slate-800 text-[10px] font-semibold">${isAcc ? (bal <= 0 ? 'Liquidado ✅' : `Abonado: ${medFmt(f.paid)}`) : f.method}</span></td>
+          <td class="py-3 px-4 text-right font-mono font-black ${amtColor}">${isAcc ? `${medFmt(bal)} / ${medFmt(f.amount)}` : medFmt(f.amount)}</td>
+          <td class="py-3 px-4 text-right space-x-1">
+            ${isAcc && bal > 0 ? `<button onclick="settleMedAccount(${f.id})" class="px-2.5 py-1 rounded-lg bg-emerald-500 text-slate-950 font-extrabold text-[11px]">💵 Abonar</button>` : ''}
+            <button onclick="deleteMedFinance(${f.id})" class="px-2 py-1 rounded bg-red-500/15 text-red-300 hover:bg-red-500 hover:text-white text-xs font-bold">&times;</button>
+          </td>
+        `;
+        tbody.appendChild(tr);
+      });
+
+      document.getElementById('med-kpi-income').textContent = medFmt(incTotal);
+      document.getElementById('med-kpi-income-today').textContent = `Ingresos de Hoy: ${medFmt(incToday)}`;
+      document.getElementById('med-kpi-expense').textContent = medFmt(expTotal);
+      document.getElementById('med-kpi-exp-count').textContent = `${expCount} gastos registrados`;
+      document.getElementById('med-kpi-net').textContent = medFmt(incTotal - expTotal);
+      document.getElementById('med-kpi-cxc').textContent = `Por Cobrar (Pacientes): ${medFmt(cxcTotal)}`;
+      document.getElementById('med-kpi-cxp').textContent = `Por Pagar (Proveedores): ${medFmt(cxpTotal)}`;
+      document.getElementById('med-fin-range-badge').textContent = (fromISO || toISO) ? `Rango: ${fromISO || 'Inicio'} → ${toISO || 'Hoy'}` : 'Mostrando todas las fechas';
+    }
+
+    function exportClinicAgendaCSV() {
+      const fromISO = document.getElementById('agenda-date-from') ? document.getElementById('agenda-date-from').value : '';
+      const toISO = document.getElementById('agenda-date-to') ? document.getElementById('agenda-date-to').value : '';
+      const apps = (state.appointments || []).filter(a => medInDateRange(a.date, fromISO, toISO));
+      let csv = '\uFEFFFecha,Hora,Paciente,Especialidad,Profesional,Motivo,Estado,Recordatorio Enviado\n';
+      apps.forEach(a => {
+        const pat = state.patients.find(p => p.id === Number(a.patientId)) || { name: 'Paciente' };
+        csv += `"${a.date}","${a.time}","${pat.name}","${a.specialty}","${a.doctor}","${a.reason}","${a.status}","${a.reminded ? 'Si' : 'No'}"\n`;
+      });
+      const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+      const link = document.createElement('a');
+      link.href = URL.createObjectURL(blob);
+      link.download = `Agenda_Clinica_Kinetix_${medTodayISO()}.csv`;
+      link.click();
+    }
+
+    function exportClinicFinanceCSV() {
+      const fromISO = (document.getElementById('med-fin-from') && document.getElementById('med-fin-from').value) || (document.getElementById('agenda-date-from') && document.getElementById('agenda-date-from').value) || '';
+      const toISO = (document.getElementById('med-fin-to') && document.getElementById('med-fin-to').value) || (document.getElementById('agenda-date-to') && document.getElementById('agenda-date-to').value) || '';
+      const rows = (state.finances || []).filter(f => medInDateRange(f.date, fromISO, toISO));
+      let csv = '\uFEFFFecha,Tipo Movimiento,Paciente o Proveedor,Concepto Clinico,Categoria,Metodo Pago,Monto Total,Monto Pagado,Saldo Pendiente\n';
+      rows.forEach(f => {
+        const bal = (f.type === 'CXC' || f.type === 'CXP') ? Math.max(0, Number(f.amount) - Number(f.paid || 0)) : 0;
+        csv += `"${f.date}","${f.type}","${f.entity}","${f.concept}","${f.category}","${f.method}",${Number(f.amount).toFixed(2)},${Number(f.paid || f.amount).toFixed(2)},${bal.toFixed(2)}\n`;
+      });
+      const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+      const link = document.createElement('a');
+      link.href = URL.createObjectURL(blob);
+      link.download = `Reporte_Finanzas_Clinica_${medTodayISO()}.csv`;
+      link.click();
     }
 
     function changeAppStatus(aid, newStatus) {
@@ -778,6 +1258,7 @@
       document.getElementById('app-modal').classList.add('hidden');
       document.getElementById('app-modal').classList.remove('flex');
     }
+
 
     function saveAppointment() {
       const patId = Number(document.getElementById('app-patient-id').value);

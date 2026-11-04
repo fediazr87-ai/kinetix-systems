@@ -63,6 +63,31 @@
       }
       .no-print { display: none !important; }
     }
+  
+    /* === KINETIX LIGHT MODE CONTRAST PATCH (todas las letras legibles en modo claro) === */
+    html.light .text-emerald-300, html.light .text-emerald-400, html.light .text-emerald-500 { color: #047857 !important; }
+    html.light .text-teal-300, html.light .text-teal-400, html.light .text-teal-500 { color: #0f766e !important; }
+    html.light .text-cyan-300, html.light .text-cyan-400, html.light .text-cyan-500 { color: #0e7490 !important; }
+    html.light .text-sky-300, html.light .text-sky-400, html.light .text-sky-500 { color: #0369a1 !important; }
+    html.light .text-blue-300, html.light .text-blue-400, html.light .text-blue-500 { color: #1d4ed8 !important; }
+    html.light .text-indigo-300, html.light .text-indigo-400, html.light .text-indigo-500 { color: #4338ca !important; }
+    html.light .text-purple-300, html.light .text-purple-400, html.light .text-purple-500 { color: #6d28d9 !important; }
+    html.light .text-violet-300, html.light .text-violet-400, html.light .text-violet-500 { color: #6d28d9 !important; }
+    html.light .text-rose-300, html.light .text-rose-400, html.light .text-rose-500 { color: #be123c !important; }
+    html.light .text-red-300, html.light .text-red-400, html.light .text-red-500 { color: #b91c1c !important; }
+    html.light .text-orange-300, html.light .text-orange-400, html.light .text-orange-500 { color: #c2410c !important; }
+    html.light .text-amber-300, html.light .text-amber-400, html.light .text-amber-500 { color: #b45309 !important; }
+    html.light .text-yellow-300, html.light .text-yellow-400, html.light .text-yellow-500 { color: #854d0e !important; }
+    html.light .text-slate-600 { color: #475569 !important; }
+    html.light .hover\:text-slate-950:hover { color: #020617 !important; }
+    html.light .bg-indigo-500\/10, html.light .bg-indigo-500\/15, html.light .bg-indigo-500\/20 { background-color: rgba(99, 102, 241, 0.12) !important; }
+    html.light .bg-blue-500\/10, html.light .bg-blue-500\/15, html.light .bg-blue-500\/20 { background-color: rgba(59, 130, 246, 0.12) !important; }
+    html.light .bg-amber-500\/10, html.light .bg-amber-500\/15, html.light .bg-amber-500\/20 { background-color: rgba(245, 158, 11, 0.16) !important; }
+    html.light .bg-rose-500\/10, html.light .bg-rose-500\/15, html.light .bg-rose-500\/20 { background-color: rgba(244, 63, 94, 0.12) !important; }
+    body .nav-btn.bg-indigo-500, body .nav-btn.bg-purple-500, html.light body .nav-btn.bg-indigo-500, html.light body .nav-btn.bg-purple-500 { color: #ffffff !important; }
+    html.light body .nav-btn.bg-emerald-500, html.light body .nav-btn.bg-cyan-500 { color: #022c22 !important; }
+    html.light button.bg-indigo-500, html.light .bg-indigo-500 { color: #ffffff; }
+    /* === FIN PATCH === */
   </style>
 </head>
 <body class="min-h-screen flex flex-col selection:bg-emerald-500 selection:text-black">
@@ -146,6 +171,9 @@
           <button id="nav-sales" onclick="switchTab('sales')" class="nav-btn flex items-center gap-3 px-4 py-3 rounded-xl text-xs sm:text-sm font-semibold text-slate-300 hover:bg-slate-900 transition whitespace-nowrap">
             <span>🧾</span> <span>Facturas & Corte Caja</span>
           </button>
+          <button id="nav-expenses" onclick="switchTab('expenses')" class="nav-btn flex items-center gap-3 px-4 py-3 rounded-xl text-xs sm:text-sm font-semibold text-slate-300 hover:bg-slate-900 transition whitespace-nowrap">
+            <span>💸</span> <span>Gastos, Compras, CxC & CxP</span>
+          </button>
           <button id="nav-users" onclick="switchTab('users')" class="nav-btn flex items-center gap-3 px-4 py-3 rounded-xl text-xs sm:text-sm font-semibold text-slate-300 hover:bg-slate-900 transition whitespace-nowrap">
             <span>👥</span> <span>4 Usuarios & Roles</span>
           </button>
@@ -228,6 +256,7 @@
                     <option value="Efectivo">💵 Efectivo</option>
                     <option value="Tarjeta">💳 Tarjeta</option>
                     <option value="Transferencia">🏦 Transferencia</option>
+                    <option value="Crédito (CxC)">📝 Crédito (CxC)</option>
                   </select>
                 </div>
               </div>
@@ -332,40 +361,99 @@
         </div>
       </section>
 
-      <!-- TAB 3: HISTORIAL DE VENTAS, FACTURAS Y CORTE DE CAJA -->
+      <!-- TAB 3: DASHBOARD FACTURAS, CORTE DE CAJA Y REPORTES POR FECHAS -->
       <section id="tab-sales" class="space-y-6 hidden">
-        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
           <div>
-            <span class="text-xs font-mono uppercase text-cyan-400 font-bold">ARQUEO Y COMPROBANTES EMITIDOS</span>
-            <h2 class="text-2xl font-extrabold text-white">Historial de Facturación y Corte de Caja</h2>
+            <span class="text-xs font-mono uppercase text-cyan-400 font-bold">DASHBOARD EJECUTIVO · ARQUEO, INVENTARIO & FINANZAS</span>
+            <h2 class="text-2xl font-extrabold text-white">Facturas, Corte de Caja y Reportes por Fechas</h2>
           </div>
-          <button onclick="exportSalesCSV()" class="px-4 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-white font-semibold text-xs border border-slate-700 transition">
-            📥 Descargar Reporte de Ventas (CSV)
-          </button>
-        </div>
-
-        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
-          <div class="glass p-5 rounded-2xl border-l-4 border-emerald-400">
-            <span class="text-xs text-slate-400">Ingresos Totales Facturados</span>
-            <p id="sales-kpi-revenue" class="text-3xl font-black text-white mono mt-1">$0.00</p>
-          </div>
-          <div class="glass p-5 rounded-2xl border-l-4 border-cyan-400">
-            <span class="text-xs text-slate-400">Comprobantes Emitidos</span>
-            <p id="sales-kpi-count" class="text-3xl font-black text-cyan-400 mono mt-1">0</p>
-          </div>
-          <div class="glass p-5 rounded-2xl border-l-4 border-teal-400">
-            <span class="text-xs text-slate-400">Ganancia Bruta Estimada</span>
-            <p id="sales-kpi-profit" class="text-3xl font-black text-emerald-400 mono mt-1">$0.00</p>
+          <div class="flex flex-wrap gap-2">
+            <button onclick="exportSalesCSV()" class="px-3.5 py-2.5 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-extrabold text-xs transition flex items-center gap-1.5 shadow-lg">
+              📥 Ventas en Excel (CSV)
+            </button>
+            <button onclick="exportExpensesCSV()" class="px-3.5 py-2.5 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-extrabold text-xs transition flex items-center gap-1.5 shadow-lg">
+              📥 Gastos y Compras Excel
+            </button>
+            <button onclick="exportCashCloseCSV()" class="px-3.5 py-2.5 rounded-xl bg-cyan-500/20 hover:bg-cyan-400 hover:text-slate-950 text-cyan-300 border border-cyan-500/40 font-bold text-xs transition flex items-center gap-1.5">
+              📊 Corte de Caja Completo (Excel)
+            </button>
           </div>
         </div>
 
-        <div class="glass rounded-3xl overflow-hidden">
+        <!-- Barra de Filtro por Fechas o Rangos de Fechas -->
+        <div class="glass p-4 rounded-2xl border border-slate-800 flex flex-col xl:flex-row xl:items-center justify-between gap-3 text-xs">
+          <div class="flex flex-wrap items-center gap-2">
+            <span class="font-bold text-slate-300 uppercase font-mono">📅 Filtrar por Fecha / Rango:</span>
+            <div class="flex items-center gap-1.5 bg-slate-900 border border-slate-700 rounded-xl px-3 py-1.5">
+              <span class="text-slate-400">Desde:</span>
+              <input id="sales-date-from" type="date" onchange="renderSales()" class="bg-transparent text-white font-mono focus:outline-none">
+            </div>
+            <div class="flex items-center gap-1.5 bg-slate-900 border border-slate-700 rounded-xl px-3 py-1.5">
+              <span class="text-slate-400">Hasta:</span>
+              <input id="sales-date-to" type="date" onchange="renderSales()" class="bg-transparent text-white font-mono focus:outline-none">
+            </div>
+            <div class="flex flex-wrap gap-1">
+              <button onclick="setSalesDatePreset('TODAY')" class="px-2.5 py-1.5 rounded-lg bg-emerald-500/20 text-emerald-300 hover:bg-emerald-500 hover:text-slate-950 font-bold transition">Hoy</button>
+              <button onclick="setSalesDatePreset('WEEK')" class="px-2.5 py-1.5 rounded-lg bg-slate-800 text-slate-300 hover:bg-slate-700 font-semibold transition">7 Días</button>
+              <button onclick="setSalesDatePreset('MONTH')" class="px-2.5 py-1.5 rounded-lg bg-slate-800 text-slate-300 hover:bg-slate-700 font-semibold transition">Este Mes</button>
+              <button onclick="setSalesDatePreset('ALL')" class="px-2.5 py-1.5 rounded-lg bg-slate-800 text-cyan-300 hover:bg-slate-700 font-semibold transition">Todo el Historial</button>
+            </div>
+          </div>
+          <div class="flex items-center gap-2">
+            <input id="sales-search-input" type="text" oninput="renderSales()" placeholder="🔍 Buscar folio, cliente o método..." class="bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-white w-full sm:w-56">
+          </div>
+        </div>
+
+        <!-- KPIs del Dashboard de Corte de Caja, Ventas del Día y Valor de Inventario -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-4">
+          <div class="glass p-4 rounded-2xl border-l-4 border-emerald-400">
+            <span class="text-[11px] text-slate-400 font-semibold">Ventas del Día (Hoy)</span>
+            <p id="sales-kpi-today" class="text-2xl font-black text-emerald-400 mono mt-1">$0.00</p>
+            <span id="sales-kpi-today-count" class="text-[10px] text-slate-400 font-mono">0 facturas hoy</span>
+          </div>
+          <div class="glass p-4 rounded-2xl border-l-4 border-cyan-400">
+            <span class="text-[11px] text-slate-400 font-semibold">Ventas (Rango Filtrado)</span>
+            <p id="sales-kpi-revenue" class="text-2xl font-black text-white mono mt-1">$0.00</p>
+            <span class="text-[10px] text-cyan-400 font-mono"><strong id="sales-kpi-count">0</strong> comprobantes</span>
+          </div>
+          <div class="glass p-4 rounded-2xl border-l-4 border-indigo-400">
+            <span class="text-[11px] text-slate-400 font-semibold">Valor del Inventario</span>
+            <p id="sales-kpi-inv-value" class="text-2xl font-black text-indigo-300 mono mt-1">$0.00</p>
+            <span id="sales-kpi-inv-cost" class="text-[10px] text-slate-400 font-mono">Costo: $0.00</span>
+          </div>
+          <div class="glass p-4 rounded-2xl border-l-4 border-amber-400">
+            <span class="text-[11px] text-slate-400 font-semibold">Gastos y Compras (Rango)</span>
+            <p id="sales-kpi-expenses" class="text-2xl font-black text-amber-400 mono mt-1">$0.00</p>
+            <span id="sales-kpi-exp-count" class="text-[10px] text-slate-400 font-mono">0 registros</span>
+          </div>
+          <div class="glass p-4 rounded-2xl border-l-4 border-rose-400">
+            <span class="text-[11px] text-slate-400 font-semibold">Cuentas Cobrar / Pagar</span>
+            <p id="sales-kpi-cxc" class="text-sm font-black text-emerald-400 mono mt-1">CxC: $0.00</p>
+            <p id="sales-kpi-cxp" class="text-sm font-black text-rose-400 mono">CxP: $0.00</p>
+          </div>
+          <div class="glass p-4 rounded-2xl border-l-4 border-teal-400">
+            <span class="text-[11px] text-slate-400 font-semibold">Ganancia / Flujo Neto</span>
+            <p id="sales-kpi-profit" class="text-2xl font-black text-emerald-400 mono mt-1">$0.00</p>
+            <span id="sales-kpi-netcash" class="text-[10px] text-slate-400 font-mono">Caja Neta: $0.00</span>
+          </div>
+        </div>
+
+        <!-- Resumen de Arqueo por Método de Pago -->
+        <div id="sales-payment-breakdown" class="grid grid-cols-2 sm:grid-cols-4 gap-3 text-xs"></div>
+
+        <!-- Tabla de Ventas y Facturas Filtradas -->
+        <div class="glass rounded-3xl overflow-hidden border border-slate-800">
+          <div class="p-4 border-b border-slate-800 flex items-center justify-between">
+            <h3 class="text-sm font-extrabold text-white uppercase tracking-wider">🧾 Facturas y Ventas en el Rango Seleccionado</h3>
+            <span id="sales-range-badge" class="text-xs font-mono text-cyan-400">Mostrando todas las fechas</span>
+          </div>
           <div class="overflow-x-auto">
             <table class="w-full text-left text-xs sm:text-sm">
               <thead class="bg-slate-900/90 text-slate-400 uppercase text-[11px] font-bold border-b border-slate-800">
                 <tr>
                   <th class="py-3.5 px-4">Folio #</th>
-                  <th class="py-3.5 px-4">Fecha y Hora</th>
+                  <th class="py-3.5 px-4">Fecha</th>
                   <th class="py-3.5 px-4">Cliente</th>
                   <th class="py-3.5 px-4">Cajero / Usuario</th>
                   <th class="py-3.5 px-4">Método</th>
@@ -374,6 +462,209 @@
                 </tr>
               </thead>
               <tbody id="sales-table-body" class="divide-y divide-slate-800/70"></tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Tabla de Gastos y Compras dentro del Corte de Caja -->
+        <div class="glass rounded-3xl overflow-hidden border border-slate-800">
+          <div class="p-4 border-b border-slate-800 flex items-center justify-between">
+            <h3 class="text-sm font-extrabold text-white uppercase tracking-wider">💸 Gastos y Compras Registrados en el Rango del Corte</h3>
+            <button onclick="switchTab('expenses')" class="text-xs text-amber-400 hover:underline font-bold">Ir al Módulo Financiero Completo &rarr;</button>
+          </div>
+          <div class="overflow-x-auto">
+            <table class="w-full text-left text-xs">
+              <thead class="bg-slate-900/90 text-slate-400 uppercase text-[11px] font-bold border-b border-slate-800">
+                <tr>
+                  <th class="py-3 px-4">Fecha</th>
+                  <th class="py-3 px-4">Tipo</th>
+                  <th class="py-3 px-4">Concepto / Proveedor</th>
+                  <th class="py-3 px-4">Categoría / Estado</th>
+                  <th class="py-3 px-4">Responsable</th>
+                  <th class="py-3 px-4 text-right">Monto</th>
+                </tr>
+              </thead>
+              <tbody id="sales-expenses-summary-body" class="divide-y divide-slate-800/70"></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- TAB 4: MÓDULO INTEGRAL DE GASTOS, COMPRAS, CUENTAS POR COBRAR (CxC) Y CUENTAS POR PAGAR (CxP) -->
+      <section id="tab-expenses" class="space-y-6 hidden">
+        <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
+          <div>
+            <span class="text-xs font-mono uppercase text-amber-500 font-bold">MÓDULO FINANCIERO & CONTROL ADMINISTRATIVO</span>
+            <h2 class="text-2xl font-extrabold text-white">Gastos, Compras, Cuentas por Cobrar y Cuentas por Pagar</h2>
+          </div>
+          <div class="flex flex-wrap gap-2">
+            <button onclick="openExpenseModal()" class="px-3.5 py-2.5 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-extrabold text-xs transition flex items-center gap-1.5 shadow-lg cursor-pointer">
+              ➕ Registrar Gasto
+            </button>
+            <button onclick="openPurchaseModal()" class="px-3.5 py-2.5 rounded-xl bg-cyan-400 hover:bg-cyan-300 text-slate-950 font-extrabold text-xs transition flex items-center gap-1.5 shadow-lg cursor-pointer">
+              🛍️ Registrar Compra
+            </button>
+            <button onclick="openAccountModal('CXC')" class="px-3.5 py-2.5 rounded-xl bg-emerald-400 hover:bg-emerald-300 text-slate-950 font-extrabold text-xs transition flex items-center gap-1.5 shadow-lg cursor-pointer">
+              📥 + Cuenta por Cobrar
+            </button>
+            <button onclick="openAccountModal('CXP')" class="px-3.5 py-2.5 rounded-xl bg-rose-500 hover:bg-rose-400 text-white font-extrabold text-xs transition flex items-center gap-1.5 shadow-lg cursor-pointer">
+              📤 + Cuenta por Pagar
+            </button>
+            <button onclick="exportFullFinanceCSV()" class="px-3.5 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-white border border-slate-700 font-bold text-xs transition flex items-center gap-1.5 cursor-pointer">
+              📥 Descargar Excel
+            </button>
+          </div>
+        </div>
+
+        <!-- Filtro de Fechas para Finanzas -->
+        <div class="glass p-4 rounded-2xl border border-slate-800 flex flex-col xl:flex-row xl:items-center justify-between gap-3 text-xs">
+          <div class="flex flex-wrap items-center gap-2">
+            <span class="font-bold text-slate-300 uppercase font-mono">📅 Rango de Fechas:</span>
+            <div class="flex items-center gap-1.5 bg-slate-900 border border-slate-700 rounded-xl px-3 py-1.5">
+              <span class="text-slate-400">Desde:</span>
+              <input id="fin-date-from" type="date" onchange="renderExpenses()" class="bg-transparent text-white font-mono focus:outline-none">
+            </div>
+            <div class="flex items-center gap-1.5 bg-slate-900 border border-slate-700 rounded-xl px-3 py-1.5">
+              <span class="text-slate-400">Hasta:</span>
+              <input id="fin-date-to" type="date" onchange="renderExpenses()" class="bg-transparent text-white font-mono focus:outline-none">
+            </div>
+            <button onclick="setFinanceDatePreset('TODAY')" class="px-2.5 py-1.5 rounded-lg bg-amber-500/20 text-amber-300 hover:bg-amber-500 hover:text-slate-950 font-bold transition">Hoy</button>
+            <button onclick="setFinanceDatePreset('MONTH')" class="px-2.5 py-1.5 rounded-lg bg-slate-800 text-slate-300 hover:bg-slate-700 font-semibold transition">Este Mes</button>
+            <button onclick="setFinanceDatePreset('ALL')" class="px-2.5 py-1.5 rounded-lg bg-slate-800 text-cyan-300 hover:bg-slate-700 font-semibold transition">Todo</button>
+          </div>
+          <div class="flex flex-wrap gap-1.5">
+            <button id="fintab-all" onclick="switchFinanceSubTab('all')" class="px-3 py-1.5 rounded-xl bg-amber-500 text-slate-950 font-extrabold text-xs transition">Vista General</button>
+            <button id="fintab-gastos" onclick="switchFinanceSubTab('gastos')" class="px-3 py-1.5 rounded-xl bg-slate-800 text-slate-300 font-bold text-xs transition">💸 Gastos</button>
+            <button id="fintab-compras" onclick="switchFinanceSubTab('compras')" class="px-3 py-1.5 rounded-xl bg-slate-800 text-slate-300 font-bold text-xs transition">🛍️ Compras</button>
+            <button id="fintab-cxc" onclick="switchFinanceSubTab('cxc')" class="px-3 py-1.5 rounded-xl bg-slate-800 text-slate-300 font-bold text-xs transition">📥 Cuentas por Cobrar</button>
+            <button id="fintab-cxp" onclick="switchFinanceSubTab('cxp')" class="px-3 py-1.5 rounded-xl bg-slate-800 text-slate-300 font-bold text-xs transition">📤 Cuentas por Pagar</button>
+          </div>
+        </div>
+
+        <!-- KPIs Financieros -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+          <div class="glass p-5 rounded-2xl border-l-4 border-amber-500">
+            <span class="text-xs text-slate-400">Gastos Operativos (Rango)</span>
+            <p id="expense-kpi-total" class="text-2xl font-black text-amber-400 mono mt-1">$0.00</p>
+            <span id="expense-kpi-caja" class="text-[11px] text-slate-400 font-mono">Caja Chica / Servicios</span>
+          </div>
+          <div class="glass p-5 rounded-2xl border-l-4 border-cyan-500">
+            <span class="text-xs text-slate-400">Compras de Mercancía / Stock</span>
+            <p id="expense-kpi-prov" class="text-2xl font-black text-cyan-400 mono mt-1">$0.00</p>
+            <span id="purchase-kpi-count" class="text-[11px] text-slate-400 font-mono">0 órdenes de compra</span>
+          </div>
+          <div class="glass p-5 rounded-2xl border-l-4 border-emerald-500">
+            <span class="text-xs text-slate-400">Cuentas por Cobrar (CxC Pendiente)</span>
+            <p id="cxc-kpi-pending" class="text-2xl font-black text-emerald-400 mono mt-1">$0.00</p>
+            <span id="cxc-kpi-count" class="text-[11px] text-slate-400 font-mono">Clientes con crédito activo</span>
+          </div>
+          <div class="glass p-5 rounded-2xl border-l-4 border-rose-500">
+            <span class="text-xs text-slate-400">Cuentas por Pagar (CxP Pendiente)</span>
+            <p id="cxp-kpi-pending" class="text-2xl font-black text-rose-400 mono mt-1">$0.00</p>
+            <span id="cxp-kpi-count" class="text-[11px] text-slate-400 font-mono">Facturas de proveedores</span>
+          </div>
+        </div>
+
+        <!-- SECCIÓN 1: GASTOS OPERATIVOS -->
+        <div id="fin-sec-gastos" class="glass rounded-3xl p-6 border border-slate-800 space-y-4">
+          <div class="flex items-center justify-between">
+            <h3 class="text-sm font-extrabold text-white uppercase tracking-wider">💸 Registro de Gastos Operativos y Caja Chica</h3>
+            <button onclick="exportExpensesCSV()" class="text-xs text-amber-400 hover:underline font-bold">📥 Exportar Gastos Excel</button>
+          </div>
+          <div class="overflow-x-auto">
+            <table class="w-full text-left text-xs">
+              <thead class="bg-slate-900/80 text-slate-400 uppercase font-mono border-b border-slate-800">
+                <tr>
+                  <th class="py-3 px-4">Fecha</th>
+                  <th class="py-3 px-4">Concepto del Gasto</th>
+                  <th class="py-3 px-4">Categoría</th>
+                  <th class="py-3 px-4">Autorizado por</th>
+                  <th class="py-3 px-4 text-right">Monto</th>
+                  <th class="py-3 px-4 text-right">Acción</th>
+                </tr>
+              </thead>
+              <tbody id="expenses-table-body" class="divide-y divide-slate-800/70"></tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- SECCIÓN 2: COMPRAS A PROVEEDORES E INGRESO DE MERCANCÍA -->
+        <div id="fin-sec-compras" class="glass rounded-3xl p-6 border border-slate-800 space-y-4">
+          <div class="flex items-center justify-between">
+            <h3 class="text-sm font-extrabold text-white uppercase tracking-wider">🛍️ Compras a Proveedores y Abastecimiento</h3>
+            <button onclick="openPurchaseModal()" class="text-xs text-cyan-400 hover:underline font-bold">+ Nueva Compra</button>
+          </div>
+          <div class="overflow-x-auto">
+            <table class="w-full text-left text-xs">
+              <thead class="bg-slate-900/80 text-slate-400 uppercase font-mono border-b border-slate-800">
+                <tr>
+                  <th class="py-3 px-4">Factura / Fecha</th>
+                  <th class="py-3 px-4">Proveedor</th>
+                  <th class="py-3 px-4">Productos / Detalle</th>
+                  <th class="py-3 px-4">Condición</th>
+                  <th class="py-3 px-4 text-right">Total Compra</th>
+                  <th class="py-3 px-4 text-right">Acción</th>
+                </tr>
+              </thead>
+              <tbody id="purchases-table-body" class="divide-y divide-slate-800/70"></tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- SECCIÓN 3: CUENTAS POR COBRAR (CLIENTES) -->
+        <div id="fin-sec-cxc" class="glass rounded-3xl p-6 border border-emerald-500/30 space-y-4">
+          <div class="flex items-center justify-between">
+            <div>
+              <h3 class="text-sm font-extrabold text-white uppercase tracking-wider">📥 Cuentas por Cobrar (Créditos de Clientes - CxC)</h3>
+              <p class="text-[11px] text-slate-400">Incluye ventas al crédito desde el POS y créditos directos registrados.</p>
+            </div>
+            <button onclick="openAccountModal('CXC')" class="px-3 py-1.5 rounded-xl bg-emerald-500/20 text-emerald-300 font-bold text-xs">+ Nueva CxC</button>
+          </div>
+          <div class="overflow-x-auto">
+            <table class="w-full text-left text-xs">
+              <thead class="bg-slate-900/80 text-slate-400 uppercase font-mono border-b border-slate-800">
+                <tr>
+                  <th class="py-3 px-4">Folio / Fecha</th>
+                  <th class="py-3 px-4">Cliente & Contacto</th>
+                  <th class="py-3 px-4">Concepto</th>
+                  <th class="py-3 px-4">Vencimiento</th>
+                  <th class="py-3 px-4">Total</th>
+                  <th class="py-3 px-4">Abonado</th>
+                  <th class="py-3 px-4">Saldo Pendiente</th>
+                  <th class="py-3 px-4">Estado</th>
+                  <th class="py-3 px-4 text-right">Acciones</th>
+                </tr>
+              </thead>
+              <tbody id="cxc-table-body" class="divide-y divide-slate-800/70"></tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- SECCIÓN 4: CUENTAS POR PAGAR (PROVEEDORES) -->
+        <div id="fin-sec-cxp" class="glass rounded-3xl p-6 border border-rose-500/30 space-y-4">
+          <div class="flex items-center justify-between">
+            <div>
+              <h3 class="text-sm font-extrabold text-white uppercase tracking-wider">📤 Cuentas por Pagar (Facturas de Proveedores - CxP)</h3>
+              <p class="text-[11px] text-slate-400">Control de obligaciones, vencimientos y abonos a proveedores.</p>
+            </div>
+            <button onclick="openAccountModal('CXP')" class="px-3 py-1.5 rounded-xl bg-rose-500/20 text-rose-300 font-bold text-xs">+ Nueva CxP</button>
+          </div>
+          <div class="overflow-x-auto">
+            <table class="w-full text-left text-xs">
+              <thead class="bg-slate-900/80 text-slate-400 uppercase font-mono border-b border-slate-800">
+                <tr>
+                  <th class="py-3 px-4">Ref / Fecha</th>
+                  <th class="py-3 px-4">Proveedor</th>
+                  <th class="py-3 px-4">Concepto</th>
+                  <th class="py-3 px-4">Vencimiento</th>
+                  <th class="py-3 px-4">Total</th>
+                  <th class="py-3 px-4">Pagado</th>
+                  <th class="py-3 px-4">Saldo por Pagar</th>
+                  <th class="py-3 px-4">Estado</th>
+                  <th class="py-3 px-4 text-right">Acciones</th>
+                </tr>
+              </thead>
+              <tbody id="cxp-table-body" class="divide-y divide-slate-800/70"></tbody>
             </table>
           </div>
         </div>
@@ -536,6 +827,181 @@
     </div>
   </div>
 
+  <!-- MODAL PARA REGISTRAR NUEVO GASTO -->
+  <div id="expense-modal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4 hidden no-print">
+    <div class="glass w-full max-w-md rounded-3xl border border-amber-500/30 p-6 space-y-5 shadow-2xl bg-slate-900">
+      <div class="flex items-center justify-between border-b border-slate-800 pb-4">
+        <div class="flex items-center gap-2">
+          <span class="p-2 rounded-xl bg-amber-500/20 text-amber-400 text-lg">💸</span>
+          <div>
+            <h3 class="font-extrabold text-white text-base">Registrar Nuevo Gasto Operativo</h3>
+            <span class="text-[11px] text-slate-400">Deducción de caja operativa o gasto del negocio</span>
+          </div>
+        </div>
+        <button onclick="closeExpenseModal()" class="text-slate-400 hover:text-white text-xl cursor-pointer">&times;</button>
+      </div>
+
+      <div class="space-y-4 text-xs">
+        <div>
+          <label class="block font-semibold text-slate-300 mb-1">Concepto o Descripción:</label>
+          <input type="text" id="exp-concept" value="Compra de Insumos y Limpieza" class="w-full bg-slate-950 border border-slate-700 rounded-xl px-3.5 py-2.5 text-white focus:outline-none focus:border-amber-400 font-semibold" placeholder="Ej. Pago Recibo de Luz">
+        </div>
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block font-semibold text-slate-300 mb-1">Monto ($):</label>
+            <input type="number" id="exp-amount" value="35.00" step="0.01" class="w-full bg-slate-950 border border-slate-700 rounded-xl px-3.5 py-2.5 text-amber-400 font-black mono text-sm focus:outline-none focus:border-amber-400">
+          </div>
+          <div>
+            <label class="block font-semibold text-slate-300 mb-1">Fecha del Gasto:</label>
+            <input type="date" id="exp-date" class="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2.5 text-white font-mono focus:outline-none focus:border-amber-400">
+          </div>
+        </div>
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block font-semibold text-slate-300 mb-1">Categoría:</label>
+            <select id="exp-category" class="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2.5 text-white focus:outline-none focus:border-amber-400">
+              <option value="Insumos">Insumos & Operación</option>
+              <option value="Servicios Básicos">Servicios (Luz/Agua/Internet)</option>
+              <option value="Alquiler / Local">Alquiler / Local</option>
+              <option value="Nómina / Comisiones">Nómina / Personal</option>
+              <option value="Proveedores">Pago a Proveedor</option>
+              <option value="Caja Chica">Caja Chica</option>
+            </select>
+          </div>
+          <div>
+            <label class="block font-semibold text-slate-300 mb-1">Autorizado por:</label>
+            <input type="text" id="exp-cashier" value="Admin Principal" readonly class="w-full bg-slate-950/70 border border-slate-800 rounded-xl px-3 py-2.5 text-slate-400">
+          </div>
+        </div>
+      </div>
+
+      <div class="flex items-center gap-3 pt-2">
+        <button onclick="closeExpenseModal()" class="w-1/2 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold text-xs transition cursor-pointer">
+          Cancelar
+        </button>
+        <button onclick="saveExpense()" class="w-1/2 py-2.5 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-extrabold text-xs transition shadow-lg shadow-amber-500/20 cursor-pointer">
+          Confirmar Gasto
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL PARA REGISTRAR COMPRA A PROVEEDOR -->
+  <div id="purchase-modal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4 hidden no-print">
+    <div class="glass w-full max-w-lg rounded-3xl border border-cyan-500/40 p-6 space-y-4 shadow-2xl bg-slate-900 text-xs">
+      <div class="flex items-center justify-between border-b border-slate-800 pb-3">
+        <div class="flex items-center gap-2">
+          <span class="p-2 rounded-xl bg-cyan-500/20 text-cyan-400 text-lg">🛍️</span>
+          <div>
+            <h3 class="font-extrabold text-white text-base">Registrar Compra a Proveedor</h3>
+            <span class="text-[11px] text-slate-400">Abastecimiento de mercancía, insumos y control de stock</span>
+          </div>
+        </div>
+        <button onclick="closePurchaseModal()" class="text-slate-400 hover:text-white text-xl cursor-pointer">&times;</button>
+      </div>
+
+      <div class="grid grid-cols-2 gap-3">
+        <div>
+          <label class="block font-semibold text-slate-300 mb-1">Proveedor / Distribuidor:</label>
+          <input type="text" id="pur-supplier" placeholder="Ej: Distribuidora Central S.A." class="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-white font-semibold">
+        </div>
+        <div>
+          <label class="block font-semibold text-slate-300 mb-1">N° Factura / Referencia:</label>
+          <input type="text" id="pur-ref" placeholder="FAC-PROV-204" class="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-white font-mono">
+        </div>
+        <div>
+          <label class="block font-semibold text-slate-300 mb-1">Fecha de Compra:</label>
+          <input type="date" id="pur-date" class="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-white font-mono">
+        </div>
+        <div>
+          <label class="block font-semibold text-slate-300 mb-1">Condición de Pago:</label>
+          <select id="pur-condition" class="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-white font-semibold">
+            <option value="Contado">💵 Contado (Pagado)</option>
+            <option value="Crédito (CxP)">📤 Crédito (Generar Cuenta por Pagar)</option>
+          </select>
+        </div>
+        <div class="col-span-2">
+          <label class="block font-semibold text-slate-300 mb-1">Vincular a Producto de Inventario (Opcional - Suma al Stock):</label>
+          <select id="pur-product-id" onchange="onPurchaseProductSelect()" class="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-white">
+            <option value="">-- Compra General / Sin vincular a SKU específico --</option>
+          </select>
+        </div>
+        <div>
+          <label class="block font-semibold text-slate-300 mb-1">Unidades Compradas:</label>
+          <input type="number" id="pur-qty" value="10" min="1" oninput="calcPurchaseTotal()" class="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-white font-mono">
+        </div>
+        <div>
+          <label class="block font-semibold text-slate-300 mb-1">Monto Total Compra ($):</label>
+          <input type="number" id="pur-amount" value="120.00" step="0.01" class="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-cyan-400 font-black font-mono text-sm">
+        </div>
+        <div class="col-span-2">
+          <label class="block font-semibold text-slate-300 mb-1">Detalle de Productos / Observación:</label>
+          <input type="text" id="pur-desc" placeholder="Ej: Lote de mercancía y suministros para almacén" class="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-white">
+        </div>
+      </div>
+
+      <div class="flex items-center gap-3 pt-2">
+        <button onclick="closePurchaseModal()" class="w-1/2 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold transition">Cancelar</button>
+        <button onclick="savePurchase()" class="w-1/2 py-2.5 rounded-xl bg-cyan-400 hover:bg-cyan-300 text-slate-950 font-extrabold transition shadow-lg">Guardar Compra</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL PARA REGISTRAR CUENTA POR COBRAR (CxC) O CUENTA POR PAGAR (CxP) -->
+  <div id="account-modal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4 hidden no-print">
+    <div class="glass w-full max-w-md rounded-3xl border border-emerald-500/40 p-6 space-y-4 shadow-2xl bg-slate-900 text-xs">
+      <div class="flex items-center justify-between border-b border-slate-800 pb-3">
+        <h3 id="acc-modal-title" class="font-extrabold text-white text-base">Registrar Cuenta por Cobrar (CxC)</h3>
+        <button onclick="closeAccountModal()" class="text-slate-400 hover:text-white text-xl cursor-pointer">&times;</button>
+      </div>
+      <input type="hidden" id="acc-type" value="CXC">
+      <div class="space-y-3">
+        <div>
+          <label id="acc-entity-label" class="block font-semibold text-slate-300 mb-1">Nombre del Cliente / Deudor:</label>
+          <input type="text" id="acc-entity" placeholder="Ej: Comercializadora San José" class="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-white font-semibold">
+        </div>
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block font-semibold text-slate-300 mb-1">Teléfono / WhatsApp:</label>
+            <input type="text" id="acc-phone" placeholder="+505 8888-0000" class="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-white font-mono">
+          </div>
+          <div>
+            <label class="block font-semibold text-slate-300 mb-1">Folio / Referencia:</label>
+            <input type="text" id="acc-ref" placeholder="CRED-101" class="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-white font-mono">
+          </div>
+        </div>
+        <div>
+          <label class="block font-semibold text-slate-300 mb-1">Concepto / Detalle:</label>
+          <input type="text" id="acc-concept" placeholder="Factura al crédito / Pedido pendiente de liquidar" class="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-white">
+        </div>
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block font-semibold text-slate-300 mb-1">Fecha Emisión:</label>
+            <input type="date" id="acc-date" class="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-white font-mono">
+          </div>
+          <div>
+            <label class="block font-semibold text-slate-300 mb-1">Fecha Vencimiento:</label>
+            <input type="date" id="acc-due" class="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-white font-mono">
+          </div>
+        </div>
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block font-semibold text-slate-300 mb-1">Monto Total ($):</label>
+            <input type="number" id="acc-total" step="0.01" value="150.00" class="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-emerald-400 font-black font-mono">
+          </div>
+          <div>
+            <label class="block font-semibold text-slate-300 mb-1">Abono Inicial ($):</label>
+            <input type="number" id="acc-paid" step="0.01" value="0.00" class="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-white font-mono">
+          </div>
+        </div>
+      </div>
+      <div class="flex items-center gap-3 pt-2">
+        <button onclick="closeAccountModal()" class="w-1/2 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold">Cancelar</button>
+        <button onclick="saveAccountRecord()" class="w-1/2 py-2.5 rounded-xl bg-emerald-400 hover:bg-emerald-300 text-slate-950 font-extrabold">Guardar Registro</button>
+      </div>
+    </div>
+  </div>
+
   <!-- MODAL FACTURA / TICKET IMPRIMIBLE -->
   <div id="invoice-modal" class="fixed inset-0 z-50 bg-black/85 hidden items-center justify-center p-4 overflow-y-auto">
     <div class="bg-slate-900 max-w-md w-full rounded-3xl p-6 border border-emerald-500/40 space-y-4">
@@ -566,6 +1032,23 @@
     let currentUser = null;
     let cart = [];
     let lastInvoice = null;
+    let currentFinanceSubTab = 'all';
+
+    function todayISO() {
+      return new Date().toISOString().slice(0, 10);
+    }
+
+    function daysAgoISO(days) {
+      const d = new Date();
+      d.setDate(d.getDate() - days);
+      return d.toISOString().slice(0, 10);
+    }
+
+    function daysAheadISO(days) {
+      const d = new Date();
+      d.setDate(d.getDate() + days);
+      return d.toISOString().slice(0, 10);
+    }
 
     const defaultState = {
       settings: {
@@ -594,18 +1077,94 @@
         { id: 105, sku: 'PRD-005', name: 'Audífonos Inalámbricos Pro', category: 'Tecnología', cost: 14.00, price: 34.99, stock: 4, min: 6 },
         { id: 106, sku: 'PRD-006', name: 'Camiseta Algodón Premium', category: 'Tienda / Ropa', cost: 7.50, price: 22.00, stock: 19, min: 5 }
       ],
-      sales: []
+      sales: [
+        {
+          folio: 'FAC-1002',
+          date: todayISO() + ' 11:20 AM',
+          dateISO: todayISO(),
+          client: 'Carlos Mendoza',
+          phone: '50588881111',
+          cashier: 'Administrador Principal',
+          method: 'Efectivo',
+          items: [
+            { id: 102, sku: 'PRD-002', name: 'Combo Ejecutivo / Menú Especial', price: 11.90, cost: 4.50, qty: 2 },
+            { id: 101, sku: 'PRD-001', name: 'Café Espresso Doble / Bebida', price: 3.50, cost: 1.10, qty: 2 }
+          ],
+          subtotal: 30.80,
+          discPct: 0,
+          discVal: 0,
+          tax: 4.62,
+          total: 35.42,
+          profit: 19.60
+        },
+        {
+          folio: 'FAC-1001',
+          date: daysAgoISO(1) + ' 04:45 PM',
+          dateISO: daysAgoISO(1),
+          client: 'Empresa Corporativa Delta',
+          phone: '50588882222',
+          cashier: 'Cajero Turno 1',
+          method: 'Tarjeta',
+          items: [
+            { id: 105, sku: 'PRD-005', name: 'Audífonos Inalámbricos Pro', price: 34.99, cost: 14.00, qty: 2 }
+          ],
+          subtotal: 69.98,
+          discPct: 0,
+          discVal: 0,
+          tax: 10.50,
+          total: 80.48,
+          profit: 41.98
+        }
+      ],
+      expenses: [
+        { id: 1, date: todayISO() + ' 10:15 AM', dateISO: todayISO(), concept: 'Pago de Suministros y Bolsas Empaque', category: 'Insumos', by: 'Administrador Principal', amount: 25.00 },
+        { id: 2, date: daysAgoISO(1) + ' 08:30 AM', dateISO: daysAgoISO(1), concept: 'Pago Servicio de Internet y Energía', category: 'Servicios Básicos', by: 'Cajero Turno 1', amount: 42.00 }
+      ],
+      purchases: [
+        { id: 301, ref: 'FAC-PRV-089', date: todayISO(), dateISO: todayISO(), supplier: 'Distribuidora Mayorista Central', desc: 'Reabastecimiento Café Premium y Bebidas (25 uds)', condition: 'Contado', amount: 85.00, by: 'Administrador Principal' },
+        { id: 302, ref: 'FAC-PRV-090', date: daysAgoISO(2), dateISO: daysAgoISO(2), supplier: 'Importadora Tecnológica Global', desc: 'Lote Audífonos Inalámbricos y Accesorios', condition: 'Crédito (CxP)', amount: 210.00, by: 'Administrador Principal' }
+      ],
+      receivables: [
+        { id: 401, ref: 'FAC-CRED-01', date: todayISO(), dateISO: todayISO(), due: daysAheadISO(15), client: 'Oficinas Corporativas Prisma', phone: '50588884444', concept: 'Pedido empresarial al crédito 15 días', total: 145.00, paid: 45.00 },
+        { id: 402, ref: 'FAC-CRED-02', date: daysAgoISO(3), dateISO: daysAgoISO(3), due: daysAheadISO(7), client: 'María Fernanda Solís', phone: '50588885555', concept: 'Venta al crédito de productos seleccionados', total: 68.00, paid: 0.00 }
+      ],
+      payables: [
+        { id: 501, ref: 'FAC-PRV-090', date: daysAgoISO(2), dateISO: daysAgoISO(2), due: daysAheadISO(20), supplier: 'Importadora Tecnológica Global', phone: '50588889999', concept: 'Lote Audífonos Inalámbricos y Accesorios', total: 210.00, paid: 60.00 },
+        { id: 502, ref: 'FAC-PRV-075', date: daysAgoISO(5), dateISO: daysAgoISO(5), due: daysAheadISO(10), supplier: 'Empaques & Suministros del Norte', phone: '50588887777', concept: 'Bolsas impresas con logo y papelería térmica', total: 95.00, paid: 0.00 }
+      ]
     };
 
     let state = loadState();
+
+    function extractISODate(str) {
+      if (!str) return todayISO();
+      const s = String(str);
+      const m = s.match(/(\d{4}-\d{2}-\d{2})/);
+      if (m) return m[1];
+      const m2 = s.match(/(\d{1,2})\/(\d{1,2})\/(\d{4})/);
+      if (m2) {
+        return `${m2[3]}-${String(m2[2]).padStart(2, '0')}-${String(m2[1]).padStart(2, '0')}`;
+      }
+      return todayISO();
+    }
 
     function loadState() {
       try {
         const raw = localStorage.getItem(STORAGE_KEY);
         if (!raw) return JSON.parse(JSON.stringify(defaultState));
         const parsed = JSON.parse(raw);
-        // Garantizar máximo 4 usuarios siempre
         if (!parsed.users || parsed.users.length !== 4) parsed.users = defaultState.users;
+        if (!parsed.expenses) parsed.expenses = JSON.parse(JSON.stringify(defaultState.expenses));
+        if (!parsed.purchases) parsed.purchases = JSON.parse(JSON.stringify(defaultState.purchases));
+        if (!parsed.receivables) parsed.receivables = JSON.parse(JSON.stringify(defaultState.receivables));
+        if (!parsed.payables) parsed.payables = JSON.parse(JSON.stringify(defaultState.payables));
+        if (!parsed.sales || parsed.sales.length === 0) parsed.sales = JSON.parse(JSON.stringify(defaultState.sales));
+
+        parsed.sales.forEach(s => { if (!s.dateISO) s.dateISO = extractISODate(s.date); });
+        parsed.expenses.forEach(e => { if (!e.dateISO) e.dateISO = extractISODate(e.date); });
+        parsed.purchases.forEach(p => { if (!p.dateISO) p.dateISO = extractISODate(p.date); });
+        parsed.receivables.forEach(r => { if (!r.dateISO) r.dateISO = extractISODate(r.date); });
+        parsed.payables.forEach(p => { if (!p.dateISO) p.dateISO = extractISODate(p.date); });
         return parsed;
       } catch (e) {
         return JSON.parse(JSON.stringify(defaultState));
@@ -619,6 +1178,13 @@
 
     function fmt(num) {
       return (state.settings.currency || '$') + Number(num || 0).toFixed(2);
+    }
+
+    function inDateRange(dateISO, fromISO, toISO) {
+      const d = dateISO || todayISO();
+      if (fromISO && d < fromISO) return false;
+      if (toISO && d > toISO) return false;
+      return true;
     }
 
     // Gestión de Tema Claro / Oscuro
@@ -710,6 +1276,7 @@
       renderCart();
       renderInventory();
       renderSales();
+      renderExpenses();
       renderUsersGrid();
       loadSettingsForm();
     }
@@ -727,12 +1294,14 @@
       const showPOS = ['ADMIN', 'CAJERO', 'SUPERVISOR'].includes(r);
       const showInv = ['ADMIN', 'INVENTARIO', 'SUPERVISOR'].includes(r);
       const showSales = ['ADMIN', 'CAJERO', 'SUPERVISOR'].includes(r);
+      const showExpenses = ['ADMIN', 'CAJERO', 'SUPERVISOR'].includes(r);
       const showUsers = r === 'ADMIN';
       const showSettings = r === 'ADMIN';
 
       document.getElementById('nav-pos').classList.toggle('hidden', !showPOS);
       document.getElementById('nav-inventory').classList.toggle('hidden', !showInv);
       document.getElementById('nav-sales').classList.toggle('hidden', !showSales);
+      document.getElementById('nav-expenses').classList.toggle('hidden', !showExpenses);
       document.getElementById('nav-users').classList.toggle('hidden', !showUsers);
       document.getElementById('nav-settings').classList.toggle('hidden', !showSettings);
 
@@ -740,8 +1309,405 @@
       else if (showInv) switchTab('inventory');
     }
 
+    // =========================================================================
+    // MÓDULO FINANCIERO: GASTOS, COMPRAS, CUENTAS POR COBRAR (CxC) Y PAGAR (CxP)
+    // =========================================================================
+    function setFinanceDatePreset(mode) {
+      const fromEl = document.getElementById('fin-date-from');
+      const toEl = document.getElementById('fin-date-to');
+      const t = todayISO();
+      if (mode === 'TODAY') {
+        fromEl.value = t;
+        toEl.value = t;
+      } else if (mode === 'MONTH') {
+        fromEl.value = t.slice(0, 8) + '01';
+        toEl.value = t;
+      } else {
+        fromEl.value = '';
+        toEl.value = '';
+      }
+      renderExpenses();
+    }
+
+    function switchFinanceSubTab(sub) {
+      currentFinanceSubTab = sub;
+      ['all', 'gastos', 'compras', 'cxc', 'cxp'].forEach(k => {
+        const btn = document.getElementById('fintab-' + k);
+        if (btn) {
+          btn.className = k === sub
+            ? 'px-3 py-1.5 rounded-xl bg-amber-500 text-slate-950 font-extrabold text-xs transition'
+            : 'px-3 py-1.5 rounded-xl bg-slate-800 text-slate-300 font-bold text-xs transition hover:bg-slate-700';
+        }
+      });
+      document.getElementById('fin-sec-gastos').classList.toggle('hidden', sub !== 'all' && sub !== 'gastos');
+      document.getElementById('fin-sec-compras').classList.toggle('hidden', sub !== 'all' && sub !== 'compras');
+      document.getElementById('fin-sec-cxc').classList.toggle('hidden', sub !== 'all' && sub !== 'cxc');
+      document.getElementById('fin-sec-cxp').classList.toggle('hidden', sub !== 'all' && sub !== 'cxp');
+    }
+
+    function openExpenseModal() {
+      const who = document.getElementById('exp-cashier');
+      if (who && currentUser) who.value = currentUser.name;
+      document.getElementById('exp-date').value = todayISO();
+      document.getElementById('expense-modal').classList.remove('hidden');
+    }
+
+    function closeExpenseModal() {
+      document.getElementById('expense-modal').classList.add('hidden');
+    }
+
+    function saveExpense() {
+      const concept = document.getElementById('exp-concept').value.trim() || 'Gasto operativo';
+      const amount = Number(document.getElementById('exp-amount').value) || 0;
+      const dateISO = document.getElementById('exp-date').value || todayISO();
+      if (amount <= 0) { alert('Ingresa un monto válido para el gasto.'); return; }
+      const now = new Date();
+      const hh = String(now.getHours() % 12 || 12).padStart(2, '0');
+      const mm = String(now.getMinutes()).padStart(2, '0');
+      const ap = now.getHours() >= 12 ? 'PM' : 'AM';
+      state.expenses = state.expenses || [];
+      state.expenses.unshift({
+        id: Date.now(),
+        date: `${dateISO} ${hh}:${mm} ${ap}`,
+        dateISO,
+        concept,
+        category: document.getElementById('exp-category').value,
+        by: document.getElementById('exp-cashier').value || (currentUser ? currentUser.name : 'Admin'),
+        amount
+      });
+      saveState();
+      renderExpenses();
+      renderSales();
+      closeExpenseModal();
+    }
+
+    function deleteExpense(id) {
+      if (!confirm('¿Eliminar este gasto?')) return;
+      state.expenses = (state.expenses || []).filter(e => e.id !== id);
+      saveState();
+      renderExpenses();
+      renderSales();
+    }
+
+    // COMPRAS A PROVEEDORES
+    function openPurchaseModal() {
+      document.getElementById('pur-date').value = todayISO();
+      document.getElementById('pur-ref').value = 'CMP-' + String((state.purchases || []).length + 101);
+      const sel = document.getElementById('pur-product-id');
+      sel.innerHTML = '<option value="">-- Compra General / Sin vincular a SKU específico --</option>' +
+        state.products.map(p => `<option value="${p.id}">${p.sku} - ${p.name} (Costo: ${fmt(p.cost)} | Stock: ${p.stock})</option>`).join('');
+      document.getElementById('purchase-modal').classList.remove('hidden');
+    }
+
+    function closePurchaseModal() {
+      document.getElementById('purchase-modal').classList.add('hidden');
+    }
+
+    function onPurchaseProductSelect() {
+      const pid = Number(document.getElementById('pur-product-id').value);
+      const prod = state.products.find(p => p.id === pid);
+      const qty = Number(document.getElementById('pur-qty').value) || 1;
+      if (prod) {
+        document.getElementById('pur-desc').value = `Abastecimiento: ${prod.name} (${qty} uds)`;
+        document.getElementById('pur-amount').value = ((prod.cost || 1) * qty).toFixed(2);
+      }
+    }
+
+    function calcPurchaseTotal() {
+      const pid = Number(document.getElementById('pur-product-id').value);
+      const prod = state.products.find(p => p.id === pid);
+      const qty = Number(document.getElementById('pur-qty').value) || 1;
+      if (prod) {
+        document.getElementById('pur-desc').value = `Abastecimiento: ${prod.name} (${qty} uds)`;
+        document.getElementById('pur-amount').value = ((prod.cost || 1) * qty).toFixed(2);
+      }
+    }
+
+    function savePurchase() {
+      const supplier = document.getElementById('pur-supplier').value.trim() || 'Proveedor General';
+      const ref = document.getElementById('pur-ref').value.trim() || 'CMP-001';
+      const dateISO = document.getElementById('pur-date').value || todayISO();
+      const condition = document.getElementById('pur-condition').value;
+      const pid = Number(document.getElementById('pur-product-id').value);
+      const qty = Number(document.getElementById('pur-qty').value) || 0;
+      const amount = Number(document.getElementById('pur-amount').value) || 0;
+      const desc = document.getElementById('pur-desc').value.trim() || 'Compra de mercancía / insumos';
+
+      if (amount <= 0) { alert('Ingresa un monto válido para la compra.'); return; }
+
+      // Si se seleccionó un producto, sumar al inventario automáticamente
+      if (pid && qty > 0) {
+        const prod = state.products.find(p => p.id === pid);
+        if (prod) prod.stock += qty;
+      }
+
+      state.purchases = state.purchases || [];
+      state.purchases.unshift({
+        id: Date.now(),
+        ref,
+        date: dateISO,
+        dateISO,
+        supplier,
+        desc,
+        condition,
+        amount,
+        by: currentUser ? currentUser.name : 'Admin'
+      });
+
+      // Si es a crédito, generar automáticamente en Cuentas por Pagar (CxP)
+      if (condition.includes('Crédito')) {
+        state.payables = state.payables || [];
+        state.payables.unshift({
+          id: Date.now() + 1,
+          ref,
+          date: dateISO,
+          dateISO,
+          due: daysAheadISO(15),
+          supplier,
+          phone: '',
+          concept: desc,
+          total: amount,
+          paid: 0
+        });
+      }
+
+      saveState();
+      renderInventory();
+      renderPOSProducts();
+      renderExpenses();
+      renderSales();
+      closePurchaseModal();
+    }
+
+    function deletePurchase(id) {
+      if (!confirm('¿Eliminar este registro de compra?')) return;
+      state.purchases = (state.purchases || []).filter(p => p.id !== id);
+      saveState();
+      renderExpenses();
+      renderSales();
+    }
+
+    // CUENTAS POR COBRAR (CxC) Y CUENTAS POR PAGAR (CxP)
+    function openAccountModal(type) {
+      document.getElementById('acc-type').value = type;
+      document.getElementById('acc-date').value = todayISO();
+      document.getElementById('acc-due').value = daysAheadISO(15);
+      document.getElementById('acc-paid').value = '0.00';
+      if (type === 'CXC') {
+        document.getElementById('acc-modal-title').textContent = '📥 Registrar Cuenta por Cobrar (Cliente)';
+        document.getElementById('acc-entity-label').textContent = 'Nombre del Cliente / Deudor:';
+        document.getElementById('acc-ref').value = 'CXC-' + String((state.receivables || []).length + 101);
+        document.getElementById('acc-concept').value = 'Venta o servicio otorgado al crédito';
+      } else {
+        document.getElementById('acc-modal-title').textContent = '📤 Registrar Cuenta por Pagar (Proveedor)';
+        document.getElementById('acc-entity-label').textContent = 'Nombre del Proveedor / Acreedor:';
+        document.getElementById('acc-ref').value = 'CXP-' + String((state.payables || []).length + 101);
+        document.getElementById('acc-concept').value = 'Factura de proveedor pendiente de pago';
+      }
+      document.getElementById('account-modal').classList.remove('hidden');
+    }
+
+    function closeAccountModal() {
+      document.getElementById('account-modal').classList.add('hidden');
+    }
+
+    function saveAccountRecord() {
+      const type = document.getElementById('acc-type').value;
+      const entity = document.getElementById('acc-entity').value.trim() || (type === 'CXC' ? 'Cliente Crédito' : 'Proveedor');
+      const phone = document.getElementById('acc-phone').value.trim();
+      const ref = document.getElementById('acc-ref').value.trim() || 'REF-101';
+      const concept = document.getElementById('acc-concept').value.trim() || 'Cuenta pendiente';
+      const dateISO = document.getElementById('acc-date').value || todayISO();
+      const due = document.getElementById('acc-due').value || daysAheadISO(15);
+      const total = Number(document.getElementById('acc-total').value) || 0;
+      const paid = Math.min(total, Math.max(0, Number(document.getElementById('acc-paid').value) || 0));
+
+      if (total <= 0) { alert('Ingresa un monto total válido.'); return; }
+
+      if (type === 'CXC') {
+        state.receivables = state.receivables || [];
+        state.receivables.unshift({ id: Date.now(), ref, date: dateISO, dateISO, due, client: entity, phone, concept, total, paid });
+      } else {
+        state.payables = state.payables || [];
+        state.payables.unshift({ id: Date.now(), ref, date: dateISO, dateISO, due, supplier: entity, phone, concept, total, paid });
+      }
+      saveState();
+      renderExpenses();
+      renderSales();
+      closeAccountModal();
+    }
+
+    function registerAccountPayment(type, id) {
+      const list = type === 'CXC' ? (state.receivables || []) : (state.payables || []);
+      const rec = list.find(x => x.id === id);
+      if (!rec) return;
+      const pending = Math.max(0, Number(rec.total) - Number(rec.paid || 0));
+      if (pending <= 0) { alert('Esta cuenta ya se encuentra liquidada al 100%.'); return; }
+      const label = type === 'CXC' ? `el cliente "${rec.client}"` : `el proveedor "${rec.supplier}"`;
+      const input = prompt(`Saldo pendiente con ${label}: ${fmt(pending)}\n\nIngresa el monto a abonar o liquidar ($):`, pending.toFixed(2));
+      if (input === null) return;
+      const abono = Number(input);
+      if (isNaN(abono) || abono <= 0) { alert('Monto inválido.'); return; }
+      rec.paid = Math.min(Number(rec.total), Number(rec.paid || 0) + abono);
+      saveState();
+      renderExpenses();
+      renderSales();
+    }
+
+    function deleteAccountRecord(type, id) {
+      if (!confirm('¿Eliminar este registro de cuenta?')) return;
+      if (type === 'CXC') state.receivables = (state.receivables || []).filter(x => x.id !== id);
+      else state.payables = (state.payables || []).filter(x => x.id !== id);
+      saveState();
+      renderExpenses();
+      renderSales();
+    }
+
+    function renderExpenses() {
+      const fromISO = document.getElementById('fin-date-from') ? document.getElementById('fin-date-from').value : '';
+      const toISO = document.getElementById('fin-date-to') ? document.getElementById('fin-date-to').value : '';
+
+      // 1. Gastos Operativos
+      const tbodyExp = document.getElementById('expenses-table-body');
+      const badge = {
+        'Insumos': 'bg-blue-500/20 text-blue-300',
+        'Servicios Básicos': 'bg-cyan-500/20 text-cyan-300',
+        'Alquiler / Local': 'bg-purple-500/20 text-purple-300',
+        'Nómina / Comisiones': 'bg-emerald-500/20 text-emerald-300',
+        'Proveedores': 'bg-amber-500/20 text-amber-300',
+        'Caja Chica': 'bg-rose-500/20 text-rose-300'
+      };
+      const filteredExpenses = (state.expenses || []).filter(e => inDateRange(e.dateISO || extractISODate(e.date), fromISO, toISO));
+      let totalExp = 0, cajaExp = 0;
+      if (tbodyExp) {
+        tbodyExp.innerHTML = '';
+        filteredExpenses.forEach(e => {
+          totalExp += Number(e.amount);
+          if (e.category === 'Caja Chica' || e.category === 'Insumos') cajaExp += Number(e.amount);
+          const tr = document.createElement('tr');
+          tr.className = 'hover:bg-slate-800/30';
+          tr.innerHTML = `
+            <td class="py-3 px-4 font-mono text-slate-400">${e.date}</td>
+            <td class="py-3 px-4 font-bold text-white">${e.concept}</td>
+            <td class="py-3 px-4"><span class="px-2 py-0.5 rounded ${badge[e.category] || 'bg-slate-500/20 text-slate-300'} text-[10px] font-bold">${e.category}</span></td>
+            <td class="py-3 px-4 text-slate-300">${e.by}</td>
+            <td class="py-3 px-4 text-right font-black text-amber-400 mono">${fmt(e.amount)}</td>
+            <td class="py-3 px-4 text-right">
+              <button onclick="deleteExpense(${e.id})" class="px-2 py-1 rounded bg-red-500/15 text-red-300 hover:bg-red-500 hover:text-white text-xs font-bold">&times;</button>
+            </td>`;
+          tbodyExp.appendChild(tr);
+        });
+      }
+
+      // 2. Compras a Proveedores
+      const tbodyPur = document.getElementById('purchases-table-body');
+      const filteredPurchases = (state.purchases || []).filter(p => inDateRange(p.dateISO || extractISODate(p.date), fromISO, toISO));
+      let totalPur = 0;
+      if (tbodyPur) {
+        tbodyPur.innerHTML = '';
+        filteredPurchases.forEach(p => {
+          totalPur += Number(p.amount);
+          const isCred = (p.condition || '').includes('Crédito');
+          const tr = document.createElement('tr');
+          tr.className = 'hover:bg-slate-800/30';
+          tr.innerHTML = `
+            <td class="py-3 px-4 font-mono text-cyan-400 font-bold">${p.ref}<span class="block text-[10px] text-slate-400 font-normal">${p.date}</span></td>
+            <td class="py-3 px-4 font-bold text-white">${p.supplier}</td>
+            <td class="py-3 px-4 text-slate-300">${p.desc}</td>
+            <td class="py-3 px-4"><span class="px-2 py-0.5 rounded ${isCred ? 'bg-rose-500/20 text-rose-300' : 'bg-emerald-500/20 text-emerald-300'} text-[10px] font-bold">${p.condition}</span></td>
+            <td class="py-3 px-4 text-right font-black text-cyan-400 mono">${fmt(p.amount)}</td>
+            <td class="py-3 px-4 text-right">
+              <button onclick="deletePurchase(${p.id})" class="px-2 py-1 rounded bg-red-500/15 text-red-300 hover:bg-red-500 hover:text-white text-xs font-bold">&times;</button>
+            </td>`;
+          tbodyPur.appendChild(tr);
+        });
+      }
+
+      // 3. Cuentas por Cobrar (CxC)
+      const tbodyCxC = document.getElementById('cxc-table-body');
+      const filteredCxC = (state.receivables || []).filter(r => inDateRange(r.dateISO || extractISODate(r.date), fromISO, toISO));
+      let pendingCxC = 0, activeCxCCount = 0;
+      if (tbodyCxC) {
+        tbodyCxC.innerHTML = '';
+        filteredCxC.forEach(r => {
+          const bal = Math.max(0, Number(r.total) - Number(r.paid || 0));
+          pendingCxC += bal;
+          if (bal > 0) activeCxCCount++;
+          const stBadge = bal <= 0
+            ? `<span class="px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-300 text-[10px] font-bold">Pagado ✅</span>`
+            : Number(r.paid) > 0
+              ? `<span class="px-2 py-0.5 rounded bg-amber-500/20 text-amber-300 text-[10px] font-bold">Abono Parcial</span>`
+              : `<span class="px-2 py-0.5 rounded bg-rose-500/20 text-rose-300 text-[10px] font-bold">Pendiente</span>`;
+          const tr = document.createElement('tr');
+          tr.className = 'hover:bg-slate-800/30';
+          tr.innerHTML = `
+            <td class="py-3 px-4 font-mono font-bold text-emerald-400">${r.ref}<span class="block text-[10px] text-slate-400 font-normal">${r.date}</span></td>
+            <td class="py-3 px-4 font-bold text-white">${r.client}<span class="block text-[10px] text-slate-400 font-mono">${r.phone || ''}</span></td>
+            <td class="py-3 px-4 text-slate-300">${r.concept}</td>
+            <td class="py-3 px-4 font-mono text-slate-400">${r.due}</td>
+            <td class="py-3 px-4 font-mono text-white">${fmt(r.total)}</td>
+            <td class="py-3 px-4 font-mono text-emerald-400">${fmt(r.paid)}</td>
+            <td class="py-3 px-4 font-mono font-black text-amber-400">${fmt(bal)}</td>
+            <td class="py-3 px-4">${stBadge}</td>
+            <td class="py-3 px-4 text-right space-x-1">
+              ${bal > 0 ? `<button onclick="registerAccountPayment('CXC', ${r.id})" class="px-2.5 py-1 rounded-lg bg-emerald-500 text-slate-950 font-extrabold text-[11px] hover:bg-emerald-400">💵 Cobrar / Abonar</button>` : ''}
+              <button onclick="deleteAccountRecord('CXC', ${r.id})" class="px-2 py-1 rounded bg-red-500/15 text-red-300 hover:bg-red-500 hover:text-white text-xs font-bold">&times;</button>
+            </td>`;
+          tbodyCxC.appendChild(tr);
+        });
+      }
+
+      // 4. Cuentas por Pagar (CxP)
+      const tbodyCxP = document.getElementById('cxp-table-body');
+      const filteredCxP = (state.payables || []).filter(p => inDateRange(p.dateISO || extractISODate(p.date), fromISO, toISO));
+      let pendingCxP = 0, activeCxPCount = 0;
+      if (tbodyCxP) {
+        tbodyCxP.innerHTML = '';
+        filteredCxP.forEach(p => {
+          const bal = Math.max(0, Number(p.total) - Number(p.paid || 0));
+          pendingCxP += bal;
+          if (bal > 0) activeCxPCount++;
+          const stBadge = bal <= 0
+            ? `<span class="px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-300 text-[10px] font-bold">Liquidado ✅</span>`
+            : Number(p.paid) > 0
+              ? `<span class="px-2 py-0.5 rounded bg-amber-500/20 text-amber-300 text-[10px] font-bold">Abonado</span>`
+              : `<span class="px-2 py-0.5 rounded bg-rose-500/20 text-rose-300 text-[10px] font-bold">Por Pagar</span>`;
+          const tr = document.createElement('tr');
+          tr.className = 'hover:bg-slate-800/30';
+          tr.innerHTML = `
+            <td class="py-3 px-4 font-mono font-bold text-rose-400">${p.ref}<span class="block text-[10px] text-slate-400 font-normal">${p.date}</span></td>
+            <td class="py-3 px-4 font-bold text-white">${p.supplier}</td>
+            <td class="py-3 px-4 text-slate-300">${p.concept}</td>
+            <td class="py-3 px-4 font-mono text-slate-400">${p.due}</td>
+            <td class="py-3 px-4 font-mono text-white">${fmt(p.total)}</td>
+            <td class="py-3 px-4 font-mono text-emerald-400">${fmt(p.paid)}</td>
+            <td class="py-3 px-4 font-mono font-black text-rose-400">${fmt(bal)}</td>
+            <td class="py-3 px-4">${stBadge}</td>
+            <td class="py-3 px-4 text-right space-x-1">
+              ${bal > 0 ? `<button onclick="registerAccountPayment('CXP', ${p.id})" class="px-2.5 py-1 rounded-lg bg-rose-500 text-white font-extrabold text-[11px] hover:bg-rose-400">💳 Pagar / Abonar</button>` : ''}
+              <button onclick="deleteAccountRecord('CXP', ${p.id})" class="px-2 py-1 rounded bg-red-500/15 text-red-300 hover:bg-red-500 hover:text-white text-xs font-bold">&times;</button>
+            </td>`;
+          tbodyCxP.appendChild(tr);
+        });
+      }
+
+      document.getElementById('expense-kpi-total').textContent = fmt(totalExp);
+      document.getElementById('expense-kpi-caja').textContent = `Caja Chica / Insumos: ${fmt(cajaExp)}`;
+      document.getElementById('expense-kpi-prov').textContent = fmt(totalPur);
+      const purCountEl = document.getElementById('purchase-kpi-count');
+      if (purCountEl) purCountEl.textContent = `${filteredPurchases.length} compras registradas`;
+      const cxcPendEl = document.getElementById('cxc-kpi-pending');
+      if (cxcPendEl) cxcPendEl.textContent = fmt(pendingCxC);
+      const cxcCountEl = document.getElementById('cxc-kpi-count');
+      if (cxcCountEl) cxcCountEl.textContent = `${activeCxCCount} cuentas pendientes de cobro`;
+      const cxpPendEl = document.getElementById('cxp-kpi-pending');
+      if (cxpPendEl) cxpPendEl.textContent = fmt(pendingCxP);
+      const cxpCountEl = document.getElementById('cxp-kpi-count');
+      if (cxpCountEl) cxpCountEl.textContent = `${activeCxPCount} facturas pendientes de pago`;
+    }
+
     function switchTab(tab) {
-      ['pos', 'inventory', 'sales', 'users', 'settings'].forEach(t => {
+      ['pos', 'inventory', 'sales', 'expenses', 'users', 'settings'].forEach(t => {
         document.getElementById(`tab-${t}`).classList.toggle('hidden', t !== tab);
         const btn = document.getElementById(`nav-${t}`);
         if (btn) {
@@ -752,9 +1718,11 @@
           }
         }
       });
+      if (tab === 'sales') renderSales();
+      if (tab === 'expenses') renderExpenses();
     }
 
-    // POS & CARRITO
+    // POS & CARRITO (CON CANTIDAD DIGITABLE Y BOTÓN ELIMINAR POR LÍNEA)
     function populateCategoryFilter() {
       const sel = document.getElementById('pos-category-filter');
       const cats = [...new Set(state.products.map(p => p.category))];
@@ -825,6 +1793,28 @@
       renderCart();
     }
 
+    function setCartQty(pid, val) {
+      const item = cart.find(i => i.id === pid);
+      const prod = state.products.find(p => p.id === pid);
+      if (!item) return;
+      let q = parseInt(val, 10);
+      if (isNaN(q) || q <= 0) {
+        cart = cart.filter(i => i.id !== pid);
+      } else {
+        if (prod && q > prod.stock) {
+          alert(`Stock máximo disponible para "${prod.name}": ${prod.stock} unidades.`);
+          q = prod.stock;
+        }
+        item.qty = q;
+      }
+      renderCart();
+    }
+
+    function removeFromCart(pid) {
+      cart = cart.filter(i => i.id !== pid);
+      renderCart();
+    }
+
     function clearCart() {
       cart = [];
       renderCart();
@@ -845,19 +1835,23 @@
       if (cart.length === 0) {
         box.innerHTML = `<div class="text-center py-10 text-xs text-slate-500">Haz clic en cualquier producto del catálogo para agregarlo a la factura.</div>`;
       } else {
-        box.innerHTML = cart.map(i => `
-          <div class="flex items-center justify-between bg-slate-900 p-2.5 rounded-xl border border-slate-800 text-xs">
-            <div class="truncate pr-2">
+        box.innerHTML = cart.map(i => {
+          const prod = state.products.find(p => p.id === i.id);
+          const maxStock = prod ? prod.stock : 9999;
+          return `
+          <div class="flex items-center justify-between bg-slate-900 p-2.5 rounded-xl border border-slate-800 text-xs gap-2">
+            <div class="truncate flex-1">
               <p class="font-bold text-white truncate">${i.name}</p>
               <span class="text-[11px] text-slate-400 mono">${fmt(i.price)} x ${i.qty} = <strong class="text-emerald-400">${fmt(i.price * i.qty)}</strong></span>
             </div>
-            <div class="flex items-center gap-1.5 shrink-0">
-              <button onclick="updateCartQty(${i.id}, -1)" class="w-6 h-6 rounded bg-slate-800 hover:bg-slate-700 text-white font-bold">-</button>
-              <span class="w-6 text-center font-mono font-bold">${i.qty}</span>
-              <button onclick="updateCartQty(${i.id}, 1)" class="w-6 h-6 rounded bg-slate-800 hover:bg-emerald-500 hover:text-slate-950 text-white font-bold">+</button>
+            <div class="flex items-center gap-1 shrink-0">
+              <button onclick="updateCartQty(${i.id}, -1)" title="Disminuir cantidad" class="w-6 h-6 rounded-lg bg-slate-800 hover:bg-slate-700 text-white font-bold">-</button>
+              <input type="number" min="1" max="${maxStock}" value="${i.qty}" onchange="setCartQty(${i.id}, this.value)" title="Digitar cantidad exacta" class="w-12 h-6 bg-slate-950 border border-slate-700 rounded-lg text-center font-mono font-bold text-white focus:border-emerald-400 focus:outline-none">
+              <button onclick="updateCartQty(${i.id}, 1)" title="Aumentar cantidad" class="w-6 h-6 rounded-lg bg-slate-800 hover:bg-emerald-500 hover:text-slate-950 text-white font-bold">+</button>
+              <button onclick="removeFromCart(${i.id})" title="Eliminar producto del carrito" class="w-6 h-6 rounded-lg bg-red-500/20 hover:bg-red-500 text-red-400 hover:text-white font-bold flex items-center justify-center transition ml-1">🗑️</button>
             </div>
           </div>
-        `).join('');
+        `}).join('');
       }
 
       const t = getCartTotals();
@@ -890,7 +1884,12 @@
       const phone = document.getElementById('pos-client-phone').value.trim() || '';
       const method = document.getElementById('pos-payment-method').value;
       const folio = 'FAC-' + String(state.sales.length + 1001);
-      const dateStr = new Date().toLocaleString('es-ES');
+      const tISO = todayISO();
+      const now = new Date();
+      const hh = String(now.getHours() % 12 || 12).padStart(2, '0');
+      const mm = String(now.getMinutes()).padStart(2, '0');
+      const ap = now.getHours() >= 12 ? 'PM' : 'AM';
+      const dateStr = `${tISO} ${hh}:${mm} ${ap}`;
 
       // Descontar Stock en Tiempo Real
       cart.forEach(item => {
@@ -902,9 +1901,10 @@
       const saleRecord = {
         folio,
         date: dateStr,
+        dateISO: tISO,
         client,
         phone,
-        cashier: currentUser.name,
+        cashier: currentUser ? currentUser.name : 'Admin Principal',
         method,
         items: JSON.parse(JSON.stringify(cart)),
         ...totals,
@@ -912,6 +1912,24 @@
       };
 
       state.sales.unshift(saleRecord);
+
+      // Si la venta fue al Crédito (CxC), crear automáticamente la Cuenta por Cobrar
+      if (method.includes('Crédito')) {
+        state.receivables = state.receivables || [];
+        state.receivables.unshift({
+          id: Date.now(),
+          ref: folio,
+          date: tISO,
+          dateISO: tISO,
+          due: daysAheadISO(15),
+          client,
+          phone,
+          concept: `Factura POS ${folio} (${cart.length} ítems)`,
+          total: totals.total,
+          paid: 0
+        });
+      }
+
       lastInvoice = saleRecord;
       saveState();
 
@@ -923,6 +1941,7 @@
       renderCart();
       renderInventory();
       renderSales();
+      renderExpenses();
       showInvoiceModal(saleRecord);
     }
 
@@ -1037,6 +2056,7 @@
         saveState();
         renderInventory();
         renderPOSProducts();
+        renderSales();
       }
     }
 
@@ -1095,6 +2115,7 @@
       populateCategoryFilter();
       renderInventory();
       renderPOSProducts();
+      renderSales();
       closeProductModal();
     }
 
@@ -1104,29 +2125,94 @@
       saveState();
       renderInventory();
       renderPOSProducts();
+      renderSales();
     }
 
-    // HISTORIAL DE VENTAS
+    // =========================================================================
+    // DASHBOARD FACTURAS, CORTE DE CAJA Y REPORTES POR FECHAS / RANGOS
+    // =========================================================================
+    function setSalesDatePreset(mode) {
+      const fromEl = document.getElementById('sales-date-from');
+      const toEl = document.getElementById('sales-date-to');
+      const t = todayISO();
+      if (mode === 'TODAY') {
+        fromEl.value = t;
+        toEl.value = t;
+      } else if (mode === 'WEEK') {
+        fromEl.value = daysAgoISO(7);
+        toEl.value = t;
+      } else if (mode === 'MONTH') {
+        fromEl.value = t.slice(0, 8) + '01';
+        toEl.value = t;
+      } else {
+        fromEl.value = '';
+        toEl.value = '';
+      }
+      renderSales();
+    }
+
+    function getFilteredSalesAndOutflows() {
+      const fromISO = document.getElementById('sales-date-from') ? document.getElementById('sales-date-from').value : '';
+      const toISO = document.getElementById('sales-date-to') ? document.getElementById('sales-date-to').value : '';
+      const q = (document.getElementById('sales-search-input') ? document.getElementById('sales-search-input').value : '').toLowerCase();
+
+      const filteredSales = (state.sales || []).map((s, originalIdx) => ({ ...s, originalIdx })).filter(s => {
+        const d = s.dateISO || extractISODate(s.date);
+        const matchDate = inDateRange(d, fromISO, toISO);
+        const matchQ = !q || (s.folio || '').toLowerCase().includes(q) || (s.client || '').toLowerCase().includes(q) || (s.method || '').toLowerCase().includes(q);
+        return matchDate && matchQ;
+      });
+
+      const filteredExpenses = (state.expenses || []).filter(e => inDateRange(e.dateISO || extractISODate(e.date), fromISO, toISO));
+      const filteredPurchases = (state.purchases || []).filter(p => inDateRange(p.dateISO || extractISODate(p.date), fromISO, toISO));
+
+      return { fromISO, toISO, filteredSales, filteredExpenses, filteredPurchases };
+    }
+
     function renderSales() {
       const tbody = document.getElementById('sales-table-body');
+      if (!tbody) return;
       tbody.innerHTML = '';
-      let rev = 0;
-      let prof = 0;
 
-      state.sales.forEach((s, idx) => {
-        rev += s.total;
-        prof += (s.profit || 0);
+      const { fromISO, toISO, filteredSales, filteredExpenses, filteredPurchases } = getFilteredSalesAndOutflows();
+      const tISO = todayISO();
+
+      // Ventas del día (Hoy)
+      const todaySales = (state.sales || []).filter(s => (s.dateISO || extractISODate(s.date)) === tISO);
+      const todayRev = todaySales.reduce((acc, s) => acc + Number(s.total || 0), 0);
+
+      // Valor del Inventario (Precio Venta y Costo)
+      let invRetailVal = 0, invCostVal = 0;
+      (state.products || []).forEach(p => {
+        invRetailVal += Number(p.stock || 0) * Number(p.price || 0);
+        invCostVal += Number(p.stock || 0) * Number(p.cost || 0);
+      });
+
+      // Cuentas por Cobrar y por Pagar pendientes
+      const totalCxC = (state.receivables || []).reduce((acc, r) => acc + Math.max(0, Number(r.total) - Number(r.paid || 0)), 0);
+      const totalCxP = (state.payables || []).reduce((acc, p) => acc + Math.max(0, Number(p.total) - Number(p.paid || 0)), 0);
+
+      // Totales en Rango Filtrado
+      let rev = 0, prof = 0;
+      const byMethod = { 'Efectivo': 0, 'Tarjeta': 0, 'Transferencia': 0, 'Crédito (CxC)': 0 };
+
+      filteredSales.forEach(s => {
+        rev += Number(s.total || 0);
+        prof += Number(s.profit || 0);
+        const mKey = (s.method || '').includes('Crédito') ? 'Crédito (CxC)' : (s.method || 'Efectivo');
+        byMethod[mKey] = (byMethod[mKey] || 0) + Number(s.total || 0);
+
         const tr = document.createElement('tr');
         tr.className = 'hover:bg-slate-900/50';
         tr.innerHTML = `
           <td class="py-3 px-4 font-mono font-bold text-emerald-400">${s.folio}</td>
-          <td class="py-3 px-4 text-xs text-slate-400">${s.date}</td>
+          <td class="py-3 px-4 text-xs text-slate-400 font-mono">${s.date}</td>
           <td class="py-3 px-4 font-semibold text-white">${s.client}</td>
           <td class="py-3 px-4 text-slate-300">${s.cashier}</td>
-          <td class="py-3 px-4"><span class="px-2 py-0.5 rounded bg-slate-800 text-xs">${s.method}</span></td>
+          <td class="py-3 px-4"><span class="px-2 py-0.5 rounded bg-slate-800 text-xs font-semibold">${s.method}</span></td>
           <td class="py-3 px-4 font-mono font-bold text-white">${fmt(s.total)}</td>
           <td class="py-3 px-4 text-right">
-            <button onclick="reprintSale(${idx})" class="px-3 py-1 rounded-lg bg-emerald-500/20 text-emerald-300 hover:bg-emerald-500 hover:text-slate-950 text-xs font-bold transition">
+            <button onclick="reprintSale(${s.originalIdx})" class="px-3 py-1 rounded-lg bg-emerald-500/20 text-emerald-300 hover:bg-emerald-500 hover:text-slate-950 text-xs font-bold transition">
               🧾 Ver / Imprimir
             </button>
           </td>
@@ -1134,9 +2220,88 @@
         tbody.appendChild(tr);
       });
 
+      const expSum = filteredExpenses.reduce((acc, e) => acc + Number(e.amount || 0), 0);
+      const purSum = filteredPurchases.reduce((acc, p) => acc + Number(p.amount || 0), 0);
+      const totalOutflows = expSum + purSum;
+      const netCash = rev - totalOutflows;
+
+      // Actualizar KPIs del Dashboard
+      const todayEl = document.getElementById('sales-kpi-today');
+      if (todayEl) todayEl.textContent = fmt(todayRev);
+      const todayCntEl = document.getElementById('sales-kpi-today-count');
+      if (todayCntEl) todayCntEl.textContent = `${todaySales.length} facturas emitidas hoy`;
+
       document.getElementById('sales-kpi-revenue').textContent = fmt(rev);
-      document.getElementById('sales-kpi-count').textContent = state.sales.length;
+      document.getElementById('sales-kpi-count').textContent = filteredSales.length;
+
+      const invValEl = document.getElementById('sales-kpi-inv-value');
+      if (invValEl) invValEl.textContent = fmt(invRetailVal);
+      const invCostEl = document.getElementById('sales-kpi-inv-cost');
+      if (invCostEl) invCostEl.textContent = `Costo Almacén: ${fmt(invCostVal)}`;
+
+      const expEl = document.getElementById('sales-kpi-expenses');
+      if (expEl) expEl.textContent = fmt(totalOutflows);
+      const expCntEl = document.getElementById('sales-kpi-exp-count');
+      if (expCntEl) expCntEl.textContent = `${filteredExpenses.length} gastos + ${filteredPurchases.length} compras`;
+
+      const cxcEl = document.getElementById('sales-kpi-cxc');
+      if (cxcEl) cxcEl.textContent = `CxC: ${fmt(totalCxC)}`;
+      const cxpEl = document.getElementById('sales-kpi-cxp');
+      if (cxpEl) cxpEl.textContent = `CxP: ${fmt(totalCxP)}`;
+
       document.getElementById('sales-kpi-profit').textContent = fmt(prof);
+      const netCashEl = document.getElementById('sales-kpi-netcash');
+      if (netCashEl) netCashEl.textContent = `Flujo Caja Neto: ${fmt(netCash)}`;
+
+      const badgeRange = document.getElementById('sales-range-badge');
+      if (badgeRange) {
+        badgeRange.textContent = (fromISO || toISO)
+          ? `Rango: ${fromISO || 'Inicio'} → ${toISO || 'Hoy'}`
+          : 'Mostrando todas las fechas';
+      }
+
+      // Desglose por Método de Pago
+      const bdBox = document.getElementById('sales-payment-breakdown');
+      if (bdBox) {
+        bdBox.innerHTML = [
+          ['💵 Efectivo en Caja', byMethod['Efectivo'] || 0, 'text-emerald-400'],
+          ['💳 Tarjeta POS', byMethod['Tarjeta'] || 0, 'text-cyan-400'],
+          ['🏦 Transferencia', byMethod['Transferencia'] || 0, 'text-indigo-400'],
+          ['📝 Ventas al Crédito (CxC)', byMethod['Crédito (CxC)'] || 0, 'text-amber-400']
+        ].map(([label, val, cls]) => `
+          <div class="glass px-4 py-3 rounded-2xl border border-slate-800 flex items-center justify-between">
+            <span class="text-slate-400 font-semibold">${label}:</span>
+            <strong class="font-mono font-black ${cls}">${fmt(val)}</strong>
+          </div>
+        `).join('');
+      }
+
+      // Tabla de Gastos y Compras dentro del Corte de Caja
+      const expBody = document.getElementById('sales-expenses-summary-body');
+      if (expBody) {
+        expBody.innerHTML = '';
+        const combined = [
+          ...filteredExpenses.map(e => ({ date: e.date, type: 'Gasto Operativo', concept: e.concept, cat: e.category, by: e.by, amount: e.amount, color: 'text-amber-400' })),
+          ...filteredPurchases.map(p => ({ date: p.date, type: 'Compra Proveedor', concept: `${p.supplier} - ${p.desc}`, cat: p.condition, by: p.by, amount: p.amount, color: 'text-cyan-400' }))
+        ];
+        if (combined.length === 0) {
+          expBody.innerHTML = `<tr><td colspan="6" class="py-4 px-4 text-center text-slate-500">No hay gastos ni compras en el rango de fechas seleccionado.</td></tr>`;
+        } else {
+          combined.forEach(row => {
+            const tr = document.createElement('tr');
+            tr.className = 'hover:bg-slate-900/50';
+            tr.innerHTML = `
+              <td class="py-2.5 px-4 font-mono text-slate-400">${row.date}</td>
+              <td class="py-2.5 px-4 font-bold text-white">${row.type}</td>
+              <td class="py-2.5 px-4 text-slate-200">${row.concept}</td>
+              <td class="py-2.5 px-4"><span class="px-2 py-0.5 rounded bg-slate-800 text-[10px] font-bold">${row.cat}</span></td>
+              <td class="py-2.5 px-4 text-slate-400">${row.by || 'Admin'}</td>
+              <td class="py-2.5 px-4 text-right font-mono font-black ${row.color}">-${fmt(row.amount)}</td>
+            `;
+            expBody.appendChild(tr);
+          });
+        }
+      }
     }
 
     function reprintSale(idx) {
@@ -1238,6 +2403,7 @@
       renderPOSProducts();
       renderCart();
       renderInventory();
+      renderSales();
       alert('✅ Marca y parámetros guardados correctamente en todo el sistema.');
     }
 
@@ -1262,21 +2428,91 @@
       saveState();
     }
 
-    // EXPORTAR CSV Y RESPALDOS
+    // EXPORTAR EXCEL (CSV CON UTF-8 BOM PARA EXCEL) Y RESPALDOS
     function exportInventoryCSV() {
-      let csv = 'SKU,Producto,Categoria,Costo,Precio,Stock\n';
+      let csv = '\uFEFFSKU,Producto,Categoria,Costo Unitario,Precio Venta,Stock Actual,Valor Costo Total,Valor Venta Total\n';
       state.products.forEach(p => {
-        csv += `"${p.sku}","${p.name}","${p.category}",${p.cost},${p.price},${p.stock}\n`;
+        csv += `"${p.sku}","${p.name}","${p.category}",${p.cost},${p.price},${p.stock},${(p.cost*p.stock).toFixed(2)},${(p.price*p.stock).toFixed(2)}\n`;
       });
-      downloadBlob(csv, 'Inventario_Kinetix.csv', 'text/csv');
+      downloadBlob(csv, `Inventario_Kinetix_${todayISO()}.csv`, 'text/csv;charset=utf-8;');
     }
 
     function exportSalesCSV() {
-      let csv = 'Folio,Fecha,Cliente,Cajero,Metodo,Total\n';
-      state.sales.forEach(s => {
-        csv += `"${s.folio}","${s.date}","${s.client}","${s.cashier}","${s.method}",${s.total}\n`;
+      const { filteredSales } = getFilteredSalesAndOutflows();
+      let csv = '\uFEFFFolio,Fecha,Cliente,Telefono,Cajero,Metodo Pago,Subtotal,Impuesto,Total Facturado,Ganancia Estimada\n';
+      filteredSales.forEach(s => {
+        csv += `"${s.folio}","${s.date}","${s.client}","${s.phone || ''}","${s.cashier}","${s.method}",${Number(s.subtotal||0).toFixed(2)},${Number(s.tax||0).toFixed(2)},${Number(s.total||0).toFixed(2)},${Number(s.profit||0).toFixed(2)}\n`;
       });
-      downloadBlob(csv, 'Ventas_Kinetix.csv', 'text/csv');
+      downloadBlob(csv, `Reporte_Ventas_Kinetix_${todayISO()}.csv`, 'text/csv;charset=utf-8;');
+    }
+
+    function exportExpensesCSV() {
+      const fromISO = (document.getElementById('fin-date-from') && document.getElementById('fin-date-from').value) || (document.getElementById('sales-date-from') && document.getElementById('sales-date-from').value) || '';
+      const toISO = (document.getElementById('fin-date-to') && document.getElementById('fin-date-to').value) || (document.getElementById('sales-date-to') && document.getElementById('sales-date-to').value) || '';
+      let csv = '\uFEFFFecha,Tipo Registro,Referencia,Concepto o Proveedor,Categoria o Condicion,Responsable,Monto\n';
+      (state.expenses || []).filter(e => inDateRange(e.dateISO || extractISODate(e.date), fromISO, toISO)).forEach(e => {
+        csv += `"${e.date}","Gasto Operativo","GASTO-${e.id}","${e.concept}","${e.category}","${e.by}",${Number(e.amount).toFixed(2)}\n`;
+      });
+      (state.purchases || []).filter(p => inDateRange(p.dateISO || extractISODate(p.date), fromISO, toISO)).forEach(p => {
+        csv += `"${p.date}","Compra Proveedor","${p.ref}","${p.supplier} - ${p.desc}","${p.condition}","${p.by || 'Admin'}",${Number(p.amount).toFixed(2)}\n`;
+      });
+      downloadBlob(csv, `Reporte_Gastos_y_Compras_${todayISO()}.csv`, 'text/csv;charset=utf-8;');
+    }
+
+    function exportCashCloseCSV() {
+      const { fromISO, toISO, filteredSales, filteredExpenses, filteredPurchases } = getFilteredSalesAndOutflows();
+      const rev = filteredSales.reduce((a, s) => a + Number(s.total || 0), 0);
+      const exp = filteredExpenses.reduce((a, e) => a + Number(e.amount || 0), 0);
+      const pur = filteredPurchases.reduce((a, p) => a + Number(p.amount || 0), 0);
+      const invVal = (state.products || []).reduce((a, p) => a + Number(p.stock || 0) * Number(p.price || 0), 0);
+      const cxc = (state.receivables || []).reduce((a, r) => a + Math.max(0, Number(r.total) - Number(r.paid || 0)), 0);
+      const cxp = (state.payables || []).reduce((a, p) => a + Math.max(0, Number(p.total) - Number(p.paid || 0)), 0);
+
+      let csv = `\uFEFFREPORTE EJECUTIVO DE CORTE DE CAJA - ${state.settings.companyName}\n`;
+      csv += `Periodo Consultado,${fromISO || 'Inicio'} al ${toISO || todayISO()}\n\n`;
+      csv += `INDICADOR,MONTO\n`;
+      csv += `"Ventas Totales Facturadas",${rev.toFixed(2)}\n`;
+      csv += `"Gastos Operativos",${exp.toFixed(2)}\n`;
+      csv += `"Compras a Proveedores",${pur.toFixed(2)}\n`;
+      csv += `"Flujo Neto de Caja",${(rev - exp - pur).toFixed(2)}\n`;
+      csv += `"Valor Venta del Inventario Actual",${invVal.toFixed(2)}\n`;
+      csv += `"Cuentas por Cobrar Pendientes (CxC)",${cxc.toFixed(2)}\n`;
+      csv += `"Cuentas por Pagar Pendientes (CxP)",${cxp.toFixed(2)}\n\n`;
+      csv += `DETALLE DE FACTURAS EMITIDAS\nFolio,Fecha,Cliente,Metodo,Total\n`;
+      filteredSales.forEach(s => {
+        csv += `"${s.folio}","${s.date}","${s.client}","${s.method}",${Number(s.total).toFixed(2)}\n`;
+      });
+      csv += `\nDETALLE DE GASTOS Y COMPRAS\nFecha,Tipo,Concepto,Categoria,Monto\n`;
+      filteredExpenses.forEach(e => {
+        csv += `"${e.date}","Gasto","${e.concept}","${e.category}",${Number(e.amount).toFixed(2)}\n`;
+      });
+      filteredPurchases.forEach(p => {
+        csv += `"${p.date}","Compra","${p.supplier} - ${p.desc}","${p.condition}",${Number(p.amount).toFixed(2)}\n`;
+      });
+      downloadBlob(csv, `Corte_de_Caja_Ejecutivo_${todayISO()}.csv`, 'text/csv;charset=utf-8;');
+    }
+
+    function exportFullFinanceCSV() {
+      const fromISO = document.getElementById('fin-date-from') ? document.getElementById('fin-date-from').value : '';
+      const toISO = document.getElementById('fin-date-to') ? document.getElementById('fin-date-to').value : '';
+      let csv = `\uFEFFREPORTE FINANCIERO INTEGRAL (GASTOS, COMPRAS, CXC Y CXP) - ${state.settings.companyName}\n`;
+      csv += `Fecha,Modulo,Referencia,Cliente / Proveedor / Concepto,Detalle / Categoria,Monto Total,Pagado / Abonado,Saldo Pendiente\n`;
+
+      (state.expenses || []).filter(e => inDateRange(e.dateISO || extractISODate(e.date), fromISO, toISO)).forEach(e => {
+        csv += `"${e.date}","Gasto Operativo","EXP-${e.id}","${e.concept}","${e.category}",${Number(e.amount).toFixed(2)},${Number(e.amount).toFixed(2)},0.00\n`;
+      });
+      (state.purchases || []).filter(p => inDateRange(p.dateISO || extractISODate(p.date), fromISO, toISO)).forEach(p => {
+        csv += `"${p.date}","Compra Proveedor","${p.ref}","${p.supplier}","${p.desc} (${p.condition})",${Number(p.amount).toFixed(2)},${Number(p.amount).toFixed(2)},0.00\n`;
+      });
+      (state.receivables || []).filter(r => inDateRange(r.dateISO || extractISODate(r.date), fromISO, toISO)).forEach(r => {
+        const bal = Math.max(0, Number(r.total) - Number(r.paid || 0));
+        csv += `"${r.date}","Cuenta por Cobrar (CxC)","${r.ref}","${r.client}","${r.concept} (Vence: ${r.due})",${Number(r.total).toFixed(2)},${Number(r.paid||0).toFixed(2)},${bal.toFixed(2)}\n`;
+      });
+      (state.payables || []).filter(p => inDateRange(p.dateISO || extractISODate(p.date), fromISO, toISO)).forEach(p => {
+        const bal = Math.max(0, Number(p.total) - Number(p.paid || 0));
+        csv += `"${p.date}","Cuenta por Pagar (CxP)","${p.ref}","${p.supplier}","${p.concept} (Vence: ${p.due})",${Number(p.total).toFixed(2)},${Number(p.paid||0).toFixed(2)},${bal.toFixed(2)}\n`;
+      });
+      downloadBlob(csv, `Finanzas_Gastos_Compras_CxC_CxP_${todayISO()}.csv`, 'text/csv;charset=utf-8;');
     }
 
     function exportBackupJSON() {

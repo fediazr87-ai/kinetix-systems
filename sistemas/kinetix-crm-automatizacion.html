@@ -59,6 +59,31 @@
       }
       .no-print { display: none !important; }
     }
+  
+    /* === KINETIX LIGHT MODE CONTRAST PATCH (todas las letras legibles en modo claro) === */
+    html.light .text-emerald-300, html.light .text-emerald-400, html.light .text-emerald-500 { color: #047857 !important; }
+    html.light .text-teal-300, html.light .text-teal-400, html.light .text-teal-500 { color: #0f766e !important; }
+    html.light .text-cyan-300, html.light .text-cyan-400, html.light .text-cyan-500 { color: #0e7490 !important; }
+    html.light .text-sky-300, html.light .text-sky-400, html.light .text-sky-500 { color: #0369a1 !important; }
+    html.light .text-blue-300, html.light .text-blue-400, html.light .text-blue-500 { color: #1d4ed8 !important; }
+    html.light .text-indigo-300, html.light .text-indigo-400, html.light .text-indigo-500 { color: #4338ca !important; }
+    html.light .text-purple-300, html.light .text-purple-400, html.light .text-purple-500 { color: #6d28d9 !important; }
+    html.light .text-violet-300, html.light .text-violet-400, html.light .text-violet-500 { color: #6d28d9 !important; }
+    html.light .text-rose-300, html.light .text-rose-400, html.light .text-rose-500 { color: #be123c !important; }
+    html.light .text-red-300, html.light .text-red-400, html.light .text-red-500 { color: #b91c1c !important; }
+    html.light .text-orange-300, html.light .text-orange-400, html.light .text-orange-500 { color: #c2410c !important; }
+    html.light .text-amber-300, html.light .text-amber-400, html.light .text-amber-500 { color: #b45309 !important; }
+    html.light .text-yellow-300, html.light .text-yellow-400, html.light .text-yellow-500 { color: #854d0e !important; }
+    html.light .text-slate-600 { color: #475569 !important; }
+    html.light .hover\:text-slate-950:hover { color: #020617 !important; }
+    html.light .bg-indigo-500\/10, html.light .bg-indigo-500\/15, html.light .bg-indigo-500\/20 { background-color: rgba(99, 102, 241, 0.12) !important; }
+    html.light .bg-blue-500\/10, html.light .bg-blue-500\/15, html.light .bg-blue-500\/20 { background-color: rgba(59, 130, 246, 0.12) !important; }
+    html.light .bg-amber-500\/10, html.light .bg-amber-500\/15, html.light .bg-amber-500\/20 { background-color: rgba(245, 158, 11, 0.16) !important; }
+    html.light .bg-rose-500\/10, html.light .bg-rose-500\/15, html.light .bg-rose-500\/20 { background-color: rgba(244, 63, 94, 0.12) !important; }
+    body .nav-btn.bg-indigo-500, body .nav-btn.bg-purple-500, html.light body .nav-btn.bg-indigo-500, html.light body .nav-btn.bg-purple-500 { color: #ffffff !important; }
+    html.light body .nav-btn.bg-emerald-500, html.light body .nav-btn.bg-cyan-500 { color: #022c22 !important; }
+    html.light button.bg-indigo-500, html.light .bg-indigo-500 { color: #ffffff; }
+    /* === FIN PATCH === */
   </style>
 </head>
 <body class="min-h-screen flex flex-col selection:bg-indigo-500 selection:text-white">
@@ -135,7 +160,10 @@
             <span>📑</span> <span>Cotizaciones & PDF</span>
           </button>
           <button id="nav-clients" onclick="switchTab('clients')" class="nav-btn flex items-center gap-3 px-4 py-3 rounded-xl text-xs sm:text-sm font-semibold text-slate-300 hover:bg-slate-900 transition whitespace-nowrap">
-            <span>📇</span> <span>Base de Clientes & Bots</span>
+            <span>📇</span> <span>Base de Clientes & Seguimiento</span>
+          </button>
+          <button id="nav-finances" onclick="switchTab('finances')" class="nav-btn flex items-center gap-3 px-4 py-3 rounded-xl text-xs sm:text-sm font-semibold text-slate-300 hover:bg-slate-900 transition whitespace-nowrap">
+            <span>💰</span> <span>Finanzas, Ingresos & Gastos</span>
           </button>
           <button id="nav-users" onclick="switchTab('users')" class="nav-btn flex items-center gap-3 px-4 py-3 rounded-xl text-xs sm:text-sm font-semibold text-slate-300 hover:bg-slate-900 transition whitespace-nowrap">
             <span>👥</span> <span>4 Usuarios & Roles</span>
@@ -165,40 +193,77 @@
     <!-- MAIN CONTENT -->
     <main class="flex-1 p-4 md:p-6 overflow-y-auto no-print">
 
-      <!-- TAB 1: PIPELINE KANBAN & CAPTACIÓN DE LEADS -->
+      <!-- TAB 1: PIPELINE KANBAN & CAPTACIÓN DE LEADS + DASHBOARD COMERCIAL Y FINANCIERO -->
       <section id="tab-pipeline" class="space-y-6">
-        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
           <div>
-            <span class="text-xs font-mono uppercase text-indigo-400 font-bold">EMBUDO DE VENTAS & AUTOMATIZACIÓN</span>
-            <h2 class="text-2xl font-extrabold text-white">Pipeline de Prospectos y Oportunidades</h2>
+            <span class="text-xs font-mono uppercase text-indigo-400 font-bold">EMBUDO DE VENTAS, AUTOMATIZACIÓN & REPORTES COMERCIALES</span>
+            <h2 class="text-2xl font-extrabold text-white">Dashboard de Pipeline, Cierres y Finanzas B2B</h2>
           </div>
-          <div class="flex gap-2">
+          <div class="flex flex-wrap gap-2">
             <button onclick="openLeadModal()" class="px-4 py-2.5 rounded-xl bg-indigo-500 hover:bg-indigo-400 text-white font-extrabold text-xs transition shadow-lg">
               + Captar Nuevo Lead / Trato
             </button>
-            <button onclick="switchTab('quotes')" class="px-4 py-2.5 rounded-xl bg-emerald-500/20 border border-emerald-500/40 text-emerald-300 font-bold text-xs">
-              📑 Crear Cotización Rápida
+            <button onclick="exportClientsCSV()" class="px-3.5 py-2.5 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-extrabold text-xs transition shadow-lg">
+              📥 Descargar Leads Excel
+            </button>
+            <button onclick="exportCRMFinanceCSV()" class="px-3.5 py-2.5 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-extrabold text-xs transition shadow-lg">
+              📊 Reporte Ingresos/Gastos Excel
+            </button>
+            <button onclick="switchTab('quotes')" class="px-3.5 py-2.5 rounded-xl bg-emerald-500/20 border border-emerald-500/40 text-emerald-300 font-bold text-xs">
+              📑 Cotizar
             </button>
           </div>
         </div>
 
-        <!-- KPIs Pipeline -->
-        <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
+        <!-- Barra de Filtro por Fechas o Rangos en el Dashboard CRM -->
+        <div class="glass p-4 rounded-2xl border border-slate-800 flex flex-col xl:flex-row xl:items-center justify-between gap-3 text-xs">
+          <div class="flex flex-wrap items-center gap-2">
+            <span class="font-bold text-slate-300 uppercase font-mono">📅 Filtrar Dashboard por Fecha / Rango:</span>
+            <div class="flex items-center gap-1.5 bg-slate-900 border border-slate-700 rounded-xl px-3 py-1.5">
+              <span class="text-slate-400">Desde:</span>
+              <input id="crm-dash-from" type="date" onchange="renderPipeline()" class="bg-transparent text-white font-mono focus:outline-none">
+            </div>
+            <div class="flex items-center gap-1.5 bg-slate-900 border border-slate-700 rounded-xl px-3 py-1.5">
+              <span class="text-slate-400">Hasta:</span>
+              <input id="crm-dash-to" type="date" onchange="renderPipeline()" class="bg-transparent text-white font-mono focus:outline-none">
+            </div>
+            <button onclick="setCRMDashDatePreset('TODAY')" class="px-2.5 py-1.5 rounded-lg bg-indigo-500/20 text-indigo-300 hover:bg-indigo-500 hover:text-white font-bold transition">Hoy</button>
+            <button onclick="setCRMDashDatePreset('WEEK')" class="px-2.5 py-1.5 rounded-lg bg-slate-800 text-slate-300 hover:bg-slate-700 font-semibold transition">7 Días</button>
+            <button onclick="setCRMDashDatePreset('MONTH')" class="px-2.5 py-1.5 rounded-lg bg-slate-800 text-slate-300 hover:bg-slate-700 font-semibold transition">Este Mes</button>
+            <button onclick="setCRMDashDatePreset('ALL')" class="px-2.5 py-1.5 rounded-lg bg-slate-800 text-cyan-300 hover:bg-slate-700 font-semibold transition">Todo</button>
+          </div>
+          <button onclick="switchTab('finances')" class="text-xs font-bold text-amber-400 hover:underline">
+            💰 Ver Módulo de Finanzas Comerciales (Ingresos y Gastos) &rarr;
+          </button>
+        </div>
+
+        <!-- KPIs Pipeline + Finanzas Comerciales en Dashboard -->
+        <div class="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-4">
           <div class="glass p-4 rounded-2xl border-l-4 border-indigo-400">
-            <span class="text-xs text-slate-400">Leads Activos en Embudo</span>
+            <span class="text-[11px] text-slate-400">Leads en Rango</span>
             <p id="kpi-crm-leads" class="text-2xl font-black text-white mono mt-1">0</p>
           </div>
           <div class="glass p-4 rounded-2xl border-l-4 border-cyan-400">
-            <span class="text-xs text-slate-400">Valor en Negociación</span>
+            <span class="text-[11px] text-slate-400">Valor en Negociación</span>
             <p id="kpi-crm-pipeline" class="text-2xl font-black text-cyan-400 mono mt-1">$0.00</p>
           </div>
           <div class="glass p-4 rounded-2xl border-l-4 border-emerald-400">
-            <span class="text-xs text-slate-400">Ventas Cerradas (Ganadas)</span>
+            <span class="text-[11px] text-slate-400">Tratos Ganados</span>
             <p id="kpi-crm-won" class="text-2xl font-black text-emerald-400 mono mt-1">$0.00</p>
           </div>
           <div class="glass p-4 rounded-2xl border-l-4 border-amber-400">
-            <span class="text-xs text-slate-400">Cotizaciones Emitidas</span>
+            <span class="text-[11px] text-slate-400">Cotizaciones Emitidas</span>
             <p id="kpi-crm-quotes" class="text-2xl font-black text-amber-400 mono mt-1">0</p>
+          </div>
+          <div class="glass p-4 rounded-2xl border-l-4 border-emerald-500">
+            <span class="text-[11px] text-slate-400">Ingresos Cobrados (Rango)</span>
+            <p id="kpi-crm-dash-inc" class="text-2xl font-black text-emerald-400 mono mt-1">$0.00</p>
+          </div>
+          <div class="glass p-4 rounded-2xl border-l-4 border-rose-500">
+            <span class="text-[11px] text-slate-400">Gastos / Margen Neto</span>
+            <p id="kpi-crm-dash-exp" class="text-sm font-black text-rose-400 mono mt-1">Gastos: $0.00</p>
+            <p id="kpi-crm-dash-net" class="text-sm font-black text-cyan-400 mono">Neto: $0.00</p>
           </div>
         </div>
 
@@ -289,6 +354,109 @@
                 </tr>
               </thead>
               <tbody id="clients-table-body" class="divide-y divide-slate-800/70"></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- TAB 3B: FINANZAS COMERCIALES, INGRESOS, GASTOS, CXC Y CXP -->
+      <section id="tab-finances" class="space-y-6 hidden">
+        <div class="glass rounded-3xl p-6 border border-emerald-500/30 space-y-5">
+          <div class="flex flex-wrap items-center justify-between gap-4">
+            <div>
+              <span class="text-xs font-mono uppercase text-emerald-400 font-bold">CONTROL FINANCIERO B2B & AGENCIA</span>
+              <h2 class="text-2xl font-extrabold text-white">Ingresos por Cierres, Gastos Comerciales, CxC y CxP</h2>
+              <p class="text-xs text-slate-400">Registra cobros de proyectos/igualas, inversión en Ads, comisiones de venta, software y saldos pendientes.</p>
+            </div>
+            <div class="flex flex-wrap gap-2">
+              <button onclick="openCRMFinanceModal('INGRESO')" class="px-3.5 py-2.5 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-extrabold text-xs transition">+ Registrar Ingreso / Cierre</button>
+              <button onclick="openCRMFinanceModal('GASTO')" class="px-3.5 py-2.5 rounded-xl bg-rose-500 hover:bg-rose-400 text-white font-extrabold text-xs transition">+ Registrar Gasto / Ads</button>
+              <button onclick="openCRMFinanceModal('CXC')" class="px-3.5 py-2.5 rounded-xl bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-extrabold text-xs transition">+ Cuenta por Cobrar (Cliente)</button>
+              <button onclick="openCRMFinanceModal('CXP')" class="px-3.5 py-2.5 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-extrabold text-xs transition">+ Cuenta por Pagar</button>
+              <button onclick="exportCRMFinanceCSV()" class="px-3.5 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-emerald-300 font-bold text-xs border border-emerald-500/30 transition">📥 Exportar Excel (.CSV)</button>
+            </div>
+          </div>
+
+          <!-- Filtro por Fechas y Tipo -->
+          <div class="bg-slate-900/80 border border-slate-800 rounded-2xl p-4 flex flex-wrap items-end justify-between gap-4">
+            <div class="flex flex-wrap items-end gap-3">
+              <div>
+                <label class="text-[10px] font-mono uppercase text-slate-400 block mb-1">Desde Fecha</label>
+                <input id="crm-fin-from" type="date" onchange="renderCRMFinances()" class="bg-slate-950 border border-slate-700 rounded-xl px-3 py-1.5 text-xs text-white mono">
+              </div>
+              <div>
+                <label class="text-[10px] font-mono uppercase text-slate-400 block mb-1">Hasta Fecha</label>
+                <input id="crm-fin-to" type="date" onchange="renderCRMFinances()" class="bg-slate-950 border border-slate-700 rounded-xl px-3 py-1.5 text-xs text-white mono">
+              </div>
+              <div>
+                <label class="text-[10px] font-mono uppercase text-slate-400 block mb-1">Tipo Movimiento</label>
+                <select id="crm-fin-type" onchange="renderCRMFinances()" class="bg-slate-950 border border-slate-700 rounded-xl px-3 py-1.5 text-xs text-white font-semibold">
+                  <option value="ALL">Todos los Movimientos</option>
+                  <option value="INGRESO">💵 Ingresos (Cierres / Igualas)</option>
+                  <option value="GASTO">💸 Gastos (Ads / Comisiones / SaaS)</option>
+                  <option value="CXC">📥 Cuentas por Cobrar (Clientes)</option>
+                  <option value="CXP">📤 Cuentas por Pagar (Proveedores)</option>
+                </select>
+              </div>
+              <div class="flex flex-wrap gap-1.5">
+                <button onclick="setCRMFinDatePreset('today')" class="px-2.5 py-1.5 rounded-lg bg-slate-800 hover:bg-indigo-500 hover:text-white text-slate-300 text-xs font-bold transition">Hoy</button>
+                <button onclick="setCRMFinDatePreset('week')" class="px-2.5 py-1.5 rounded-lg bg-slate-800 hover:bg-indigo-500 hover:text-white text-slate-300 text-xs font-bold transition">7 Días</button>
+                <button onclick="setCRMFinDatePreset('month')" class="px-2.5 py-1.5 rounded-lg bg-slate-800 hover:bg-indigo-500 hover:text-white text-slate-300 text-xs font-bold transition">Este Mes</button>
+                <button onclick="setCRMFinDatePreset('all')" class="px-2.5 py-1.5 rounded-lg bg-indigo-500/20 text-indigo-300 hover:bg-indigo-500 hover:text-white text-xs font-bold transition">Todo</button>
+              </div>
+            </div>
+            <div class="text-right">
+              <span class="text-[10px] font-mono uppercase text-slate-400 block">Periodo Filtrado</span>
+              <strong id="crm-fin-range-label" class="text-xs font-mono text-indigo-400">Mostrando Todo el Historial</strong>
+            </div>
+          </div>
+
+          <!-- KPIs Financieros CRM -->
+          <div class="grid grid-cols-2 sm:grid-cols-5 gap-3">
+            <div class="p-4 rounded-2xl bg-slate-900/90 border border-emerald-500/30">
+              <span class="text-[11px] text-slate-400 block">Ingresos (Rango)</span>
+              <strong id="crm-kpi-inc" class="text-xl font-black text-emerald-400 mono">$0.00</strong>
+              <span id="crm-kpi-inc-today" class="text-[10px] text-slate-400 block mt-0.5">Hoy: $0.00</span>
+            </div>
+            <div class="p-4 rounded-2xl bg-slate-900/90 border border-rose-500/30">
+              <span class="text-[11px] text-slate-400 block">Gastos & Ads (Rango)</span>
+              <strong id="crm-kpi-exp" class="text-xl font-black text-rose-400 mono">$0.00</strong>
+              <span class="text-[10px] text-slate-400 block mt-0.5">Campañas + Operación</span>
+            </div>
+            <div class="p-4 rounded-2xl bg-slate-900/90 border border-cyan-500/30">
+              <span class="text-[11px] text-slate-400 block">Por Cobrar (CxC)</span>
+              <strong id="crm-kpi-cxc" class="text-xl font-black text-cyan-400 mono">$0.00</strong>
+              <span class="text-[10px] text-slate-400 block mt-0.5">50% Entregas / Igualas</span>
+            </div>
+            <div class="p-4 rounded-2xl bg-slate-900/90 border border-amber-500/30">
+              <span class="text-[11px] text-slate-400 block">Por Pagar (CxP)</span>
+              <strong id="crm-kpi-cxp" class="text-xl font-black text-amber-400 mono">$0.00</strong>
+              <span class="text-[10px] text-slate-400 block mt-0.5">Comisiones / Freelancers</span>
+            </div>
+            <div class="p-4 rounded-2xl bg-slate-900/90 border border-indigo-500/40 col-span-2 sm:col-span-1">
+              <span class="text-[11px] text-slate-400 block">Margen Neto</span>
+              <strong id="crm-kpi-net" class="text-xl font-black text-indigo-400 mono">$0.00</strong>
+              <span class="text-[10px] text-slate-400 block mt-0.5">Ingresos - Gastos</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="glass rounded-3xl overflow-hidden border border-slate-800">
+          <div class="overflow-x-auto">
+            <table class="w-full text-left text-xs">
+              <thead class="bg-slate-900/90 text-slate-400 uppercase font-mono">
+                <tr>
+                  <th class="py-3.5 px-4">Fecha</th>
+                  <th class="py-3.5 px-4">Tipo</th>
+                  <th class="py-3.5 px-4">Categoría Comercial</th>
+                  <th class="py-3.5 px-4">Concepto / Cliente / Proveedor</th>
+                  <th class="py-3.5 px-4">Método / Estado</th>
+                  <th class="py-3.5 px-4">Monto Total</th>
+                  <th class="py-3.5 px-4">Saldo Pendiente</th>
+                  <th class="py-3.5 px-4 text-right">Acciones</th>
+                </tr>
+              </thead>
+              <tbody id="crm-finances-tbody" class="divide-y divide-slate-800/70"></tbody>
             </table>
           </div>
         </div>
@@ -417,11 +585,67 @@
     </div>
   </div>
 
+  <!-- MODAL REGISTRAR FINANZAS CRM -->
+  <div id="crm-finance-modal" class="fixed inset-0 z-50 bg-black/80 hidden items-center justify-center p-4 no-print">
+    <div class="glass max-w-md w-full rounded-3xl p-6 border border-emerald-500/40 space-y-4 text-xs">
+      <div class="flex items-center justify-between border-b border-slate-800 pb-3">
+        <h3 id="crm-fin-modal-title" class="text-lg font-extrabold text-white">Registrar Movimiento Comercial</h3>
+        <button onclick="closeCRMFinanceModal()" class="text-slate-400 hover:text-white text-xl">&times;</button>
+      </div>
+      <input id="crm-fin-modal-type" type="hidden" value="INGRESO">
+      <div class="space-y-3">
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="text-slate-400 font-bold block mb-1">Fecha</label>
+            <input id="crm-fin-date" type="date" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-white mono">
+          </div>
+          <div>
+            <label class="text-slate-400 font-bold block mb-1">Categoría Comercial</label>
+            <select id="crm-fin-category" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-white">
+              <option value="Cierre de Proyecto / Licencia">Cierre de Proyecto / Licencia</option>
+              <option value="Anticipo 50% Cotización">Anticipo 50% Cotización</option>
+              <option value="Iguala Mensual / Retainer">Iguala Mensual / Retainer</option>
+              <option value="Publicidad Meta / Google Ads">Publicidad Meta / Google Ads</option>
+              <option value="Comisiones de Ventas (Closers)">Comisiones de Ventas (Closers)</option>
+              <option value="Suscripciones Software / Servidores">Suscripciones Software / Servidores</option>
+              <option value="Otros Movimientos">Otros Movimientos</option>
+            </select>
+          </div>
+        </div>
+        <div>
+          <label class="text-slate-400 font-bold block mb-1">Concepto / Cliente / Proveedor</label>
+          <input id="crm-fin-concept" type="text" placeholder="Ej: Anticipo 50% COT-1001 - Clínica Dental Sonrisa VIP" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-white">
+        </div>
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="text-slate-400 font-bold block mb-1">Monto Total ($)</label>
+            <input id="crm-fin-amount" type="number" step="0.01" placeholder="650.00" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-white mono font-bold">
+          </div>
+          <div>
+            <label class="text-slate-400 font-bold block mb-1">Método de Pago</label>
+            <select id="crm-fin-method" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-white">
+              <option value="Transferencia">🏦 Transferencia Corporativa</option>
+              <option value="Tarjeta / Link">💳 Tarjeta / Link de Pago</option>
+              <option value="PayPal">🌐 PayPal</option>
+              <option value="Efectivo">💵 Efectivo</option>
+              <option value="Crédito / Pendiente">⏳ Crédito / Saldo Pendiente</option>
+            </select>
+          </div>
+        </div>
+      </div>
+      <div class="flex justify-end gap-2 pt-3 border-t border-slate-800">
+        <button onclick="closeCRMFinanceModal()" class="px-4 py-2 rounded-xl bg-slate-800 text-slate-300 font-bold">Cancelar</button>
+        <button onclick="saveCRMFinanceRecord()" class="px-5 py-2 rounded-xl bg-emerald-500 text-slate-950 font-extrabold">Guardar Registro</button>
+      </div>
+    </div>
+  </div>
+
   <script>
     const STORAGE_KEY = 'KINETIX_CRM_SUITE_V3';
     const STAGES = ['Nuevo Lead', 'Contactado', 'Cotización Enviada', 'En Negociación', 'Cerrado Ganado'];
     let currentUser = null;
     let activeQuote = null;
+    const todayISO = new Date().toISOString().slice(0, 10);
 
     const defaultState = {
       settings: {
@@ -438,13 +662,20 @@
         { id: 4, name: 'Soporte & Cotizaciones', role: 'SOPORTE', pin: '3333', active: true, isMaster: false }
       ],
       leads: [
-        { id: 201, name: 'Clínica Dental Sonrisa VIP', phone: '50588881111', email: 'direccion@sonrisavip.com', value: 1450, source: 'Instagram', stage: 'Cotización Enviada', notes: 'Requiere sistema de citas y expedientes para 4 doctores.', owner: 'Director Comercial' },
-        { id: 202, name: 'Distribuidora Automotriz Norte', phone: '50588882222', email: 'compras@autonorte.com', value: 2200, source: 'WhatsApp', stage: 'En Negociación', notes: 'Sistema de facturación POS y control de inventario multi-bodega.', owner: 'Ejecutivo Closer #1' },
-        { id: 203, name: 'Inmobiliaria Horizonte', phone: '50588883333', email: 'ventas@horizonte.com', value: 980, source: 'Landing Web', stage: 'Nuevo Lead', notes: 'Automatización de leads y cotizador web.', owner: 'Especialista Leads (SDR)' },
-        { id: 204, name: 'Restaurante & Lounge Fuego', phone: '50588884444', email: 'admin@fuego.com', value: 650, source: 'Referido', stage: 'Cerrado Ganado', notes: 'Implementación POS y control de stock.', owner: 'Director Comercial' }
+        { id: 201, name: 'Clínica Dental Sonrisa VIP', phone: '50588881111', email: 'direccion@sonrisavip.com', value: 1450, source: 'Instagram', stage: 'Cotización Enviada', notes: 'Requiere sistema de citas y expedientes para 4 doctores.', owner: 'Director Comercial', date: todayISO },
+        { id: 202, name: 'Distribuidora Automotriz Norte', phone: '50588882222', email: 'compras@autonorte.com', value: 2200, source: 'WhatsApp', stage: 'En Negociación', notes: 'Sistema de facturación POS y control de inventario multi-bodega.', owner: 'Ejecutivo Closer #1', date: todayISO },
+        { id: 203, name: 'Inmobiliaria Horizonte', phone: '50588883333', email: 'ventas@horizonte.com', value: 980, source: 'Landing Web', stage: 'Nuevo Lead', notes: 'Automatización de leads y cotizador web.', owner: 'Especialista Leads (SDR)', date: todayISO },
+        { id: 204, name: 'Restaurante & Lounge Fuego', phone: '50588884444', email: 'admin@fuego.com', value: 650, source: 'Referido', stage: 'Cerrado Ganado', notes: 'Implementación POS y control de stock.', owner: 'Director Comercial', date: todayISO }
       ],
       quotes: [
-        { id: 901, code: 'COT-1001', leadId: 201, clientName: 'Clínica Dental Sonrisa VIP', phone: '50588881111', desc: '1. Licencia Sistema Clínico & Agendamiento (4 Usuarios)\n2. Configuración de Recordatorios WhatsApp y Logo', amount: 1450, validity: '7 días', terms: '50% inicio y 50% entrega.', status: 'Enviada', date: '2026-10-25' }
+        { id: 901, code: 'COT-1001', leadId: 201, clientName: 'Clínica Dental Sonrisa VIP', phone: '50588881111', desc: '1. Licencia Sistema Clínico & Agendamiento (4 Usuarios)\n2. Configuración de Recordatorios WhatsApp y Logo', amount: 1450, validity: '7 días', terms: '50% inicio y 50% entrega.', status: 'Enviada', date: todayISO }
+      ],
+      finances: [
+        { id: 801, date: todayISO, type: 'INGRESO', category: 'Cierre de Proyecto / Licencia', concept: 'Cierre Implementación POS - Restaurante & Lounge Fuego', amount: 650.00, balance: 0, method: 'Transferencia', status: 'PAGADO' },
+        { id: 802, date: todayISO, type: 'INGRESO', category: 'Anticipo 50% Cotización', concept: 'Anticipo 50% COT-1001 - Clínica Dental Sonrisa VIP', amount: 725.00, balance: 0, method: 'Tarjeta / Link', status: 'PAGADO' },
+        { id: 803, date: todayISO, type: 'GASTO', category: 'Publicidad Meta / Google Ads', concept: 'Campaña Generación de Leads B2B Meta Ads', amount: 185.00, balance: 0, method: 'Tarjeta / Link', status: 'PAGADO' },
+        { id: 804, date: todayISO, type: 'CXC', category: 'Cierre de Proyecto / Licencia', concept: 'Saldo 50% Contra Entrega - Clínica Dental Sonrisa VIP', amount: 725.00, balance: 725.00, method: 'Crédito / Pendiente', status: 'PENDIENTE' },
+        { id: 805, date: todayISO, type: 'CXP', category: 'Comisiones de Ventas (Closers)', concept: 'Comisión Cierre POS - Ejecutivo Closer #1', amount: 95.00, balance: 95.00, method: 'Crédito / Pendiente', status: 'PENDIENTE' }
       ]
     };
 
@@ -456,6 +687,7 @@
         if (!raw) return JSON.parse(JSON.stringify(defaultState));
         const parsed = JSON.parse(raw);
         if (!parsed.users || parsed.users.length !== 4) parsed.users = defaultState.users;
+        if (!Array.isArray(parsed.finances)) parsed.finances = JSON.parse(JSON.stringify(defaultState.finances));
         return parsed;
       } catch (e) {
         return JSON.parse(JSON.stringify(defaultState));
@@ -546,6 +778,7 @@
       renderPipeline();
       renderQuotes();
       renderClients();
+      renderCRMFinances();
       renderUsers();
       loadSettingsForm();
     }
@@ -558,8 +791,9 @@
     }
 
     function switchTab(tab) {
-      ['pipeline', 'quotes', 'clients', 'users', 'settings'].forEach(t => {
-        document.getElementById(`tab-${t}`).classList.toggle('hidden', t !== tab);
+      ['pipeline', 'quotes', 'clients', 'finances', 'users', 'settings'].forEach(t => {
+        const el = document.getElementById(`tab-${t}`);
+        if (el) el.classList.toggle('hidden', t !== tab);
         const btn = document.getElementById(`nav-${t}`);
         if (btn) {
           btn.className = t === tab
@@ -567,27 +801,77 @@
             : 'nav-btn flex items-center gap-3 px-4 py-3 rounded-xl text-xs sm:text-sm font-semibold text-slate-300 hover:bg-slate-900 transition whitespace-nowrap';
         }
       });
+      if (tab === 'pipeline') renderPipeline();
+      if (tab === 'finances') renderCRMFinances();
+    }
+
+    function crmDateInRange(dateStr, fromStr, toStr) {
+      if (!dateStr) return true;
+      const d = dateStr.slice(0, 10);
+      if (fromStr && d < fromStr) return false;
+      if (toStr && d > toStr) return false;
+      return true;
+    }
+
+    function setCRMDashDatePreset(preset) {
+      const fromEl = document.getElementById('crm-dash-from');
+      const toEl = document.getElementById('crm-dash-to');
+      if (!fromEl || !toEl) return;
+      const now = new Date();
+      const today = now.toISOString().slice(0, 10);
+      if (preset === 'today') {
+        fromEl.value = today;
+        toEl.value = today;
+      } else if (preset === 'week') {
+        const d = new Date(now);
+        d.setDate(d.getDate() - 6);
+        fromEl.value = d.toISOString().slice(0, 10);
+        toEl.value = today;
+      } else if (preset === 'month') {
+        fromEl.value = today.slice(0, 8) + '01';
+        toEl.value = today;
+      } else {
+        fromEl.value = '';
+        toEl.value = '';
+      }
+      renderPipeline();
     }
 
     function renderPipeline() {
       const board = document.getElementById('kanban-board');
       board.innerHTML = '';
 
+      const fromStr = (document.getElementById('crm-dash-from') || {}).value || '';
+      const toStr = (document.getElementById('crm-dash-to') || {}).value || '';
+      const filteredLeads = state.leads.filter(l => crmDateInRange(l.date || todayISO, fromStr, toStr));
+      const filteredQuotes = state.quotes.filter(q => crmDateInRange(q.date || todayISO, fromStr, toStr));
+
       let openVal = 0, wonVal = 0;
-      state.leads.forEach(l => {
+      filteredLeads.forEach(l => {
         if (l.stage === 'Cerrado Ganado') wonVal += Number(l.value);
         else openVal += Number(l.value);
       });
 
-      document.getElementById('kpi-crm-leads').textContent = state.leads.length;
+      document.getElementById('kpi-crm-leads').textContent = filteredLeads.length;
       document.getElementById('kpi-crm-pipeline').textContent = fmt(openVal);
       document.getElementById('kpi-crm-won').textContent = fmt(wonVal);
-      document.getElementById('kpi-crm-quotes').textContent = state.quotes.length;
+      document.getElementById('kpi-crm-quotes').textContent = filteredQuotes.length;
+
+      // KPIs financieros en Dashboard CRM
+      const fins = (state.finances || []).filter(f => crmDateInRange(f.date, fromStr, toStr));
+      const incTotal = fins.filter(f => f.type === 'INGRESO').reduce((s, f) => s + Number(f.amount || 0), 0);
+      const expTotal = fins.filter(f => f.type === 'GASTO').reduce((s, f) => s + Number(f.amount || 0), 0);
+      const incEl = document.getElementById('kpi-crm-dash-inc');
+      const expEl = document.getElementById('kpi-crm-dash-exp');
+      const netEl = document.getElementById('kpi-crm-dash-net');
+      if (incEl) incEl.textContent = fmt(incTotal);
+      if (expEl) expEl.textContent = fmt(expTotal);
+      if (netEl) netEl.textContent = `Neto: ${fmt(incTotal - expTotal)}`;
 
       document.getElementById('quote-lead-id').innerHTML = state.leads.map(l => `<option value="${l.id}">${l.name} (${fmt(l.value)})</option>`).join('');
 
       STAGES.forEach(stage => {
-        const items = state.leads.filter(l => l.stage === stage);
+        const items = filteredLeads.filter(l => l.stage === stage);
         const col = document.createElement('div');
         col.className = 'glass rounded-3xl p-4 space-y-3 border border-slate-800/90';
         col.innerHTML = `
@@ -650,7 +934,8 @@
         source: document.getElementById('lead-source').value,
         stage: 'Nuevo Lead',
         notes: document.getElementById('lead-notes').value.trim() || 'Interesado en servicios',
-        owner: currentUser ? currentUser.name : 'Ejecutivo'
+        owner: currentUser ? currentUser.name : 'Ejecutivo',
+        date: new Date().toISOString().slice(0, 10)
       });
       saveState();
       renderPipeline();
@@ -787,14 +1072,195 @@
     }
 
     function exportClientsCSV() {
-      let csv = 'Cliente,Telefono,Email,Origen,Etapa,Valor\n';
-      state.leads.forEach(l => {
-        csv += `"${l.name}","${l.phone}","${l.email}","${l.source}","${l.stage}",${l.value}\n`;
+      const fromStr = (document.getElementById('crm-dash-from') || {}).value || '';
+      const toStr = (document.getElementById('crm-dash-to') || {}).value || '';
+      const list = state.leads.filter(l => crmDateInRange(l.date || todayISO, fromStr, toStr));
+      let csv = '\uFEFFFecha,Cliente,Telefono,Email,Origen,Etapa,Valor,Ejecutivo\n';
+      list.forEach(l => {
+        csv += `"${l.date || todayISO}","${l.name.replace(/"/g, '""')}","${l.phone}","${l.email}","${l.source}","${l.stage}",${Number(l.value || 0).toFixed(2)},"${l.owner || ''}"\n`;
       });
-      const blob = new Blob([csv], { type: 'text/csv' });
+      const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
       const a = document.createElement('a');
       a.href = URL.createObjectURL(blob);
-      a.download = 'Base_Clientes_CRM.csv';
+      a.download = `Leads_Pipeline_CRM_${new Date().toISOString().slice(0,10)}.csv`;
+      a.click();
+    }
+
+    // MÓDULO FINANZAS CRM (INGRESOS, GASTOS, CXC Y CXP)
+    function setCRMFinDatePreset(preset) {
+      const fromEl = document.getElementById('crm-fin-from');
+      const toEl = document.getElementById('crm-fin-to');
+      if (!fromEl || !toEl) return;
+      const now = new Date();
+      const today = now.toISOString().slice(0, 10);
+      if (preset === 'today') {
+        fromEl.value = today;
+        toEl.value = today;
+      } else if (preset === 'week') {
+        const d = new Date(now);
+        d.setDate(d.getDate() - 6);
+        fromEl.value = d.toISOString().slice(0, 10);
+        toEl.value = today;
+      } else if (preset === 'month') {
+        fromEl.value = today.slice(0, 8) + '01';
+        toEl.value = today;
+      } else {
+        fromEl.value = '';
+        toEl.value = '';
+      }
+      renderCRMFinances();
+    }
+
+    function openCRMFinanceModal(type) {
+      document.getElementById('crm-fin-modal-type').value = type;
+      const titles = {
+        INGRESO: '💵 Registrar Ingreso / Cierre Comercial',
+        GASTO: '💸 Registrar Gasto / Inversión en Ads',
+        CXC: '📥 Registrar Cuenta por Cobrar (Cliente)',
+        CXP: '📤 Registrar Cuenta por Pagar (Comisión / Proveedor)'
+      };
+      document.getElementById('crm-fin-modal-title').textContent = titles[type] || 'Registrar Movimiento';
+      document.getElementById('crm-fin-date').value = new Date().toISOString().slice(0, 10);
+      document.getElementById('crm-fin-concept').value = '';
+      document.getElementById('crm-fin-amount').value = '';
+      document.getElementById('crm-finance-modal').classList.remove('hidden');
+      document.getElementById('crm-finance-modal').classList.add('flex');
+    }
+
+    function closeCRMFinanceModal() {
+      document.getElementById('crm-finance-modal').classList.add('hidden');
+      document.getElementById('crm-finance-modal').classList.remove('flex');
+    }
+
+    function saveCRMFinanceRecord() {
+      const type = document.getElementById('crm-fin-modal-type').value;
+      const date = document.getElementById('crm-fin-date').value || new Date().toISOString().slice(0, 10);
+      const category = document.getElementById('crm-fin-category').value;
+      const concept = document.getElementById('crm-fin-concept').value.trim();
+      const amount = Number(document.getElementById('crm-fin-amount').value) || 0;
+      const method = document.getElementById('crm-fin-method').value;
+      if (!concept || amount <= 0) return alert('Ingresa el concepto y un monto válido mayor a 0.');
+
+      const isCredit = (type === 'CXC' || type === 'CXP');
+      state.finances.unshift({
+        id: Date.now(),
+        date,
+        type,
+        category,
+        concept,
+        amount,
+        balance: isCredit ? amount : 0,
+        method: isCredit ? 'Crédito / Pendiente' : method,
+        status: isCredit ? 'PENDIENTE' : 'PAGADO'
+      });
+      saveState();
+      closeCRMFinanceModal();
+      renderCRMFinances();
+      renderPipeline();
+    }
+
+    function settleCRMAccount(id) {
+      const rec = (state.finances || []).find(f => f.id === id);
+      if (!rec || rec.balance <= 0) return;
+      const val = prompt(`Monto a abonar / liquidar para "${rec.concept}" (Saldo actual: ${fmt(rec.balance)}):`, rec.balance.toFixed(2));
+      if (val === null) return;
+      const pay = Number(val);
+      if (isNaN(pay) || pay <= 0) return alert('Monto inválido.');
+      const applied = Math.min(pay, rec.balance);
+      rec.balance = Math.max(0, Number((rec.balance - applied).toFixed(2)));
+      if (rec.balance <= 0) rec.status = 'LIQUIDADO';
+
+      state.finances.unshift({
+        id: Date.now(),
+        date: new Date().toISOString().slice(0, 10),
+        type: rec.type === 'CXC' ? 'INGRESO' : 'GASTO',
+        category: rec.category,
+        concept: `Abono/Liquidación ${rec.type}: ${rec.concept}`,
+        amount: applied,
+        balance: 0,
+        method: 'Transferencia',
+        status: 'PAGADO'
+      });
+      saveState();
+      renderCRMFinances();
+      renderPipeline();
+    }
+
+    function deleteCRMFinance(id) {
+      if (!confirm('¿Eliminar este registro financiero del CRM?')) return;
+      state.finances = (state.finances || []).filter(f => f.id !== id);
+      saveState();
+      renderCRMFinances();
+      renderPipeline();
+    }
+
+    function renderCRMFinances() {
+      const fromStr = (document.getElementById('crm-fin-from') || {}).value || '';
+      const toStr = (document.getElementById('crm-fin-to') || {}).value || '';
+      const typeFilter = (document.getElementById('crm-fin-type') || {}).value || 'ALL';
+      const labelEl = document.getElementById('crm-fin-range-label');
+      if (labelEl) {
+        labelEl.textContent = (fromStr || toStr) ? `Filtro: ${fromStr || 'Inicio'} → ${toStr || 'Hoy'}` : 'Mostrando Todo el Historial';
+      }
+
+      const today = new Date().toISOString().slice(0, 10);
+      const allFins = state.finances || [];
+      const inRange = allFins.filter(f => crmDateInRange(f.date, fromStr, toStr));
+
+      const incRange = inRange.filter(f => f.type === 'INGRESO').reduce((s, f) => s + Number(f.amount || 0), 0);
+      const incToday = allFins.filter(f => f.type === 'INGRESO' && f.date === today).reduce((s, f) => s + Number(f.amount || 0), 0);
+      const expRange = inRange.filter(f => f.type === 'GASTO').reduce((s, f) => s + Number(f.amount || 0), 0);
+      const cxcPending = allFins.filter(f => f.type === 'CXC').reduce((s, f) => s + Number(f.balance || 0), 0);
+      const cxpPending = allFins.filter(f => f.type === 'CXP').reduce((s, f) => s + Number(f.balance || 0), 0);
+
+      const elInc = document.getElementById('crm-kpi-inc');
+      if (elInc) {
+        elInc.textContent = fmt(incRange);
+        document.getElementById('crm-kpi-inc-today').textContent = `Hoy: ${fmt(incToday)}`;
+        document.getElementById('crm-kpi-exp').textContent = fmt(expRange);
+        document.getElementById('crm-kpi-cxc').textContent = fmt(cxcPending);
+        document.getElementById('crm-kpi-cxp').textContent = fmt(cxpPending);
+        document.getElementById('crm-kpi-net').textContent = fmt(incRange - expRange);
+      }
+
+      const rows = inRange.filter(f => typeFilter === 'ALL' || f.type === typeFilter);
+      const tbody = document.getElementById('crm-finances-tbody');
+      if (!tbody) return;
+      const badgeMap = {
+        INGRESO: 'bg-emerald-500/20 text-emerald-300 border-emerald-500/30',
+        GASTO: 'bg-rose-500/20 text-rose-300 border-rose-500/30',
+        CXC: 'bg-cyan-500/20 text-cyan-300 border-cyan-500/30',
+        CXP: 'bg-amber-500/20 text-amber-300 border-amber-500/30'
+      };
+      tbody.innerHTML = rows.length ? rows.map(f => `
+        <tr class="hover:bg-slate-900/50">
+          <td class="py-3.5 px-4 font-mono text-slate-300">${f.date}</td>
+          <td class="py-3.5 px-4"><span class="px-2.5 py-0.5 rounded-full text-[10px] font-bold border ${badgeMap[f.type] || ''}">${f.type}</span></td>
+          <td class="py-3.5 px-4 text-slate-300">${f.category}</td>
+          <td class="py-3.5 px-4 font-bold text-white">${f.concept}</td>
+          <td class="py-3.5 px-4 text-slate-400">${f.method} · <strong class="text-white">${f.status}</strong></td>
+          <td class="py-3.5 px-4 font-mono font-bold ${f.type==='INGRESO'||f.type==='CXC'?'text-emerald-400':'text-rose-400'}">${fmt(f.amount)}</td>
+          <td class="py-3.5 px-4 font-mono font-bold ${f.balance > 0 ? 'text-amber-400' : 'text-slate-500'}">${fmt(f.balance || 0)}</td>
+          <td class="py-3.5 px-4 text-right space-x-1">
+            ${f.balance > 0 ? `<button onclick="settleCRMAccount(${f.id})" class="px-2.5 py-1 rounded-lg bg-emerald-500 text-slate-950 font-extrabold text-[11px]">💳 Abonar / Liquidar</button>` : ''}
+            <button onclick="deleteCRMFinance(${f.id})" class="px-2 py-1 rounded-lg bg-slate-800 hover:bg-rose-500/20 text-slate-400 hover:text-rose-300 text-xs">🗑️</button>
+          </td>
+        </tr>
+      `).join('') : `<tr><td colspan="8" class="py-8 text-center text-slate-500">No hay movimientos financieros en el rango de fechas seleccionado.</td></tr>`;
+    }
+
+    function exportCRMFinanceCSV() {
+      const fromStr = (document.getElementById('crm-fin-from') || {}).value || (document.getElementById('crm-dash-from') || {}).value || '';
+      const toStr = (document.getElementById('crm-fin-to') || {}).value || (document.getElementById('crm-dash-to') || {}).value || '';
+      const list = (state.finances || []).filter(f => crmDateInRange(f.date, fromStr, toStr));
+      let csv = '\uFEFFFecha,Tipo,Categoria_Comercial,Concepto_Cliente_Proveedor,Metodo_Pago,Estado,Monto_Total,Saldo_Pendiente\n';
+      list.forEach(f => {
+        csv += `"${f.date}","${f.type}","${f.category}","${(f.concept || '').replace(/"/g, '""')}","${f.method}","${f.status}",${Number(f.amount || 0).toFixed(2)},${Number(f.balance || 0).toFixed(2)}\n`;
+      });
+      const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = `Reporte_Finanzas_CRM_${new Date().toISOString().slice(0,10)}.csv`;
       a.click();
     }
 
