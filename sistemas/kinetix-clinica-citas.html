@@ -416,9 +416,23 @@
             <button onclick="openMedFinanceModal('CXP')" class="px-3.5 py-2.5 rounded-xl bg-rose-500/20 border border-rose-500/40 text-rose-300 font-bold text-xs transition">
               📤 + Cuenta por Pagar
             </button>
-            <button onclick="exportClinicFinanceCSV()" class="px-4 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-white border border-slate-700 font-bold text-xs transition">
-              📥 Descargar Reporte Excel
-            </button>
+            <div class="flex flex-wrap gap-1.5 border-l border-slate-700 pl-2">
+              <button onclick="exportMedFinanceTypeCSV('INGRESO')" title="Descargar solo Ingresos y Consultas" class="px-2.5 py-2 rounded-xl bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 hover:bg-emerald-500 hover:text-slate-950 font-bold text-xs transition flex items-center gap-1 cursor-pointer">
+                📥 Excel Ingresos
+              </button>
+              <button onclick="exportMedFinanceTypeCSV('GASTO')" title="Descargar solo Gastos Médicos e Insumos" class="px-2.5 py-2 rounded-xl bg-amber-500/20 text-amber-300 border border-amber-500/30 hover:bg-amber-500 hover:text-slate-950 font-bold text-xs transition flex items-center gap-1 cursor-pointer">
+                📥 Excel Gastos
+              </button>
+              <button onclick="exportMedFinanceTypeCSV('CXC')" title="Descargar solo Cuentas por Cobrar" class="px-2.5 py-2 rounded-xl bg-cyan-500/20 text-cyan-300 border border-cyan-500/30 hover:bg-cyan-500 hover:text-slate-950 font-bold text-xs transition flex items-center gap-1 cursor-pointer">
+                📥 Excel CxC
+              </button>
+              <button onclick="exportMedFinanceTypeCSV('CXP')" title="Descargar solo Cuentas por Pagar" class="px-2.5 py-2 rounded-xl bg-rose-500/20 text-rose-300 border border-rose-500/30 hover:bg-rose-500 hover:text-white font-bold text-xs transition flex items-center gap-1 cursor-pointer">
+                📥 Excel CxP
+              </button>
+              <button onclick="exportClinicFinanceCSV()" title="Descargar Reporte Financiero Completo" class="px-2.5 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-white border border-slate-700 font-bold text-xs transition flex items-center gap-1 cursor-pointer">
+                📊 Todo
+              </button>
+            </div>
           </div>
         </div>
 
@@ -707,6 +721,7 @@
         <button onclick="closeMedFinanceModal()" class="text-slate-400 hover:text-white text-xl">&times;</button>
       </div>
       <input type="hidden" id="med-fin-type" value="INGRESO">
+      <input type="hidden" id="med-fin-edit-id" value="">
       <div class="space-y-3">
         <div class="grid grid-cols-2 gap-3">
           <div>
@@ -770,7 +785,7 @@
       </div>
       <div class="flex justify-end gap-2 pt-3 border-t border-slate-800">
         <button onclick="closeMedFinanceModal()" class="px-4 py-2 rounded-xl bg-slate-800 text-slate-300 font-bold">Cancelar</button>
-        <button onclick="saveMedFinanceRecord()" class="px-6 py-2 rounded-xl bg-emerald-400 text-slate-950 font-extrabold">Guardar Registro</button>
+        <button id="med-fin-submit-btn" onclick="saveMedFinanceRecord()" class="px-6 py-2 rounded-xl bg-emerald-400 text-slate-950 font-extrabold">Guardar Registro</button>
       </div>
     </div>
   </div>
@@ -1254,8 +1269,15 @@
 
     function openMedFinanceModal(type) {
       document.getElementById('med-fin-type').value = type;
+      const editIdEl = document.getElementById('med-fin-edit-id');
+      if (editIdEl) editIdEl.value = '';
+      const submitBtn = document.getElementById('med-fin-submit-btn');
+      if (submitBtn) submitBtn.textContent = 'Guardar Registro';
+
       document.getElementById('med-fin-date').value = medTodayISO();
       document.getElementById('med-fin-paid').value = '0.00';
+      document.getElementById('med-fin-concept').value = '';
+      document.getElementById('med-fin-amount').value = '';
       const paidRow = document.getElementById('med-fin-paid-row');
       paidRow.classList.toggle('hidden', type !== 'CXC' && type !== 'CXP');
 
@@ -1286,12 +1308,47 @@
       document.getElementById('med-finance-modal').classList.add('flex');
     }
 
+    function editMedFinance(id) {
+      const f = (state.finances || []).find(x => x.id === id);
+      if (!f) return;
+      document.getElementById('med-fin-edit-id').value = id;
+      document.getElementById('med-fin-type').value = f.type;
+      document.getElementById('med-fin-date').value = f.date || medTodayISO();
+      document.getElementById('med-fin-category').value = f.category || '';
+      document.getElementById('med-fin-method').value = f.method || 'Efectivo';
+      document.getElementById('med-fin-entity').value = f.entity || '';
+      document.getElementById('med-fin-concept').value = f.concept || '';
+      document.getElementById('med-fin-amount').value = Number(f.amount || 0).toFixed(2);
+      document.getElementById('med-fin-paid').value = Number(f.paid || 0).toFixed(2);
+
+      const paidRow = document.getElementById('med-fin-paid-row');
+      paidRow.classList.toggle('hidden', f.type !== 'CXC' && f.type !== 'CXP');
+
+      const supBox = document.getElementById('med-fin-supplier-box');
+      const isSupplierType = (f.type === 'GASTO' || f.type === 'CXP');
+      if (supBox) supBox.classList.toggle('hidden', !isSupplierType);
+      if (isSupplierType) {
+        document.getElementById('med-fin-entity-label').textContent = 'Proveedor Médico / Laboratorio Confirmado:';
+        populateMedFinanceSuppliers();
+      } else {
+        document.getElementById('med-fin-entity-label').textContent = 'Nombre del Paciente / Cliente:';
+      }
+
+      document.getElementById('med-fin-modal-title').textContent = `✏️ Editar Movimiento Clínico (${f.type} #${id})`;
+      const submitBtn = document.getElementById('med-fin-submit-btn');
+      if (submitBtn) submitBtn.textContent = '💾 Guardar Cambios';
+
+      document.getElementById('med-finance-modal').classList.remove('hidden');
+      document.getElementById('med-finance-modal').classList.add('flex');
+    }
+
     function closeMedFinanceModal() {
       document.getElementById('med-finance-modal').classList.add('hidden');
       document.getElementById('med-finance-modal').classList.remove('flex');
     }
 
     function saveMedFinanceRecord() {
+      const editId = (document.getElementById('med-fin-edit-id') || {}).value;
       const type = document.getElementById('med-fin-type').value;
       const entity = document.getElementById('med-fin-entity').value.trim() || (type === 'INGRESO' || type === 'CXC' ? 'Paciente General' : 'Proveedor Clínico');
       const concept = document.getElementById('med-fin-concept').value.trim() || 'Movimiento clínico';
@@ -1306,17 +1363,31 @@
       if (amount <= 0) { alert('Ingresa un monto válido.'); return; }
 
       state.finances = state.finances || [];
-      state.finances.unshift({
-        id: Date.now(),
-        date,
-        type,
-        entity,
-        concept,
-        category,
-        method,
-        amount,
-        paid
-      });
+      if (editId) {
+        const existing = state.finances.find(f => String(f.id) === String(editId));
+        if (existing) {
+          existing.type = type;
+          existing.entity = entity;
+          existing.concept = concept;
+          existing.category = category;
+          existing.method = method;
+          existing.date = date;
+          existing.amount = amount;
+          existing.paid = paid;
+        }
+      } else {
+        state.finances.unshift({
+          id: Date.now(),
+          date,
+          type,
+          entity,
+          concept,
+          category,
+          method,
+          amount,
+          paid
+        });
+      }
       saveState();
       renderClinicFinances();
       renderAgenda();
@@ -1398,9 +1469,10 @@
           <td class="py-3 px-4 text-slate-400">${f.category}</td>
           <td class="py-3 px-4"><span class="px-2 py-0.5 rounded bg-slate-800 text-[10px] font-semibold">${isAcc ? (bal <= 0 ? 'Liquidado ✅' : `Abonado: ${medFmt(f.paid)}`) : f.method}</span></td>
           <td class="py-3 px-4 text-right font-mono font-black ${amtColor}">${isAcc ? `${medFmt(bal)} / ${medFmt(f.amount)}` : medFmt(f.amount)}</td>
-          <td class="py-3 px-4 text-right space-x-1">
-            ${isAcc && bal > 0 ? `<button onclick="settleMedAccount(${f.id})" class="px-2.5 py-1 rounded-lg bg-emerald-500 text-slate-950 font-extrabold text-[11px]">💵 Abonar</button>` : ''}
-            <button onclick="deleteMedFinance(${f.id})" class="px-2 py-1 rounded bg-red-500/15 text-red-300 hover:bg-red-500 hover:text-white text-xs font-bold">&times;</button>
+          <td class="py-3 px-4 text-right space-x-1 whitespace-nowrap">
+            ${isAcc && bal > 0 ? `<button onclick="settleMedAccount(${f.id})" class="px-2.5 py-1 rounded-lg bg-emerald-500 text-slate-950 font-extrabold text-[11px] hover:bg-emerald-400">💵 Abonar</button>` : ''}
+            <button onclick="editMedFinance(${f.id})" class="px-2.5 py-1 rounded bg-indigo-500/20 text-indigo-300 hover:bg-indigo-500 hover:text-white text-xs font-bold transition">✏️ Editar</button>
+            <button onclick="deleteMedFinance(${f.id})" class="px-2 py-1 rounded bg-red-500/15 text-red-300 hover:bg-red-500 hover:text-white text-xs font-bold transition">🗑️</button>
           </td>
         `;
         tbody.appendChild(tr);
@@ -1448,6 +1520,30 @@
       const link = document.createElement('a');
       link.href = URL.createObjectURL(blob);
       link.download = `Agenda_Clinica_Kinetix_${medTodayISO()}.csv`;
+      link.click();
+    }
+
+    function exportMedFinanceTypeCSV(type) {
+      const fromISO = (document.getElementById('med-fin-from') && document.getElementById('med-fin-from').value) || (document.getElementById('agenda-date-from') && document.getElementById('agenda-date-from').value) || '';
+      const toISO = (document.getElementById('med-fin-to') && document.getElementById('med-fin-to').value) || (document.getElementById('agenda-date-to') && document.getElementById('agenda-date-to').value) || '';
+      const rows = (state.finances || []).filter(f => f.type === type && medInDateRange(f.date, fromISO, toISO));
+
+      const typeLabels = {
+        'INGRESO': 'Ingresos_Consultas_Clinica',
+        'GASTO': 'Gastos_Insumos_Medicos',
+        'CXC': 'Cuentas_por_Cobrar_Pacientes_CxC',
+        'CXP': 'Cuentas_por_Pagar_Proveedores_CxP'
+      };
+
+      let csv = '\uFEFFID_Registro,Fecha,Tipo_Movimiento,Paciente_o_Proveedor,Concepto_Clinico,Categoria_Giro,Metodo_Pago,Monto_Total,Monto_Abonado_Pagado,Saldo_Pendiente\n';
+      rows.forEach(f => {
+        const bal = (f.type === 'CXC' || f.type === 'CXP') ? Math.max(0, Number(f.amount) - Number(f.paid || 0)) : 0;
+        csv += `"MED-${f.id}","${f.date}","${f.type}","${(f.entity||'').replace(/"/g, '""')}","${(f.concept||'').replace(/"/g, '""')}","${f.category}","${f.method}",${Number(f.amount).toFixed(2)},${Number(f.paid || f.amount).toFixed(2)},${bal.toFixed(2)}\n`;
+      });
+      const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+      const link = document.createElement('a');
+      link.href = URL.createObjectURL(blob);
+      link.download = `Reporte_${typeLabels[type] || type}_${medTodayISO()}.csv`;
       link.click();
     }
 

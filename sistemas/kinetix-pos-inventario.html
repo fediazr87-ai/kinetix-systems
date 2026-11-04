@@ -458,7 +458,7 @@
                   <th class="py-3.5 px-4">Cajero / Usuario</th>
                   <th class="py-3.5 px-4">Método</th>
                   <th class="py-3.5 px-4">Total</th>
-                  <th class="py-3.5 px-4 text-right">Comprobante</th>
+                  <th class="py-3.5 px-4 text-right">Acciones</th>
                 </tr>
               </thead>
               <tbody id="sales-table-body" class="divide-y divide-slate-800/70"></tbody>
@@ -513,9 +513,23 @@
             <button onclick="openAccountModal('CXP')" class="px-3.5 py-2.5 rounded-xl bg-rose-500 hover:bg-rose-400 text-white font-extrabold text-xs transition flex items-center gap-1.5 shadow-lg cursor-pointer">
               📤 + Cuenta por Pagar
             </button>
-            <button onclick="exportFullFinanceCSV()" class="px-3.5 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-white border border-slate-700 font-bold text-xs transition flex items-center gap-1.5 cursor-pointer">
-              📥 Descargar Excel
-            </button>
+            <div class="flex flex-wrap gap-1.5 border-l border-slate-700 pl-2">
+              <button onclick="exportOnlyExpensesCSV()" title="Descargar solo Gastos Operativos" class="px-2.5 py-2 rounded-xl bg-amber-500/20 text-amber-300 border border-amber-500/30 hover:bg-amber-500 hover:text-slate-950 font-bold text-xs transition flex items-center gap-1 cursor-pointer">
+                📥 Excel Gastos
+              </button>
+              <button onclick="exportOnlyPurchasesCSV()" title="Descargar solo Compras a Proveedores" class="px-2.5 py-2 rounded-xl bg-cyan-500/20 text-cyan-300 border border-cyan-500/30 hover:bg-cyan-500 hover:text-slate-950 font-bold text-xs transition flex items-center gap-1 cursor-pointer">
+                📥 Excel Compras
+              </button>
+              <button onclick="exportOnlyCxCCSV()" title="Descargar solo Cuentas por Cobrar" class="px-2.5 py-2 rounded-xl bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 hover:bg-emerald-500 hover:text-slate-950 font-bold text-xs transition flex items-center gap-1 cursor-pointer">
+                📥 Excel CxC
+              </button>
+              <button onclick="exportOnlyCxPCSV()" title="Descargar solo Cuentas por Pagar" class="px-2.5 py-2 rounded-xl bg-rose-500/20 text-rose-300 border border-rose-500/30 hover:bg-rose-500 hover:text-white font-bold text-xs transition flex items-center gap-1 cursor-pointer">
+                📥 Excel CxP
+              </button>
+              <button onclick="exportFullFinanceCSV()" title="Descargar Reporte Financiero Completo" class="px-2.5 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-white border border-slate-700 font-bold text-xs transition flex items-center gap-1 cursor-pointer">
+                📊 Todo
+              </button>
+            </div>
           </div>
         </div>
 
@@ -573,7 +587,7 @@
         <div id="fin-sec-gastos" class="glass rounded-3xl p-6 border border-slate-800 space-y-4">
           <div class="flex items-center justify-between">
             <h3 class="text-sm font-extrabold text-white uppercase tracking-wider">💸 Registro de Gastos Operativos y Caja Chica</h3>
-            <button onclick="exportExpensesCSV()" class="text-xs text-amber-400 hover:underline font-bold">📥 Exportar Gastos Excel</button>
+            <button onclick="exportOnlyExpensesCSV()" class="text-xs text-amber-400 hover:underline font-bold">📥 Exportar Gastos a Excel (.CSV)</button>
           </div>
           <div class="overflow-x-auto">
             <table class="w-full text-left text-xs">
@@ -597,7 +611,10 @@
         <div id="fin-sec-compras" class="glass rounded-3xl p-6 border border-slate-800 space-y-4">
           <div class="flex items-center justify-between">
             <h3 class="text-sm font-extrabold text-white uppercase tracking-wider">🛍️ Compras a Proveedores y Abastecimiento</h3>
-            <button onclick="openPurchaseModal()" class="text-xs text-cyan-400 hover:underline font-bold">+ Nueva Compra</button>
+            <div class="flex items-center gap-3">
+              <button onclick="exportOnlyPurchasesCSV()" class="text-xs text-cyan-400 hover:underline font-bold">📥 Exportar Compras a Excel (.CSV)</button>
+              <button onclick="openPurchaseModal()" class="px-3 py-1 rounded-xl bg-cyan-400 text-slate-950 text-xs font-bold hover:bg-cyan-300">+ Nueva Compra</button>
+            </div>
           </div>
           <div class="overflow-x-auto">
             <table class="w-full text-left text-xs">
@@ -652,7 +669,10 @@
               <h3 class="text-sm font-extrabold text-white uppercase tracking-wider">📥 Cuentas por Cobrar (Créditos de Clientes - CxC)</h3>
               <p class="text-[11px] text-slate-400">Incluye ventas al crédito desde el POS y créditos directos registrados.</p>
             </div>
-            <button onclick="openAccountModal('CXC')" class="px-3 py-1.5 rounded-xl bg-emerald-500/20 text-emerald-300 font-bold text-xs">+ Nueva CxC</button>
+            <div class="flex items-center gap-3">
+              <button onclick="exportOnlyCxCCSV()" class="text-xs text-emerald-400 hover:underline font-bold">📥 Exportar CxC a Excel (.CSV)</button>
+              <button onclick="openAccountModal('CXC')" class="px-3 py-1.5 rounded-xl bg-emerald-500/20 text-emerald-300 font-bold text-xs hover:bg-emerald-500 hover:text-slate-950">+ Nueva CxC</button>
+            </div>
           </div>
           <div class="overflow-x-auto">
             <table class="w-full text-left text-xs">
@@ -681,7 +701,10 @@
               <h3 class="text-sm font-extrabold text-white uppercase tracking-wider">📤 Cuentas por Pagar (Facturas de Proveedores - CxP)</h3>
               <p class="text-[11px] text-slate-400">Control de obligaciones, vencimientos y abonos a proveedores.</p>
             </div>
-            <button onclick="openAccountModal('CXP')" class="px-3 py-1.5 rounded-xl bg-rose-500/20 text-rose-300 font-bold text-xs">+ Nueva CxP</button>
+            <div class="flex items-center gap-3">
+              <button onclick="exportOnlyCxPCSV()" class="text-xs text-rose-400 hover:underline font-bold">📥 Exportar CxP a Excel (.CSV)</button>
+              <button onclick="openAccountModal('CXP')" class="px-3 py-1.5 rounded-xl bg-rose-500/20 text-rose-300 font-bold text-xs hover:bg-rose-500 hover:text-white">+ Nueva CxP</button>
+            </div>
           </div>
           <div class="overflow-x-auto">
             <table class="w-full text-left text-xs">
@@ -861,19 +884,20 @@
     </div>
   </div>
 
-  <!-- MODAL PARA REGISTRAR NUEVO GASTO -->
+  <!-- MODAL PARA REGISTRAR / EDITAR GASTO -->
   <div id="expense-modal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4 hidden no-print">
     <div class="glass w-full max-w-md rounded-3xl border border-amber-500/30 p-6 space-y-4 shadow-2xl bg-slate-900">
       <div class="flex items-center justify-between border-b border-slate-800 pb-3">
         <div class="flex items-center gap-2">
           <span class="p-2 rounded-xl bg-amber-500/20 text-amber-400 text-lg">💸</span>
           <div>
-            <h3 class="font-extrabold text-white text-base">Registrar Nuevo Gasto Operativo</h3>
+            <h3 id="exp-modal-title" class="font-extrabold text-white text-base">Registrar Nuevo Gasto Operativo</h3>
             <span class="text-[11px] text-slate-400">Deducción de caja operativa con proveedor vinculado por categoría</span>
           </div>
         </div>
         <button onclick="closeExpenseModal()" class="text-slate-400 hover:text-white text-xl cursor-pointer">&times;</button>
       </div>
+      <input type="hidden" id="exp-edit-id" value="">
 
       <div class="space-y-3.5 text-xs">
         <div>
@@ -926,26 +950,27 @@
         <button onclick="closeExpenseModal()" class="w-1/2 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold text-xs transition cursor-pointer">
           Cancelar
         </button>
-        <button onclick="saveExpense()" class="w-1/2 py-2.5 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-extrabold text-xs transition shadow-lg shadow-amber-500/20 cursor-pointer">
+        <button id="exp-submit-btn" onclick="saveExpense()" class="w-1/2 py-2.5 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-extrabold text-xs transition shadow-lg shadow-amber-500/20 cursor-pointer">
           Confirmar Gasto
         </button>
       </div>
     </div>
   </div>
 
-  <!-- MODAL PARA REGISTRAR COMPRA A PROVEEDOR -->
+  <!-- MODAL PARA REGISTRAR / EDITAR COMPRA A PROVEEDOR -->
   <div id="purchase-modal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4 hidden no-print">
     <div class="glass w-full max-w-lg rounded-3xl border border-cyan-500/40 p-6 space-y-4 shadow-2xl bg-slate-900 text-xs">
       <div class="flex items-center justify-between border-b border-slate-800 pb-3">
         <div class="flex items-center gap-2">
           <span class="p-2 rounded-xl bg-cyan-500/20 text-cyan-400 text-lg">🛍️</span>
           <div>
-            <h3 class="font-extrabold text-white text-base">Registrar Compra a Proveedor</h3>
+            <h3 id="pur-modal-title" class="font-extrabold text-white text-base">Registrar Compra a Proveedor</h3>
             <span class="text-[11px] text-slate-400">Abastecimiento de mercancía, insumos y control de stock</span>
           </div>
         </div>
         <button onclick="closePurchaseModal()" class="text-slate-400 hover:text-white text-xl cursor-pointer">&times;</button>
       </div>
+      <input type="hidden" id="pur-edit-id" value="">
 
       <!-- Categoría y Buscador/Selector de Proveedor Asignado -->
       <div class="p-3.5 rounded-2xl bg-slate-950/80 border border-cyan-500/30 space-y-2.5">
@@ -1016,7 +1041,7 @@
 
       <div class="flex items-center gap-3 pt-2">
         <button onclick="closePurchaseModal()" class="w-1/2 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold transition">Cancelar</button>
-        <button onclick="savePurchase()" class="w-1/2 py-2.5 rounded-xl bg-cyan-400 hover:bg-cyan-300 text-slate-950 font-extrabold transition shadow-lg">Guardar Compra</button>
+        <button id="pur-submit-btn" onclick="savePurchase()" class="w-1/2 py-2.5 rounded-xl bg-cyan-400 hover:bg-cyan-300 text-slate-950 font-extrabold transition shadow-lg">Guardar Compra</button>
       </div>
     </div>
   </div>
@@ -1083,6 +1108,7 @@
         <button onclick="closeAccountModal()" class="text-slate-400 hover:text-white text-xl cursor-pointer">&times;</button>
       </div>
       <input type="hidden" id="acc-type" value="CXC">
+      <input type="hidden" id="acc-edit-id" value="">
       <div class="space-y-3">
         <div id="acc-supplier-picker-box" class="hidden p-3 rounded-2xl bg-slate-950/80 border border-rose-500/30 space-y-2">
           <label class="block font-bold text-rose-400 text-[11px]">🏢 Seleccionar Proveedor Registrado:</label>
@@ -1129,7 +1155,67 @@
       </div>
       <div class="flex items-center gap-3 pt-2">
         <button onclick="closeAccountModal()" class="w-1/2 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold">Cancelar</button>
-        <button onclick="saveAccountRecord()" class="w-1/2 py-2.5 rounded-xl bg-emerald-400 hover:bg-emerald-300 text-slate-950 font-extrabold">Guardar Registro</button>
+        <button id="acc-submit-btn" onclick="saveAccountRecord()" class="w-1/2 py-2.5 rounded-xl bg-emerald-400 hover:bg-emerald-300 text-slate-950 font-extrabold">Guardar Registro</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL EDITAR FACTURA DE VENTA / CORTE CAJA -->
+  <div id="sale-edit-modal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4 hidden no-print">
+    <div class="glass w-full max-w-lg rounded-3xl border border-emerald-500/40 p-6 space-y-4 shadow-2xl bg-slate-900 text-xs">
+      <div class="flex items-center justify-between border-b border-slate-800 pb-3">
+        <div class="flex items-center gap-2">
+          <span class="p-2 rounded-xl bg-emerald-500/20 text-emerald-400 text-lg">✏️</span>
+          <div>
+            <h3 class="font-extrabold text-white text-base">Editar Factura de Venta</h3>
+            <span class="text-[11px] text-slate-400">Modifica cliente, fecha, método de pago o montos facturados</span>
+          </div>
+        </div>
+        <button onclick="closeEditSaleModal()" class="text-slate-400 hover:text-white text-xl cursor-pointer">&times;</button>
+      </div>
+      <input type="hidden" id="sale-edit-idx" value="">
+      <div class="grid grid-cols-2 gap-3">
+        <div>
+          <label class="block font-semibold text-slate-300 mb-1">Folio Factura:</label>
+          <input type="text" id="sale-edit-folio" class="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-emerald-400 font-mono font-bold">
+        </div>
+        <div>
+          <label class="block font-semibold text-slate-300 mb-1">Fecha y Hora:</label>
+          <input type="text" id="sale-edit-date" class="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-white font-mono">
+        </div>
+        <div>
+          <label class="block font-semibold text-slate-300 mb-1">Cliente:</label>
+          <input type="text" id="sale-edit-client" class="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-white font-bold">
+        </div>
+        <div>
+          <label class="block font-semibold text-slate-300 mb-1">Teléfono / WhatsApp:</label>
+          <input type="text" id="sale-edit-phone" class="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-white font-mono">
+        </div>
+        <div>
+          <label class="block font-semibold text-slate-300 mb-1">Cajero / Operador:</label>
+          <input type="text" id="sale-edit-cashier" class="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-white">
+        </div>
+        <div>
+          <label class="block font-semibold text-slate-300 mb-1">Método de Pago:</label>
+          <select id="sale-edit-method" class="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-white font-semibold">
+            <option value="Efectivo">💵 Efectivo</option>
+            <option value="Tarjeta">💳 Tarjeta POS</option>
+            <option value="Transferencia">🏦 Transferencia Bancaria</option>
+            <option value="Crédito (CxC)">📝 Crédito (CxC)</option>
+          </select>
+        </div>
+        <div>
+          <label class="block font-semibold text-slate-300 mb-1">Total Facturado ($):</label>
+          <input type="number" id="sale-edit-total" step="0.01" class="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-emerald-400 font-mono font-black text-sm">
+        </div>
+        <div>
+          <label class="block font-semibold text-slate-300 mb-1">Ganancia Estimada ($):</label>
+          <input type="number" id="sale-edit-profit" step="0.01" class="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-cyan-400 font-mono font-bold">
+        </div>
+      </div>
+      <div class="flex items-center gap-3 pt-2 border-t border-slate-800">
+        <button onclick="closeEditSaleModal()" class="w-1/2 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold transition">Cancelar</button>
+        <button onclick="saveEditedSale()" class="w-1/2 py-2.5 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-extrabold transition shadow-lg">💾 Guardar Cambios Factura</button>
       </div>
     </div>
   </div>
@@ -1597,12 +1683,41 @@
     }
 
     function openExpenseModal() {
+      const editIdEl = document.getElementById('exp-edit-id');
+      if (editIdEl) editIdEl.value = '';
+      const titleEl = document.getElementById('exp-modal-title');
+      if (titleEl) titleEl.textContent = 'Registrar Nuevo Gasto Operativo';
+      const submitBtn = document.getElementById('exp-submit-btn');
+      if (submitBtn) submitBtn.textContent = 'Confirmar Gasto';
+
       const who = document.getElementById('exp-cashier');
       if (who && currentUser) who.value = currentUser.name;
+      document.getElementById('exp-concept').value = '';
+      document.getElementById('exp-amount').value = '';
       document.getElementById('exp-date').value = todayISO();
       const searchEl = document.getElementById('exp-supplier-search');
       if (searchEl) searchEl.value = '';
       populateExpenseSuppliers();
+      document.getElementById('expense-modal').classList.remove('hidden');
+    }
+
+    function editExpense(id) {
+      const exp = (state.expenses || []).find(e => e.id === id);
+      if (!exp) return;
+      const editIdEl = document.getElementById('exp-edit-id');
+      if (editIdEl) editIdEl.value = id;
+      const titleEl = document.getElementById('exp-modal-title');
+      if (titleEl) titleEl.textContent = `✏️ Editar Gasto Operativo (#${id})`;
+      const submitBtn = document.getElementById('exp-submit-btn');
+      if (submitBtn) submitBtn.textContent = '💾 Guardar Cambios';
+
+      document.getElementById('exp-concept').value = exp.concept || '';
+      document.getElementById('exp-amount').value = Number(exp.amount || 0).toFixed(2);
+      document.getElementById('exp-date').value = exp.dateISO || extractISODate(exp.date);
+      document.getElementById('exp-category').value = exp.category || 'Insumos';
+      document.getElementById('exp-cashier').value = exp.by || (currentUser ? currentUser.name : 'Admin');
+      populateExpenseSuppliers(exp.supplier || '');
+      document.getElementById('exp-supplier').value = exp.supplier || '';
       document.getElementById('expense-modal').classList.remove('hidden');
     }
 
@@ -1611,26 +1726,41 @@
     }
 
     function saveExpense() {
+      const editId = (document.getElementById('exp-edit-id') || {}).value;
       const concept = document.getElementById('exp-concept').value.trim() || 'Gasto operativo';
       const amount = Number(document.getElementById('exp-amount').value) || 0;
       const dateISO = document.getElementById('exp-date').value || todayISO();
       const supplier = (document.getElementById('exp-supplier') ? document.getElementById('exp-supplier').value.trim() : '') || 'Proveedor General';
       if (amount <= 0) { alert('Ingresa un monto válido para el gasto.'); return; }
-      const now = new Date();
-      const hh = String(now.getHours() % 12 || 12).padStart(2, '0');
-      const mm = String(now.getMinutes()).padStart(2, '0');
-      const ap = now.getHours() >= 12 ? 'PM' : 'AM';
+
       state.expenses = state.expenses || [];
-      state.expenses.unshift({
-        id: Date.now(),
-        date: `${dateISO} ${hh}:${mm} ${ap}`,
-        dateISO,
-        concept,
-        category: document.getElementById('exp-category').value,
-        supplier,
-        by: document.getElementById('exp-cashier').value || (currentUser ? currentUser.name : 'Admin'),
-        amount
-      });
+      if (editId) {
+        const existing = state.expenses.find(e => String(e.id) === String(editId));
+        if (existing) {
+          existing.concept = concept;
+          existing.amount = amount;
+          existing.dateISO = dateISO;
+          existing.date = `${dateISO} ${existing.date ? existing.date.slice(11) : '12:00 PM'}`;
+          existing.category = document.getElementById('exp-category').value;
+          existing.supplier = supplier;
+          existing.by = document.getElementById('exp-cashier').value || existing.by;
+        }
+      } else {
+        const now = new Date();
+        const hh = String(now.getHours() % 12 || 12).padStart(2, '0');
+        const mm = String(now.getMinutes()).padStart(2, '0');
+        const ap = now.getHours() >= 12 ? 'PM' : 'AM';
+        state.expenses.unshift({
+          id: Date.now(),
+          date: `${dateISO} ${hh}:${mm} ${ap}`,
+          dateISO,
+          concept,
+          category: document.getElementById('exp-category').value,
+          supplier,
+          by: document.getElementById('exp-cashier').value || (currentUser ? currentUser.name : 'Admin'),
+          amount
+        });
+      }
       saveState();
       renderExpenses();
       renderSales();
@@ -1701,14 +1831,44 @@
     }
 
     function openPurchaseModal() {
+      const editIdEl = document.getElementById('pur-edit-id');
+      if (editIdEl) editIdEl.value = '';
+      const titleEl = document.getElementById('pur-modal-title');
+      if (titleEl) titleEl.textContent = 'Registrar Compra a Proveedor';
+      const submitBtn = document.getElementById('pur-submit-btn');
+      if (submitBtn) submitBtn.textContent = 'Guardar Compra';
+
       document.getElementById('pur-date').value = todayISO();
       document.getElementById('pur-ref').value = 'CMP-' + String((state.purchases || []).length + 101);
+      document.getElementById('pur-desc').value = '';
+      document.getElementById('pur-amount').value = '';
       const searchEl = document.getElementById('pur-supplier-search');
       if (searchEl) searchEl.value = '';
       populatePurchaseSuppliers();
       const sel = document.getElementById('pur-product-id');
       sel.innerHTML = '<option value="">-- Compra General / Sin vincular a SKU específico --</option>' +
         state.products.map(p => `<option value="${p.id}">${p.sku} - ${p.name} (Costo: ${fmt(p.cost)} | Stock: ${p.stock})</option>`).join('');
+      document.getElementById('purchase-modal').classList.remove('hidden');
+    }
+
+    function editPurchase(id) {
+      const pur = (state.purchases || []).find(p => p.id === id);
+      if (!pur) return;
+      const editIdEl = document.getElementById('pur-edit-id');
+      if (editIdEl) editIdEl.value = id;
+      const titleEl = document.getElementById('pur-modal-title');
+      if (titleEl) titleEl.textContent = `✏️ Editar Factura de Compra #${pur.ref || ''}`;
+      const submitBtn = document.getElementById('pur-submit-btn');
+      if (submitBtn) submitBtn.textContent = '💾 Guardar Cambios';
+
+      document.getElementById('pur-ref').value = pur.ref || '';
+      document.getElementById('pur-date').value = pur.dateISO || extractISODate(pur.date);
+      document.getElementById('pur-condition').value = pur.condition || 'Contado';
+      document.getElementById('pur-amount').value = Number(pur.amount || 0).toFixed(2);
+      document.getElementById('pur-desc').value = pur.desc || '';
+      if (document.getElementById('pur-category')) document.getElementById('pur-category').value = pur.category || 'Proveedores';
+      populatePurchaseSuppliers(pur.supplier || '');
+      document.getElementById('pur-supplier').value = pur.supplier || '';
       document.getElementById('purchase-modal').classList.remove('hidden');
     }
 
@@ -1737,6 +1897,7 @@
     }
 
     function savePurchase() {
+      const editId = (document.getElementById('pur-edit-id') || {}).value;
       const supplier = document.getElementById('pur-supplier').value.trim() || 'Proveedor General';
       const category = document.getElementById('pur-category') ? document.getElementById('pur-category').value : 'Proveedores';
       const ref = document.getElementById('pur-ref').value.trim() || 'CMP-001';
@@ -1749,42 +1910,56 @@
 
       if (amount <= 0) { alert('Ingresa un monto válido para la compra.'); return; }
 
-      // Si se seleccionó un producto, sumar al inventario automáticamente
-      if (pid && qty > 0) {
-        const prod = state.products.find(p => p.id === pid);
-        if (prod) prod.stock += qty;
-      }
-
       state.purchases = state.purchases || [];
-      state.purchases.unshift({
-        id: Date.now(),
-        ref,
-        date: dateISO,
-        dateISO,
-        supplier,
-        category,
-        desc,
-        condition,
-        amount,
-        by: currentUser ? currentUser.name : 'Admin'
-      });
+      if (editId) {
+        const existing = state.purchases.find(p => String(p.id) === String(editId));
+        if (existing) {
+          existing.supplier = supplier;
+          existing.category = category;
+          existing.ref = ref;
+          existing.dateISO = dateISO;
+          existing.date = dateISO;
+          existing.condition = condition;
+          existing.amount = amount;
+          existing.desc = desc;
+        }
+      } else {
+        // Si se seleccionó un producto, sumar al inventario automáticamente
+        if (pid && qty > 0) {
+          const prod = state.products.find(p => p.id === pid);
+          if (prod) prod.stock += qty;
+        }
 
-      // Si es a crédito, generar automáticamente en Cuentas por Pagar (CxP)
-      if (condition.includes('Crédito')) {
-        const supObj = (state.suppliers || []).find(s => s.name === supplier);
-        state.payables = state.payables || [];
-        state.payables.unshift({
-          id: Date.now() + 1,
+        state.purchases.unshift({
+          id: Date.now(),
           ref,
           date: dateISO,
           dateISO,
-          due: daysAheadISO(15),
           supplier,
-          phone: supObj ? supObj.phone : '',
-          concept: desc,
-          total: amount,
-          paid: 0
+          category,
+          desc,
+          condition,
+          amount,
+          by: currentUser ? currentUser.name : 'Admin'
         });
+
+        // Si es a crédito, generar automáticamente en Cuentas por Pagar (CxP)
+        if (condition.includes('Crédito')) {
+          const supObj = (state.suppliers || []).find(s => s.name === supplier);
+          state.payables = state.payables || [];
+          state.payables.unshift({
+            id: Date.now() + 1,
+            ref,
+            date: dateISO,
+            dateISO,
+            due: daysAheadISO(15),
+            supplier,
+            phone: supObj ? supObj.phone : '',
+            concept: desc,
+            total: amount,
+            paid: 0
+          });
+        }
       }
 
       saveState();
@@ -1815,9 +1990,15 @@
 
     function openAccountModal(type) {
       document.getElementById('acc-type').value = type;
+      const editIdEl = document.getElementById('acc-edit-id');
+      if (editIdEl) editIdEl.value = '';
+      const submitBtn = document.getElementById('acc-submit-btn');
+      if (submitBtn) submitBtn.textContent = 'Guardar Registro';
+
       document.getElementById('acc-date').value = todayISO();
       document.getElementById('acc-due').value = daysAheadISO(15);
       document.getElementById('acc-paid').value = '0.00';
+      document.getElementById('acc-total').value = '';
       const supBox = document.getElementById('acc-supplier-picker-box');
       if (type === 'CXC') {
         if (supBox) supBox.classList.add('hidden');
@@ -1846,12 +2027,38 @@
       document.getElementById('account-modal').classList.remove('hidden');
     }
 
+    function editAccountRecord(type, id) {
+      const list = type === 'CXC' ? (state.receivables || []) : (state.payables || []);
+      const rec = list.find(x => x.id === id);
+      if (!rec) return;
+      document.getElementById('acc-type').value = type;
+      const editIdEl = document.getElementById('acc-edit-id');
+      if (editIdEl) editIdEl.value = id;
+      const titleEl = document.getElementById('acc-modal-title');
+      if (titleEl) titleEl.textContent = `✏️ Editar Cuenta por ${type === 'CXC' ? 'Cobrar' : 'Pagar'} (${rec.ref || ''})`;
+      const submitBtn = document.getElementById('acc-submit-btn');
+      if (submitBtn) submitBtn.textContent = '💾 Guardar Cambios';
+
+      document.getElementById('acc-entity').value = type === 'CXC' ? (rec.client || '') : (rec.supplier || '');
+      document.getElementById('acc-phone').value = rec.phone || '';
+      document.getElementById('acc-ref').value = rec.ref || '';
+      document.getElementById('acc-concept').value = rec.concept || '';
+      document.getElementById('acc-date').value = rec.dateISO || extractISODate(rec.date);
+      document.getElementById('acc-due').value = rec.due || daysAheadISO(15);
+      document.getElementById('acc-total').value = Number(rec.total || 0).toFixed(2);
+      document.getElementById('acc-paid').value = Number(rec.paid || 0).toFixed(2);
+      const supBox = document.getElementById('acc-supplier-picker-box');
+      if (supBox) supBox.classList.add('hidden');
+      document.getElementById('account-modal').classList.remove('hidden');
+    }
+
     function closeAccountModal() {
       document.getElementById('account-modal').classList.add('hidden');
     }
 
     function saveAccountRecord() {
       const type = document.getElementById('acc-type').value;
+      const editId = (document.getElementById('acc-edit-id') || {}).value;
       const entity = document.getElementById('acc-entity').value.trim() || (type === 'CXC' ? 'Cliente Crédito' : 'Proveedor');
       const phone = document.getElementById('acc-phone').value.trim();
       const ref = document.getElementById('acc-ref').value.trim() || 'REF-101';
@@ -1863,12 +2070,29 @@
 
       if (total <= 0) { alert('Ingresa un monto total válido.'); return; }
 
-      if (type === 'CXC') {
-        state.receivables = state.receivables || [];
-        state.receivables.unshift({ id: Date.now(), ref, date: dateISO, dateISO, due, client: entity, phone, concept, total, paid });
+      if (editId) {
+        const list = type === 'CXC' ? (state.receivables || []) : (state.payables || []);
+        const existing = list.find(x => String(x.id) === String(editId));
+        if (existing) {
+          if (type === 'CXC') existing.client = entity;
+          else existing.supplier = entity;
+          existing.phone = phone;
+          existing.ref = ref;
+          existing.concept = concept;
+          existing.dateISO = dateISO;
+          existing.date = dateISO;
+          existing.due = due;
+          existing.total = total;
+          existing.paid = paid;
+        }
       } else {
-        state.payables = state.payables || [];
-        state.payables.unshift({ id: Date.now(), ref, date: dateISO, dateISO, due, supplier: entity, phone, concept, total, paid });
+        if (type === 'CXC') {
+          state.receivables = state.receivables || [];
+          state.receivables.unshift({ id: Date.now(), ref, date: dateISO, dateISO, due, client: entity, phone, concept, total, paid });
+        } else {
+          state.payables = state.payables || [];
+          state.payables.unshift({ id: Date.now(), ref, date: dateISO, dateISO, due, supplier: entity, phone, concept, total, paid });
+        }
       }
       saveState();
       renderExpenses();
@@ -1934,8 +2158,9 @@
             <td class="py-3 px-4 font-semibold text-indigo-300">🏢 ${supName}</td>
             <td class="py-3 px-4 text-slate-300">${e.by}</td>
             <td class="py-3 px-4 text-right font-black text-amber-400 mono">${fmt(e.amount)}</td>
-            <td class="py-3 px-4 text-right">
-              <button onclick="deleteExpense(${e.id})" class="px-2 py-1 rounded bg-red-500/15 text-red-300 hover:bg-red-500 hover:text-white text-xs font-bold">&times;</button>
+            <td class="py-3 px-4 text-right space-x-1 whitespace-nowrap">
+              <button onclick="editExpense(${e.id})" class="px-2 py-1 rounded bg-amber-500/20 text-amber-300 hover:bg-amber-500 hover:text-slate-950 text-xs font-bold transition">✏️ Editar</button>
+              <button onclick="deleteExpense(${e.id})" class="px-2 py-1 rounded bg-red-500/15 text-red-300 hover:bg-red-500 hover:text-white text-xs font-bold transition">🗑️</button>
             </td>`;
           tbodyExp.appendChild(tr);
         });
@@ -1958,8 +2183,9 @@
             <td class="py-3 px-4 text-slate-300">${p.desc}</td>
             <td class="py-3 px-4"><span class="px-2 py-0.5 rounded ${isCred ? 'bg-rose-500/20 text-rose-300' : 'bg-emerald-500/20 text-emerald-300'} text-[10px] font-bold">${p.condition}</span></td>
             <td class="py-3 px-4 text-right font-black text-cyan-400 mono">${fmt(p.amount)}</td>
-            <td class="py-3 px-4 text-right">
-              <button onclick="deletePurchase(${p.id})" class="px-2 py-1 rounded bg-red-500/15 text-red-300 hover:bg-red-500 hover:text-white text-xs font-bold">&times;</button>
+            <td class="py-3 px-4 text-right space-x-1 whitespace-nowrap">
+              <button onclick="editPurchase(${p.id})" class="px-2 py-1 rounded bg-cyan-500/20 text-cyan-300 hover:bg-cyan-500 hover:text-slate-950 text-xs font-bold transition">✏️ Editar</button>
+              <button onclick="deletePurchase(${p.id})" class="px-2 py-1 rounded bg-red-500/15 text-red-300 hover:bg-red-500 hover:text-white text-xs font-bold transition">🗑️</button>
             </td>`;
           tbodyPur.appendChild(tr);
         });
@@ -2010,9 +2236,10 @@
             <td class="py-3 px-4 font-mono text-emerald-400">${fmt(r.paid)}</td>
             <td class="py-3 px-4 font-mono font-black text-amber-400">${fmt(bal)}</td>
             <td class="py-3 px-4">${stBadge}</td>
-            <td class="py-3 px-4 text-right space-x-1">
-              ${bal > 0 ? `<button onclick="registerAccountPayment('CXC', ${r.id})" class="px-2.5 py-1 rounded-lg bg-emerald-500 text-slate-950 font-extrabold text-[11px] hover:bg-emerald-400">💵 Cobrar / Abonar</button>` : ''}
-              <button onclick="deleteAccountRecord('CXC', ${r.id})" class="px-2 py-1 rounded bg-red-500/15 text-red-300 hover:bg-red-500 hover:text-white text-xs font-bold">&times;</button>
+            <td class="py-3 px-4 text-right space-x-1 whitespace-nowrap">
+              ${bal > 0 ? `<button onclick="registerAccountPayment('CXC', ${r.id})" class="px-2.5 py-1 rounded-lg bg-emerald-500 text-slate-950 font-extrabold text-[11px] hover:bg-emerald-400">💵 Cobrar</button>` : ''}
+              <button onclick="editAccountRecord('CXC', ${r.id})" class="px-2 py-1 rounded bg-indigo-500/20 text-indigo-300 hover:bg-indigo-500 hover:text-white text-xs font-bold transition">✏️ Editar</button>
+              <button onclick="deleteAccountRecord('CXC', ${r.id})" class="px-2 py-1 rounded bg-red-500/15 text-red-300 hover:bg-red-500 hover:text-white text-xs font-bold transition">🗑️</button>
             </td>`;
           tbodyCxC.appendChild(tr);
         });
@@ -2044,9 +2271,10 @@
             <td class="py-3 px-4 font-mono text-emerald-400">${fmt(p.paid)}</td>
             <td class="py-3 px-4 font-mono font-black text-rose-400">${fmt(bal)}</td>
             <td class="py-3 px-4">${stBadge}</td>
-            <td class="py-3 px-4 text-right space-x-1">
-              ${bal > 0 ? `<button onclick="registerAccountPayment('CXP', ${p.id})" class="px-2.5 py-1 rounded-lg bg-rose-500 text-white font-extrabold text-[11px] hover:bg-rose-400">💳 Pagar / Abonar</button>` : ''}
-              <button onclick="deleteAccountRecord('CXP', ${p.id})" class="px-2 py-1 rounded bg-red-500/15 text-red-300 hover:bg-red-500 hover:text-white text-xs font-bold">&times;</button>
+            <td class="py-3 px-4 text-right space-x-1 whitespace-nowrap">
+              ${bal > 0 ? `<button onclick="registerAccountPayment('CXP', ${p.id})" class="px-2.5 py-1 rounded-lg bg-rose-500 text-white font-extrabold text-[11px] hover:bg-rose-400">💳 Pagar</button>` : ''}
+              <button onclick="editAccountRecord('CXP', ${p.id})" class="px-2 py-1 rounded bg-indigo-500/20 text-indigo-300 hover:bg-indigo-500 hover:text-white text-xs font-bold transition">✏️ Editar</button>
+              <button onclick="deleteAccountRecord('CXP', ${p.id})" class="px-2 py-1 rounded bg-red-500/15 text-red-300 hover:bg-red-500 hover:text-white text-xs font-bold transition">🗑️</button>
             </td>`;
           tbodyCxP.appendChild(tr);
         });
@@ -2530,6 +2758,53 @@
       return { fromISO, toISO, filteredSales, filteredExpenses, filteredPurchases };
     }
 
+    function openEditSaleModal(originalIdx) {
+      const s = state.sales[originalIdx];
+      if (!s) return;
+      document.getElementById('sale-edit-idx').value = originalIdx;
+      document.getElementById('sale-edit-folio').value = s.folio || '';
+      document.getElementById('sale-edit-date').value = s.date || '';
+      document.getElementById('sale-edit-client').value = s.client || 'Consumidor Final';
+      document.getElementById('sale-edit-phone').value = s.phone || '';
+      document.getElementById('sale-edit-cashier').value = s.cashier || (currentUser ? currentUser.name : 'Admin');
+      document.getElementById('sale-edit-method').value = s.method || 'Efectivo';
+      document.getElementById('sale-edit-total').value = Number(s.total || 0).toFixed(2);
+      document.getElementById('sale-edit-profit').value = Number(s.profit || 0).toFixed(2);
+      document.getElementById('sale-edit-modal').classList.remove('hidden');
+    }
+
+    function closeEditSaleModal() {
+      document.getElementById('sale-edit-modal').classList.add('hidden');
+    }
+
+    function saveEditedSale() {
+      const idx = Number(document.getElementById('sale-edit-idx').value);
+      const s = state.sales[idx];
+      if (!s) return;
+      s.folio = document.getElementById('sale-edit-folio').value.trim() || s.folio;
+      s.date = document.getElementById('sale-edit-date').value.trim() || s.date;
+      s.client = document.getElementById('sale-edit-client').value.trim() || 'Consumidor Final';
+      s.phone = document.getElementById('sale-edit-phone').value.trim();
+      s.cashier = document.getElementById('sale-edit-cashier').value.trim() || s.cashier;
+      s.method = document.getElementById('sale-edit-method').value;
+      s.total = Number(document.getElementById('sale-edit-total').value) || s.total;
+      s.profit = Number(document.getElementById('sale-edit-profit').value) || s.profit;
+      saveState();
+      closeEditSaleModal();
+      renderSales();
+      renderExpenses();
+    }
+
+    function deleteSale(originalIdx) {
+      const s = state.sales[originalIdx];
+      if (!s) return;
+      if (!confirm(`¿Eliminar la factura ${s.folio} de ${s.client} por ${fmt(s.total)}?\nEsta acción no se puede deshacer.`)) return;
+      state.sales.splice(originalIdx, 1);
+      saveState();
+      renderSales();
+      renderExpenses();
+    }
+
     function renderSales() {
       const tbody = document.getElementById('sales-table-body');
       if (!tbody) return;
@@ -2572,9 +2847,15 @@
           <td class="py-3 px-4 text-slate-300">${s.cashier}</td>
           <td class="py-3 px-4"><span class="px-2 py-0.5 rounded bg-slate-800 text-xs font-semibold">${s.method}</span></td>
           <td class="py-3 px-4 font-mono font-bold text-white">${fmt(s.total)}</td>
-          <td class="py-3 px-4 text-right">
-            <button onclick="reprintSale(${s.originalIdx})" class="px-3 py-1 rounded-lg bg-emerald-500/20 text-emerald-300 hover:bg-emerald-500 hover:text-slate-950 text-xs font-bold transition">
-              🧾 Ver / Imprimir
+          <td class="py-3 px-4 text-right space-x-1 whitespace-nowrap">
+            <button onclick="reprintSale(${s.originalIdx})" class="px-2.5 py-1 rounded-lg bg-emerald-500/20 text-emerald-300 hover:bg-emerald-500 hover:text-slate-950 text-xs font-bold transition">
+              🧾 Ver
+            </button>
+            <button onclick="openEditSaleModal(${s.originalIdx})" class="px-2.5 py-1 rounded-lg bg-indigo-500/20 text-indigo-300 hover:bg-indigo-500 hover:text-white text-xs font-bold transition">
+              ✏️ Editar
+            </button>
+            <button onclick="deleteSale(${s.originalIdx})" class="px-2 py-1 rounded bg-red-500/15 text-red-300 hover:bg-red-500 hover:text-white text-xs font-bold transition">
+              🗑️
             </button>
           </td>
         `;
@@ -2802,22 +3083,58 @@
       const { filteredSales } = getFilteredSalesAndOutflows();
       let csv = '\uFEFFFolio,Fecha,Cliente,Telefono,Cajero,Metodo Pago,Subtotal,Impuesto,Total Facturado,Ganancia Estimada\n';
       filteredSales.forEach(s => {
-        csv += `"${s.folio}","${s.date}","${s.client}","${s.phone || ''}","${s.cashier}","${s.method}",${Number(s.subtotal||0).toFixed(2)},${Number(s.tax||0).toFixed(2)},${Number(s.total||0).toFixed(2)},${Number(s.profit||0).toFixed(2)}\n`;
+        csv += `"${s.folio}","${s.date}","${(s.client||'').replace(/"/g, '""')}","${s.phone || ''}","${s.cashier}","${s.method}",${Number(s.subtotal||0).toFixed(2)},${Number(s.tax||0).toFixed(2)},${Number(s.total||0).toFixed(2)},${Number(s.profit||0).toFixed(2)}\n`;
       });
       downloadBlob(csv, `Reporte_Ventas_Kinetix_${todayISO()}.csv`, 'text/csv;charset=utf-8;');
     }
 
-    function exportExpensesCSV() {
+    // EXPORTACIÓN INDEPENDIENTE DE GASTOS, COMPRAS, CXC Y CXP
+    function exportOnlyExpensesCSV() {
       const fromISO = (document.getElementById('fin-date-from') && document.getElementById('fin-date-from').value) || (document.getElementById('sales-date-from') && document.getElementById('sales-date-from').value) || '';
       const toISO = (document.getElementById('fin-date-to') && document.getElementById('fin-date-to').value) || (document.getElementById('sales-date-to') && document.getElementById('sales-date-to').value) || '';
-      let csv = '\uFEFFFecha,Tipo Registro,Referencia,Concepto o Proveedor,Categoria o Condicion,Responsable,Monto\n';
+      let csv = '\uFEFFID_Gasto,Fecha_Hora,Concepto_Gasto,Categoria,Proveedor_Vinculado,Autorizado_Por,Monto_Gasto\n';
       (state.expenses || []).filter(e => inDateRange(e.dateISO || extractISODate(e.date), fromISO, toISO)).forEach(e => {
-        csv += `"${e.date}","Gasto Operativo","GASTO-${e.id}","${e.concept}","${e.category}","${e.by}",${Number(e.amount).toFixed(2)}\n`;
+        csv += `"EXP-${e.id}","${e.date}","${(e.concept||'').replace(/"/g, '""')}","${e.category}","${(e.supplier||'').replace(/"/g, '""')}","${e.by}",${Number(e.amount||0).toFixed(2)}\n`;
       });
+      downloadBlob(csv, `Reporte_Gastos_Operativos_${todayISO()}.csv`, 'text/csv;charset=utf-8;');
+    }
+
+    function exportOnlyPurchasesCSV() {
+      const fromISO = (document.getElementById('fin-date-from') && document.getElementById('fin-date-from').value) || (document.getElementById('sales-date-from') && document.getElementById('sales-date-from').value) || '';
+      const toISO = (document.getElementById('fin-date-to') && document.getElementById('fin-date-to').value) || (document.getElementById('sales-date-to') && document.getElementById('sales-date-to').value) || '';
+      let csv = '\uFEFFN_Factura_Ref,Fecha_Compra,Proveedor,Categoria_Rubro,Detalle_Mercancia,Condicion_Pago,Total_Compra,Registrado_Por\n';
       (state.purchases || []).filter(p => inDateRange(p.dateISO || extractISODate(p.date), fromISO, toISO)).forEach(p => {
-        csv += `"${p.date}","Compra Proveedor","${p.ref}","${p.supplier} - ${p.desc}","${p.condition}","${p.by || 'Admin'}",${Number(p.amount).toFixed(2)}\n`;
+        csv += `"${p.ref}","${p.date}","${(p.supplier||'').replace(/"/g, '""')}","${p.category || 'Mercancía'}","${(p.desc||'').replace(/"/g, '""')}","${p.condition}",${Number(p.amount||0).toFixed(2)},"${p.by || 'Admin'}"\n`;
       });
-      downloadBlob(csv, `Reporte_Gastos_y_Compras_${todayISO()}.csv`, 'text/csv;charset=utf-8;');
+      downloadBlob(csv, `Reporte_Compras_Proveedores_${todayISO()}.csv`, 'text/csv;charset=utf-8;');
+    }
+
+    function exportOnlyCxCCSV() {
+      const fromISO = (document.getElementById('fin-date-from') && document.getElementById('fin-date-from').value) || (document.getElementById('sales-date-from') && document.getElementById('sales-date-from').value) || '';
+      const toISO = (document.getElementById('fin-date-to') && document.getElementById('fin-date-to').value) || (document.getElementById('sales-date-to') && document.getElementById('sales-date-to').value) || '';
+      let csv = '\uFEFFFolio_CxC,Fecha_Emision,Fecha_Vencimiento,Cliente_Deudor,Telefono_WhatsApp,Concepto_Credito,Monto_Total,Monto_Abonado,Saldo_Pendiente,Estado\n';
+      (state.receivables || []).filter(r => inDateRange(r.dateISO || extractISODate(r.date), fromISO, toISO)).forEach(r => {
+        const bal = Math.max(0, Number(r.total) - Number(r.paid || 0));
+        const st = bal <= 0 ? 'PAGADO' : (Number(r.paid) > 0 ? 'ABONO_PARCIAL' : 'PENDIENTE');
+        csv += `"${r.ref}","${r.date}","${r.due}","${(r.client||'').replace(/"/g, '""')}","${r.phone || ''}","${(r.concept||'').replace(/"/g, '""')}",${Number(r.total||0).toFixed(2)},${Number(r.paid||0).toFixed(2)},${bal.toFixed(2)},"${st}"\n`;
+      });
+      downloadBlob(csv, `Reporte_Cuentas_por_Cobrar_CxC_${todayISO()}.csv`, 'text/csv;charset=utf-8;');
+    }
+
+    function exportOnlyCxPCSV() {
+      const fromISO = (document.getElementById('fin-date-from') && document.getElementById('fin-date-from').value) || (document.getElementById('sales-date-from') && document.getElementById('sales-date-from').value) || '';
+      const toISO = (document.getElementById('fin-date-to') && document.getElementById('fin-date-to').value) || (document.getElementById('sales-date-to') && document.getElementById('sales-date-to').value) || '';
+      let csv = '\uFEFFRef_Factura_CxP,Fecha_Emision,Fecha_Vencimiento,Proveedor_Acreedor,Telefono,Concepto_Obligacion,Monto_Total,Monto_Pagado,Saldo_Por_Pagar,Estado\n';
+      (state.payables || []).filter(p => inDateRange(p.dateISO || extractISODate(p.date), fromISO, toISO)).forEach(p => {
+        const bal = Math.max(0, Number(p.total) - Number(p.paid || 0));
+        const st = bal <= 0 ? 'LIQUIDADO' : (Number(p.paid) > 0 ? 'ABONADO' : 'POR_PAGAR');
+        csv += `"${p.ref}","${p.date}","${p.due}","${(p.supplier||'').replace(/"/g, '""')}","${p.phone || ''}","${(p.concept||'').replace(/"/g, '""')}",${Number(p.total||0).toFixed(2)},${Number(p.paid||0).toFixed(2)},${bal.toFixed(2)},"${st}"\n`;
+      });
+      downloadBlob(csv, `Reporte_Cuentas_por_Pagar_CxP_${todayISO()}.csv`, 'text/csv;charset=utf-8;');
+    }
+
+    function exportExpensesCSV() {
+      exportOnlyExpensesCSV();
     }
 
     function exportCashCloseCSV() {

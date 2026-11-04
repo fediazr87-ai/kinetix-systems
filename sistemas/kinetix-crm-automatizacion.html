@@ -374,7 +374,23 @@
               <button onclick="openCRMFinanceModal('CXC')" class="px-3.5 py-2.5 rounded-xl bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-extrabold text-xs transition">+ Cuenta por Cobrar (Cliente)</button>
               <button onclick="openCRMFinanceModal('CXP')" class="px-3.5 py-2.5 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-extrabold text-xs transition">+ Cuenta por Pagar</button>
               <button onclick="openCRMSupplierModal()" class="px-3.5 py-2.5 rounded-xl bg-indigo-500 hover:bg-indigo-400 text-white font-extrabold text-xs transition">🏢 + Registrar Proveedor / Partner</button>
-              <button onclick="exportCRMFinanceCSV()" class="px-3.5 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-emerald-300 font-bold text-xs border border-emerald-500/30 transition">📥 Exportar Excel (.CSV)</button>
+              <div class="flex flex-wrap gap-1.5 border-l border-slate-700 pl-2">
+                <button onclick="exportCRMFinanceTypeCSV('INGRESO')" title="Descargar solo Ingresos y Cierres" class="px-2.5 py-2 rounded-xl bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 hover:bg-emerald-500 hover:text-slate-950 font-bold text-xs transition flex items-center gap-1 cursor-pointer">
+                  📥 Excel Ingresos
+                </button>
+                <button onclick="exportCRMFinanceTypeCSV('GASTO')" title="Descargar solo Gastos y Ads" class="px-2.5 py-2 rounded-xl bg-rose-500/20 text-rose-300 border border-rose-500/30 hover:bg-rose-500 hover:text-white font-bold text-xs transition flex items-center gap-1 cursor-pointer">
+                  📥 Excel Gastos
+                </button>
+                <button onclick="exportCRMFinanceTypeCSV('CXC')" title="Descargar solo Cuentas por Cobrar" class="px-2.5 py-2 rounded-xl bg-cyan-500/20 text-cyan-300 border border-cyan-500/30 hover:bg-cyan-500 hover:text-slate-950 font-bold text-xs transition flex items-center gap-1 cursor-pointer">
+                  📥 Excel CxC
+                </button>
+                <button onclick="exportCRMFinanceTypeCSV('CXP')" title="Descargar solo Cuentas por Pagar" class="px-2.5 py-2 rounded-xl bg-amber-500/20 text-amber-300 border border-amber-500/30 hover:bg-amber-500 hover:text-slate-950 font-bold text-xs transition flex items-center gap-1 cursor-pointer">
+                  📥 Excel CxP
+                </button>
+                <button onclick="exportCRMFinanceCSV()" title="Descargar Reporte Financiero Completo" class="px-2.5 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-white border border-slate-700 font-bold text-xs transition flex items-center gap-1 cursor-pointer">
+                  📊 Todo
+                </button>
+              </div>
             </div>
           </div>
 
@@ -623,6 +639,7 @@
         <button onclick="closeCRMFinanceModal()" class="text-slate-400 hover:text-white text-xl">&times;</button>
       </div>
       <input id="crm-fin-modal-type" type="hidden" value="INGRESO">
+      <input id="crm-fin-edit-id" type="hidden" value="">
       <div class="space-y-3">
         <div class="grid grid-cols-2 gap-3">
           <div>
@@ -677,7 +694,7 @@
       </div>
       <div class="flex justify-end gap-2 pt-3 border-t border-slate-800">
         <button onclick="closeCRMFinanceModal()" class="px-4 py-2 rounded-xl bg-slate-800 text-slate-300 font-bold">Cancelar</button>
-        <button onclick="saveCRMFinanceRecord()" class="px-5 py-2 rounded-xl bg-emerald-500 text-slate-950 font-extrabold">Guardar Registro</button>
+        <button id="crm-fin-submit-btn" onclick="saveCRMFinanceRecord()" class="px-5 py-2 rounded-xl bg-emerald-500 text-slate-950 font-extrabold">Guardar Registro</button>
       </div>
     </div>
   </div>
@@ -1212,6 +1229,9 @@
     }
 
     function openCRMFinanceModal(type) {
+      document.getElementById('crm-fin-edit-id').value = '';
+      const submitBtn = document.getElementById('crm-fin-submit-btn');
+      if (submitBtn) submitBtn.textContent = 'Guardar Registro';
       document.getElementById('crm-fin-modal-type').value = type;
       const titles = {
         INGRESO: '💵 Registrar Ingreso / Cierre Comercial',
@@ -1235,6 +1255,38 @@
         onCRMFinCategoryChange();
       } else {
         catSelect.value = 'Cierre de Proyecto / Licencia';
+        if (supBox) supBox.classList.add('hidden');
+        const supInput = document.getElementById('crm-fin-supplier');
+        if (supInput) supInput.value = '';
+      }
+
+      document.getElementById('crm-finance-modal').classList.remove('hidden');
+      document.getElementById('crm-finance-modal').classList.add('flex');
+    }
+
+    function editCRMFinance(id) {
+      const rec = (state.finances || []).find(f => f.id === id);
+      if (!rec) return;
+      document.getElementById('crm-fin-edit-id').value = rec.id;
+      document.getElementById('crm-fin-modal-type').value = rec.type;
+      document.getElementById('crm-fin-modal-title').textContent = `✏️ Editar Movimiento (${rec.type} #${rec.id})`;
+      const submitBtn = document.getElementById('crm-fin-submit-btn');
+      if (submitBtn) submitBtn.textContent = '💾 Guardar Cambios';
+
+      document.getElementById('crm-fin-date').value = rec.date || new Date().toISOString().slice(0, 10);
+      document.getElementById('crm-fin-category').value = rec.category || '';
+      document.getElementById('crm-fin-concept').value = rec.concept || '';
+      document.getElementById('crm-fin-amount').value = rec.amount != null ? rec.amount : '';
+      if (rec.method) document.getElementById('crm-fin-method').value = rec.method;
+
+      const supBox = document.getElementById('crm-fin-supplier-box');
+      const isSupplierFlow = (rec.type === 'GASTO' || rec.type === 'CXP');
+      if (isSupplierFlow) {
+        if (supBox) supBox.classList.remove('hidden');
+        populateCRMFinanceSuppliers();
+        const supInput = document.getElementById('crm-fin-supplier');
+        if (supInput) supInput.value = rec.supplier || '';
+      } else {
         if (supBox) supBox.classList.add('hidden');
         const supInput = document.getElementById('crm-fin-supplier');
         if (supInput) supInput.value = '';
@@ -1367,6 +1419,7 @@
     }
 
     function saveCRMFinanceRecord() {
+      const editId = Number((document.getElementById('crm-fin-edit-id') || {}).value);
       const type = document.getElementById('crm-fin-modal-type').value;
       const date = document.getElementById('crm-fin-date').value || new Date().toISOString().slice(0, 10);
       const category = document.getElementById('crm-fin-category').value;
@@ -1380,18 +1433,44 @@
       const concept = useSupplier && !rawConcept.includes(supplier) ? `${rawConcept} (${supplier})` : rawConcept;
 
       const isCredit = (type === 'CXC' || type === 'CXP');
-      state.finances.unshift({
-        id: Date.now(),
-        date,
-        type,
-        category,
-        supplier: useSupplier ? supplier : '',
-        concept,
-        amount,
-        balance: isCredit ? amount : 0,
-        method: isCredit ? 'Crédito / Pendiente' : method,
-        status: isCredit ? 'PENDIENTE' : 'PAGADO'
-      });
+
+      if (editId) {
+        const item = (state.finances || []).find(f => f.id === editId);
+        if (item) {
+          const oldAmount = Number(item.amount || 0);
+          item.date = date;
+          item.type = type;
+          item.category = category;
+          item.supplier = useSupplier ? supplier : '';
+          item.concept = concept;
+          item.amount = amount;
+          if (isCredit) {
+            if (item.balance >= oldAmount || item.balance == null) {
+              item.balance = amount;
+            } else {
+              item.balance = Math.max(0, Number((amount - (oldAmount - item.balance)).toFixed(2)));
+            }
+            item.status = item.balance <= 0 ? 'LIQUIDADO' : 'PENDIENTE';
+          } else {
+            item.balance = 0;
+            item.method = method;
+            item.status = 'PAGADO';
+          }
+        }
+      } else {
+        state.finances.unshift({
+          id: Date.now(),
+          date,
+          type,
+          category,
+          supplier: useSupplier ? supplier : '',
+          concept,
+          amount,
+          balance: isCredit ? amount : 0,
+          method: isCredit ? 'Crédito / Pendiente' : method,
+          status: isCredit ? 'PENDIENTE' : 'PAGADO'
+        });
+      }
       saveState();
       closeCRMFinanceModal();
       renderCRMFinances();
@@ -1480,13 +1559,36 @@
           <td class="py-3.5 px-4 text-slate-400">${f.method} · <strong class="text-white">${f.status}</strong></td>
           <td class="py-3.5 px-4 font-mono font-bold ${f.type==='INGRESO'||f.type==='CXC'?'text-emerald-400':'text-rose-400'}">${fmt(f.amount)}</td>
           <td class="py-3.5 px-4 font-mono font-bold ${f.balance > 0 ? 'text-amber-400' : 'text-slate-500'}">${fmt(f.balance || 0)}</td>
-          <td class="py-3.5 px-4 text-right space-x-1">
-            ${f.balance > 0 ? `<button onclick="settleCRMAccount(${f.id})" class="px-2.5 py-1 rounded-lg bg-emerald-500 text-slate-950 font-extrabold text-[11px]">💳 Abonar / Liquidar</button>` : ''}
-            <button onclick="deleteCRMFinance(${f.id})" class="px-2 py-1 rounded-lg bg-slate-800 hover:bg-rose-500/20 text-slate-400 hover:text-rose-300 text-xs">🗑️</button>
+          <td class="py-3.5 px-4 text-right space-x-1 whitespace-nowrap">
+            <button onclick="editCRMFinance(${f.id})" class="px-2.5 py-1 rounded bg-indigo-500/20 text-indigo-300 hover:bg-indigo-500 hover:text-white text-xs font-bold transition">✏️ Editar</button>
+            ${f.balance > 0 ? `<button onclick="settleCRMAccount(${f.id})" class="px-2.5 py-1 rounded-lg bg-emerald-500 text-slate-950 font-extrabold text-[11px] hover:bg-emerald-400">💳 Abonar</button>` : ''}
+            <button onclick="deleteCRMFinance(${f.id})" class="px-2 py-1 rounded bg-slate-800 hover:bg-rose-500/20 text-slate-400 hover:text-rose-300 text-xs transition">🗑️</button>
           </td>
         </tr>
       `).join('') : `<tr><td colspan="8" class="py-8 text-center text-slate-500">No hay movimientos financieros en el rango de fechas seleccionado.</td></tr>`;
       renderCRMSuppliers();
+    }
+
+    function exportCRMFinanceTypeCSV(type) {
+      const fromStr = (document.getElementById('crm-fin-from') || {}).value || (document.getElementById('crm-dash-from') || {}).value || '';
+      const toStr = (document.getElementById('crm-fin-to') || {}).value || (document.getElementById('crm-dash-to') || {}).value || '';
+      const list = (state.finances || []).filter(f => f.type === type && crmDateInRange(f.date, fromStr, toStr));
+      const titles = {
+        INGRESO: 'Ingresos_Comerciales',
+        GASTO: 'Gastos_Operativos_Ads_SaaS',
+        CXC: 'Cuentas_Por_Cobrar_Clientes',
+        CXP: 'Cuentas_Por_Pagar_Proveedores'
+      };
+      const label = titles[type] || type;
+      let csv = '\uFEFFFecha,Tipo,Categoria_Comercial,Concepto_Cliente_Proveedor,Metodo_Pago,Estado,Monto_Total,Saldo_Pendiente\n';
+      list.forEach(f => {
+        csv += `"${f.date}","${f.type}","${f.category}","${(f.concept || '').replace(/"/g, '""')}","${f.method}","${f.status}",${Number(f.amount || 0).toFixed(2)},${Number(f.balance || 0).toFixed(2)}\n`;
+      });
+      const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = `Reporte_${label}_CRM_${new Date().toISOString().slice(0,10)}.csv`;
+      a.click();
     }
 
     function exportCRMFinanceCSV() {
