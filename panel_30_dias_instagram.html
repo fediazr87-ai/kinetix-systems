@@ -1,0 +1,1026 @@
+<!DOCTYPE html>
+<html lang="es" class="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Centro de Mando 30 Días Instagram | Kinetix Systems</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-color: #f8fafc;
+      --card-bg: #ffffff;
+      --card-border: #e2e8f0;
+      --text-main: #0f172a;
+      --text-muted: #475569;
+    }
+    html.dark {
+      --bg-color: #060911;
+      --card-bg: rgba(15, 23, 42, 0.75);
+      --card-border: rgba(255, 255, 255, 0.08);
+      --text-main: #f1f5f9;
+      --text-muted: #94a3b8;
+    }
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      background-color: var(--bg-color);
+      color: var(--text-main);
+      transition: background-color 0.2s ease, color 0.2s ease;
+    }
+    .mono { font-family: 'JetBrains Mono', monospace; }
+    
+    /* Light Mode Styles (Estilo Odoo Moderno) */
+    html.light .glass-card {
+      background: #ffffff;
+      border: 1px solid #e2e8f0;
+      box-shadow: 0 10px 25px -5px rgba(15, 23, 42, 0.05), 0 8px 10px -6px rgba(15, 23, 42, 0.03);
+    }
+    html.light .glass-card-active {
+      background: #f0fdf4 !important;
+      border-color: #10b981 !important;
+      box-shadow: 0 12px 25px -4px rgba(16, 185, 129, 0.15) !important;
+    }
+    html.light .inner-box {
+      background: #f8fafc !important;
+      border: 1px solid #e2e8f0 !important;
+      color: #1e293b !important;
+    }
+    html.light .inner-box pre, html.light .inner-box code {
+      color: #0f172a !important;
+    }
+    html.light .title-text { color: #0f172a !important; }
+    html.light .sub-text { color: #475569 !important; }
+    
+    /* Dark Mode Styles */
+    html.dark .glass-card {
+      background: rgba(15, 23, 42, 0.75);
+      backdrop-filter: blur(16px);
+      border: 1px solid rgba(255, 255, 255, 0.07);
+      box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.3);
+    }
+    html.dark .glass-card-active {
+      background: rgba(16, 185, 129, 0.08) !important;
+      border-color: rgba(16, 185, 129, 0.4) !important;
+    }
+    html.dark .inner-box {
+      background: rgba(2, 6, 23, 0.85) !important;
+      border: 1px solid rgba(255, 255, 255, 0.07) !important;
+      color: #f1f5f9 !important;
+    }
+    html.dark .title-text { color: #ffffff !important; }
+    html.dark .sub-text { color: #94a3b8 !important; }
+
+    .custom-scroll::-webkit-scrollbar { width: 6px; height: 6px; }
+    .custom-scroll::-webkit-scrollbar-track { background: rgba(0,0,0,0.05); }
+    .custom-scroll::-webkit-scrollbar-thumb { background: #94a3b8; border-radius: 9999px; }
+  </style>
+</head>
+<body class="min-h-screen p-4 sm:p-6 lg:p-10 custom-scroll">
+
+  <!-- TOP BAR / HEADER -->
+  <header class="max-w-7xl mx-auto mb-8">
+    <div class="glass-card rounded-3xl p-6 sm:p-8 border-emerald-500/30 flex flex-col lg:flex-row items-start lg:items-center justify-between gap-6 shadow-xl">
+      <div class="space-y-2">
+        <div class="flex flex-wrap items-center gap-3">
+          <span class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-emerald-600 dark:text-emerald-400 text-xs font-bold uppercase tracking-widest mono">
+            <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span> @kinetix.ops · Piloto Automático 30 Días
+          </span>
+          <span class="px-3 py-1 rounded-full bg-cyan-500/10 border border-cyan-500/30 text-cyan-700 dark:text-cyan-300 text-xs font-bold mono">
+            Lanzamiento $89 USD (Antes $189)
+          </span>
+          <span class="px-3 py-1 rounded-full bg-purple-500/10 border border-purple-500/30 text-purple-700 dark:text-purple-300 text-xs font-bold mono">
+            ✨ Estilo Odoo & Multi-Dispositivo
+          </span>
+        </div>
+        <h1 class="text-3xl sm:text-4xl font-extrabold title-text tracking-tight">
+          Centro de Automatización & Contenido Instagram
+        </h1>
+        <p class="sub-text text-sm max-w-2xl leading-relaxed">
+          Estrategia integral de 30 días para promocionar <a href="https://tinyurl.com/kinetixsistemasPOS" target="_blank" class="text-emerald-600 dark:text-emerald-400 underline font-semibold hover:opacity-80">Kinetix Systems</a>. Sistemas prácticos, sencillos de manejar, multi-dispositivo y para todo tipo de negocio sin pagar costosos sistemas.
+        </p>
+      </div>
+
+      <!-- Quick Action Buttons + Theme Toggle -->
+      <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 w-full lg:w-auto">
+        <!-- Theme Toggle Button -->
+        <button onclick="toggleTheme()" id="theme-btn" class="px-4 py-3 rounded-xl bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-800 dark:text-slate-100 border border-slate-300 dark:border-slate-700 font-bold text-xs flex items-center justify-center gap-2 transition text-center shadow-md">
+          <span id="theme-icon">☀️</span> <span id="theme-text">Modo Claro (Odoo)</span>
+        </button>
+
+        <div class="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-2 gap-2.5">
+          <a href="https://business.facebook.com/latest/planner" target="_blank" class="px-4 py-3 rounded-xl bg-blue-600/10 hover:bg-blue-600/20 text-blue-600 dark:text-blue-300 border border-blue-500/30 font-bold text-xs flex items-center justify-center gap-2 transition text-center shadow-sm">
+            📅 Meta Planner
+          </a>
+          <a href="panel_manychat_facebook_instagram.html" target="_blank" class="px-4 py-3 rounded-xl bg-blue-600 hover:bg-blue-500 text-white font-extrabold text-xs flex items-center justify-center gap-2 transition text-center shadow-lg shadow-blue-600/20">
+            ⚙️ Configurar FB + IG ManyChat
+          </a>
+          <a href="https://app.manychat.com/" target="_blank" class="px-4 py-3 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-extrabold text-xs flex items-center justify-center gap-2 transition text-center shadow-lg shadow-emerald-500/20">
+            💬 ManyChat Web
+          </a>
+          <a href="https://www.instagram.com/" target="_blank" class="px-4 py-3 rounded-xl bg-purple-600/10 hover:bg-purple-600/20 text-purple-600 dark:text-purple-300 border border-purple-500/30 font-bold text-xs flex items-center justify-center gap-2 transition text-center shadow-sm">
+            📸 Instagram
+          </a>
+          <a href="https://tinyurl.com/kinetixsistemasPOS" target="_blank" class="px-4 py-3 rounded-xl bg-cyan-600/10 hover:bg-cyan-600/20 text-cyan-600 dark:text-cyan-300 border border-cyan-500/30 font-bold text-xs flex items-center justify-center gap-2 transition text-center shadow-sm">
+            🌐 Tienda $89
+          </a>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- MAIN WRAPPER -->
+  <main class="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-8">
+
+    <!-- COLUMNA IZQUIERDA: CALENDARIO DE DÍAS (5 COLUMNS) -->
+    <div class="lg:col-span-5 space-y-6">
+      
+      <!-- Filtros de Semanas -->
+      <div class="glass-card rounded-2xl p-4 flex items-center justify-between gap-2 overflow-x-auto">
+        <button onclick="filterWeek('all')" id="tab-all" class="filter-tab px-3 py-1.5 rounded-lg text-xs font-bold bg-emerald-500 text-slate-950 transition">Todos (30)</button>
+        <button onclick="filterWeek(1)" id="tab-1" class="filter-tab px-3 py-1.5 rounded-lg text-xs font-semibold text-slate-500 dark:text-slate-400 hover:text-emerald-500 transition">Sem 1: Odoo & POS</button>
+        <button onclick="filterWeek(2)" id="tab-2" class="filter-tab px-3 py-1.5 rounded-lg text-xs font-semibold text-slate-500 dark:text-slate-400 hover:text-emerald-500 transition">Sem 2: Clínica</button>
+        <button onclick="filterWeek(3)" id="tab-3" class="filter-tab px-3 py-1.5 rounded-lg text-xs font-semibold text-slate-500 dark:text-slate-400 hover:text-emerald-500 transition">Sem 3: CRM</button>
+        <button onclick="filterWeek(4)" id="tab-4" class="filter-tab px-3 py-1.5 rounded-lg text-xs font-semibold text-slate-500 dark:text-slate-400 hover:text-emerald-500 transition">Sem 4: Cierre</button>
+      </div>
+
+      <!-- Lista de Días (Scrollable) -->
+      <div id="days-list" class="space-y-3 max-h-[850px] overflow-y-auto pr-2 custom-scroll">
+        <!-- Renderizado dinámico de días por JavaScript -->
+      </div>
+
+      <!-- 4 Pilares del Enfoque Actualizado -->
+      <div class="glass-card rounded-2xl p-5 border-emerald-500/30 space-y-3">
+        <div class="flex items-center gap-2 text-emerald-600 dark:text-emerald-400 text-xs font-bold uppercase tracking-wider mono">
+          <span>🎯</span> Los 4 Pilares de Alta Conversión Kinetix
+        </div>
+        <ul class="text-xs sub-text space-y-2 leading-relaxed">
+          <li class="flex items-start gap-2">
+            <span class="text-emerald-500 font-bold">1.</span>
+            <span><strong>Práctico y Sencillo:</strong> Tu equipo lo domina en 5 minutos sin manuales ni curvas técnicas.</span>
+          </li>
+          <li class="flex items-start gap-2">
+            <span class="text-emerald-500 font-bold">2.</span>
+            <span><strong>100% Multi-Dispositivo:</strong> Funciona en PC de escritorio, Laptop, Tablet y Celular/Smartphone.</span>
+          </li>
+          <li class="flex items-start gap-2">
+            <span class="text-emerald-500 font-bold">3.</span>
+            <span><strong>Para Todo Tipo de Negocio:</strong> Grandes, medianas y pequeñas empresas (comercio, salud, servicios).</span>
+          </li>
+          <li class="flex items-start gap-2">
+            <span class="text-emerald-500 font-bold">4.</span>
+            <span><strong>Cero Renta Mensual:</strong> Sin costosos sistemas de suscripción. Licencia vitalicia para 4 usuarios a solo $89 USD.</span>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- COLUMNA DERECHA: FICHA TÉCNICA Y PREVISUALIZADOR DEL DÍA SELECCIONADO (7 COLUMNS) -->
+    <div class="lg:col-span-7 space-y-6">
+      
+      <!-- Detalle del Día Activo -->
+      <div class="glass-card rounded-3xl p-6 sm:p-8 space-y-6 border-emerald-500/40 relative shadow-2xl">
+        
+        <!-- Header del Día -->
+        <div class="flex flex-wrap items-center justify-between gap-4 border-b border-slate-200 dark:border-slate-800 pb-5">
+          <div class="space-y-1">
+            <div class="flex items-center gap-2 flex-wrap">
+              <span id="detail-day-badge" class="px-3 py-1 rounded-md bg-emerald-500/20 text-emerald-600 dark:text-emerald-400 font-mono font-bold text-xs uppercase tracking-wider">
+                Día 01
+              </span>
+              <span id="detail-format-badge" class="px-3 py-1 rounded-md bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 font-mono text-xs font-semibold">
+                🎥 REEL VERTICAL (ODOO LIGHT)
+              </span>
+              <span id="detail-product-badge" class="px-3 py-1 rounded-md bg-cyan-500/10 text-cyan-700 dark:text-cyan-300 font-mono text-xs">
+                Kinetix Multi-Dispositivo
+              </span>
+            </div>
+            <h2 id="detail-title" class="text-2xl font-extrabold title-text pt-1">
+              Controla tu empresa en cualquier dispositivo sin invertir en costosos sistemas
+            </h2>
+          </div>
+
+          <!-- Botón de Copiar Todo -->
+          <button onclick="copyDayFullCaption()" class="px-4 py-2.5 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-extrabold text-xs transition flex items-center gap-2 shadow-lg shadow-emerald-500/20">
+            📋 Copiar Caption Completo
+          </button>
+        </div>
+
+        <!-- VISUALIZADOR INTERACTIVO DE MULTIMEDIA (PREVIEW REAL DE IMAGEN O VIDEO) -->
+        <div class="inner-box rounded-2xl p-4 space-y-3">
+          <div class="flex items-center justify-between">
+            <span class="text-xs font-bold uppercase tracking-wider text-emerald-600 dark:text-emerald-400 mono flex items-center gap-2">
+              <span>👁️</span> Previsualización del Contenido Visual:
+            </span>
+            <div id="carousel-controls" class="hidden items-center gap-2">
+              <button onclick="prevSlide()" class="px-2.5 py-1 rounded-lg bg-slate-200 dark:bg-slate-700 hover:bg-slate-300 dark:hover:bg-slate-600 text-xs font-bold">&larr; Anterior</button>
+              <span id="slide-indicator" class="text-xs font-mono font-bold text-slate-600 dark:text-slate-300">1 / 6</span>
+              <button onclick="nextSlide()" class="px-2.5 py-1 rounded-lg bg-slate-200 dark:bg-slate-700 hover:bg-slate-300 dark:hover:bg-slate-600 text-xs font-bold">Siguiente &rarr;</button>
+            </div>
+          </div>
+
+          <!-- Media Display Box -->
+          <div id="media-preview-box" class="w-full flex items-center justify-center bg-slate-900 rounded-xl overflow-hidden min-h-[300px] max-h-[480px] p-2 relative shadow-inner">
+            <!-- Renderizado dinámico de <video> o <img> -->
+          </div>
+
+          <!-- Archivos en Carpeta -->
+          <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 pt-2 border-t border-slate-200 dark:border-slate-800 text-xs">
+            <div>
+              <span class="font-bold text-slate-600 dark:text-slate-400">Archivo(s) local(es):</span>
+              <span id="detail-files" class="font-mono font-semibold text-emerald-600 dark:text-emerald-400 ml-1">reel_odoo_multidispositivo.mp4</span>
+            </div>
+            <a id="btn-open-file" href="#" target="_blank" class="px-3 py-1 rounded-lg bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-600 dark:text-emerald-400 font-bold transition flex items-center gap-1">
+              <span>↗️</span> Abrir archivo original
+            </a>
+          </div>
+        </div>
+
+        <!-- Gancho Visual (Hook - 0 a 3 Segundos) -->
+        <div class="inner-box rounded-2xl p-5 border-l-4 border-l-red-500 space-y-2">
+          <div class="flex items-center justify-between">
+            <span class="text-xs font-bold text-red-500 uppercase tracking-wider flex items-center gap-1.5 mono">
+              ⚡ Gancho Visual (Primeros 3 Segundos)
+            </span>
+            <button onclick="copyElementText('detail-hook', this)" class="text-xs text-slate-500 hover:text-emerald-500 transition font-mono">Copiar Hook</button>
+          </div>
+          <p id="detail-hook" class="text-sm font-semibold leading-relaxed">
+            "¿Cansado de sistemas corporativos complicados y costosos que nadie en tu empresa sabe usar? Mira esto..."
+          </p>
+        </div>
+
+        <!-- Guion / Estructura del Contenido -->
+        <div class="inner-box rounded-2xl p-5 space-y-2">
+          <div class="flex items-center justify-between">
+            <span class="text-xs font-bold text-cyan-600 dark:text-cyan-400 uppercase tracking-wider mono">
+              🎬 Guion del Video / Diapositivas
+            </span>
+            <button onclick="copyElementText('detail-script', this)" class="text-xs text-slate-500 hover:text-cyan-500 transition font-mono">Copiar Guion</button>
+          </div>
+          <div id="detail-script" class="text-xs whitespace-pre-wrap leading-relaxed max-h-48 overflow-y-auto custom-scroll p-3 bg-white/50 dark:bg-slate-900/60 rounded-xl border border-slate-200 dark:border-slate-800">
+            <!-- Guion dinámico -->
+          </div>
+        </div>
+
+        <!-- Caption Persuasivo (Pie de Foto) con CTA -->
+        <div class="inner-box rounded-2xl p-5 space-y-3">
+          <div class="flex items-center justify-between">
+            <span class="text-xs font-bold text-emerald-600 dark:text-emerald-400 uppercase tracking-wider mono">
+              ✍️ Caption para Instagram (Texto + Llamado a la Acción)
+            </span>
+            <button onclick="copyElementText('detail-caption', this)" class="px-3 py-1 rounded bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold text-xs transition">
+              Copiar Caption
+            </button>
+          </div>
+          <pre id="detail-caption" class="text-xs font-sans whitespace-pre-wrap leading-relaxed max-h-56 overflow-y-auto custom-scroll p-3 bg-white/70 dark:bg-slate-900/90 rounded-xl border border-slate-200 dark:border-slate-800">
+            <!-- Caption dinámico -->
+          </pre>
+        </div>
+
+        <!-- Automatización ManyChat: Palabra Clave & DM -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <!-- Keyword -->
+          <div class="inner-box p-4 rounded-2xl space-y-2">
+            <span class="text-xs font-mono uppercase text-slate-500 dark:text-slate-400">Palabra Clave ManyChat (Trigger):</span>
+            <div class="flex items-center justify-between bg-white dark:bg-slate-900 p-2.5 rounded-xl border border-slate-200 dark:border-slate-800">
+              <code id="detail-keyword" class="text-emerald-600 dark:text-emerald-400 font-extrabold text-sm mono">SISTEMA</code>
+              <button onclick="copyElementText('detail-keyword', this)" class="text-xs px-2 py-1 rounded bg-slate-200 dark:bg-slate-800 hover:opacity-80 transition">Copiar</button>
+            </div>
+            <p class="text-[11px] sub-text">El usuario comenta esto y ManyChat le responde al instante por DM.</p>
+          </div>
+
+          <!-- Enlace de Conversión -->
+          <div class="inner-box p-4 rounded-2xl space-y-2">
+            <span class="text-xs font-mono uppercase text-slate-500 dark:text-slate-400">Enlace en el Mensaje DM:</span>
+            <div class="flex items-center justify-between bg-white dark:bg-slate-900 p-2.5 rounded-xl border border-slate-200 dark:border-slate-800">
+              <code id="detail-link" class="text-cyan-600 dark:text-cyan-300 font-mono text-xs truncate mr-2">https://tinyurl.com/kinetixsistemasPOS</code>
+              <button onclick="copyElementText('detail-link', this)" class="text-xs px-2 py-1 rounded bg-slate-200 dark:bg-slate-800 hover:opacity-80 transition">Copiar</button>
+            </div>
+            <p class="text-[11px] sub-text">Lleva a la tienda oficial con checkout PayPal a $89 USD.</p>
+          </div>
+        </div>
+
+        <!-- Hashtags Recomendados -->
+        <div class="inner-box p-4 rounded-2xl space-y-2">
+          <div class="flex items-center justify-between">
+            <span class="text-xs font-mono uppercase text-slate-500 dark:text-slate-400">Hashtags B2B Optimizados:</span>
+            <button onclick="copyElementText('detail-hashtags', this)" class="text-xs text-slate-500 hover:text-emerald-500 transition font-mono">Copiar Hashtags</button>
+          </div>
+          <p id="detail-hashtags" class="text-xs font-mono leading-relaxed text-slate-600 dark:text-slate-400">
+            #automatizacion #softwareempresarial #pos #multidispositivo #sistemaspropios #gestiondenegocios #b2b #kinetix #productividad #pymes
+          </p>
+        </div>
+
+      </div>
+
+    </div>
+
+  </main>
+
+  <!-- DATA & JAVASCRIPT ENGINE -->
+  <script>
+    const CAMPAIGN_DAYS = [
+  {
+    "day": 1,
+    "week": 1,
+    "format": "🎥 REEL VERTICAL (DEMO EN VIVO)",
+    "product": "Kinetix Multi-Dispositivo",
+    "title": "Controla tu empresa en cualquier dispositivo sin invertir en costosos sistemas",
+    "hook": "¿Qué es mejor? ¿Pagar miles de dólares al año en sistemas complicados que nadie sabe usar, o controlar tu empresa en PC, laptop y celular con un solo pago de por vida?",
+    "mediaType": "video",
+    "mediaFiles": [
+      "reel_odoo_multidispositivo.mp4"
+    ],
+    "script": "[00:00 - 00:08] Gancho: \"¿Qué es mejor? ¿Pagar miles de dólares al año en sistemas complicados que nadie sabe usar, o controlar tu empresa en PC, laptop y celular con un solo pago de por vida? Mira esto.\"\n[00:08 - 00:16] Adaptabilidad total: PC de mostrador, laptop y celular sincronizados.\n[00:16 - 00:25] Para todo tipo de empresas: Retail, Salud privada y Servicios B2B.\n[00:25 - 00:33] Oferta especial $89 USD pago único de por vida para 4 usuarios.\n[00:33 - 00:43] CTA universal: Comenta la palabra SISTEMA y te enviamos el enlace directo al DM.",
+    "caption": "¿Qué es mejor? ¿Pagar miles de dólares al año en sistemas complicados que nadie en tu equipo sabe usar, o controlar tu empresa en PC, laptop y celular con un solo pago de por vida? 💻📱👇\n\nEn Kinetix creamos software de gestión empresarial que va directo al grano:\n✅ 100% Práctico y Sencillo: Tu equipo aprende a usarlo en 5 minutos.\n✅ Multi-Dispositivo: Úsalo en PC de mostrador, Laptop en oficina y Celular o Tablet en movilidad.\n✅ Para Todo Negocio: Diseñado para tiendas, clínicas, distribuidoras, talleres y empresas en crecimiento.\n✅ Cero Suscripciones: Olvídate de pagar mensualidades por usuario de por vida.\n\n🔥 OFERTA DE LANZAMIENTO LIMITADA:\nAsegura tu Licencia Vitalicia Oficial para hasta 4 usuarios simultáneos por un pago único de solo $89 USD (precio regular $189 USD). Incluye 7 tickets anuales de soporte técnico gratuito y respaldo local de tus datos.\n\n👇 ¿Quieres probar la demo interactiva en tu celular o PC ahora mismo?\nComenta la palabra SISTEMA aquí abajo y te enviamos el enlace directo a tus mensajes privados para que pruebes los demos en vivo y aproveches la promoción.\n\n🔗 Tienda y Demos en Vivo: https://tinyurl.com/kinetixsistemasPOS",
+    "keyword": "SISTEMA",
+    "link": "https://tinyurl.com/kinetixsistemasPOS",
+    "hashtags": "#reels #softwareempresarial #pos #sistemadeventas #kinetix #multidispositivo #pymes #negocios #sinrentas"
+  },
+  {
+    "day": 2,
+    "week": 1,
+    "format": "📑 CARRUSEL EDUCATIVO (6 LÁMINAS)",
+    "product": "Kinetix POS & Inventarios",
+    "title": "5 Razones por las que tu empresa no necesita un sistema costoso y complicado",
+    "hook": "¿Qué es mejor? ¿Pagar suscripciones mensuales caras que nunca terminas de pagar, o tener un software profesional con un solo pago de por vida?",
+    "mediaType": "carousel",
+    "mediaFiles": [
+      "odoo_slide_1.png",
+      "odoo_slide_2.png",
+      "odoo_slide_3.png",
+      "odoo_slide_4.png",
+      "odoo_slide_5.png",
+      "odoo_slide_6.png"
+    ],
+    "script": "Lámina 1: Portada estilo Odoo moderna con laptop y mockup claro.\nLámina 2: Razón 1 - Curva de aprendizaje cero vs sistemas lentos y pesados.\nLámina 3: Razón 2 - Sin rentas mensuales: pago único de $89 USD de por vida.\nLámina 4: Razón 3 - Multi-dispositivo en red local o nube privada.\nLámina 5: Razón 4 - Soporte técnico incluido con 7 tickets anuales.\nLámina 6: CTA - Comenta SISTEMA para enviarte la demo interactiva directa a tus mensajes.",
+    "caption": "¿Cuántas veces has visto empresas pagar cientos de dólares al mes por softwares que terminan usando al 10% porque nadie los entiende? 🤯\n\nDesliza este carrusel y conoce la filosofía Kinetix:\n👉 Facilidad real de uso desde el primer día.\n👉 Información de tu negocio centralizada y segura.\n👉 Un solo pago de $89 USD para hasta 4 usuarios, sin mensualidades sorpresa.\n\nComenta la palabra SISTEMA y te enviamos el acceso directo a la demo interactiva a tus mensajes privados.\n\n🔗 Enlace oficial: https://tinyurl.com/kinetixsistemasPOS",
+    "keyword": "SISTEMA",
+    "link": "https://tinyurl.com/kinetixsistemasPOS",
+    "hashtags": "#carrusel #softwarepos #gestionempresarial #productividad #kinetix #negociosrentables #controltotal"
+  },
+  {
+    "day": 3,
+    "week": 1,
+    "format": "🎥 REEL DEMO EN VIVO (INTERFAZ REAL)",
+    "product": "KINETIX POS · PUNTO DE VENTA (TIENDAS)",
+    "title": "Registra cobros y emite tickets en 3 segundos",
+    "hook": "Si todavía usas cuadernos, notas de papel o una calculadora para cobrar en tu mostrador, estás perdiendo clientes y dinero en cada venta.",
+    "mediaType": "video",
+    "mediaFiles": [
+      "reel_03_pos_venta_rapida.mp4"
+    ],
+    "script": "[00:00 - 00:07] Paso 1: REGISTRO DE VENTA & CARRITO\nVisual: Pantalla real de KINETIX POS en Modo Claro operando en vivo.\nLocución: \"Si todavía usas cuadernos, notas de papel o una calculadora para cobrar en tu mostrador, estás perdiendo clientes y dinero en cada venta.\"\n\n[00:07 - 00:14] Paso 2: TICKET TÉRMICO & COMPROBANTE\nVisual: Sistema ejecutando la acción (comprobante, WhatsApp, PDF o modal).\nLocución: \"Con Kinetix POS seleccionas los artículos en pantalla, ingresas el efectivo y en tres segundos imprimes el ticket térmico profesional.\"\n\n[00:14 - 00:19] Llamado a la acción:\nVisual: Tarjeta interactiva oficial invitando a probar la demo en vivo.\nLocución: \"Prueba este sistema gratis en tu celular o computadora. Comenta la palabra SISTEMA y te enviamos el enlace directo a tus mensajes privados.\"\nAcción: Comentar 'SISTEMA' para recibir el enlace por DM.",
+    "caption": "Registra cobros y emite tickets en 3 segundos 🚀👇\n\nMira en este video la demostración práctica de KINETIX POS operando en tiempo real:\n1️⃣ REGISTRO DE VENTA & CARRITO: Si todavía usas cuadernos, notas de papel o una calculadora para cobrar en tu mostrador, estás perdiendo clientes y dinero en cada venta.\n2️⃣ TICKET TÉRMICO & COMPROBANTE: Con Kinetix POS seleccionas los artículos en pantalla, ingresas el efectivo y en tres segundos imprimes el ticket térmico profesional.\n\n¿Por qué elegir Kinetix para tu negocio?\n✅ 100% Práctico e Intuitivo: Tu equipo lo domina en 5 minutos sin cursos complicados.\n✅ Multi-Dispositivo: Funciona en PC de mostrador, laptop y teléfono celular.\n✅ Cero Suscripciones: Olvídate de mensualidades abusivas por usuario.\n✅ Licencia Vitalicia Oficial: Un único pago de $89 USD para hasta 4 usuarios.\n✅ Soporte Incluido: 7 asistencias técnicas gratuitas anuales con atención directa por WhatsApp.\n\n👇 ¿Quieres probar la demo interactiva en tu celular o PC ahora mismo?\nComenta la palabra SISTEMA aquí abajo y te enviamos el enlace directo a tus mensajes privados para probar el sistema en vivo.\n\n🔗 Tienda y Demos en Vivo: https://tinyurl.com/kinetixsistemasPOS",
+    "keyword": "SISTEMA",
+    "link": "https://tinyurl.com/kinetixsistemasPOS",
+    "hashtags": "#reels #puntodeventa #pos #sistemapos #abarrotes #comercio #ventasrapidas #kinetix"
+  },
+  {
+    "day": 4,
+    "week": 1,
+    "format": "🎥 REEL DEMO EN VIVO (INTERFAZ REAL)",
+    "product": "KINETIX POS · BARBERÍAS & ESTÉTICAS",
+    "title": "Controla servicios y comisiones en tu barbería o salón",
+    "hook": "Deja de hacer cálculos a mano al final de la semana para saber cuánto cobrar y pagar comisiones en tu barbería o salón.",
+    "mediaType": "video",
+    "mediaFiles": [
+      "reel_04_barberia_servicios.mp4"
+    ],
+    "script": "[00:00 - 00:07] Paso 1: SERVICIOS DE BARBERÍA EN POS\nVisual: Pantalla real de KINETIX POS en Modo Claro operando en vivo.\nLocución: \"Deja de hacer cálculos a mano al final de la semana para saber cuánto cobrar y pagar comisiones en tu barbería o salón.\"\n\n[00:07 - 00:14] Paso 2: ALTA DE NUEVO SERVICIO EN CATÁLOGO\nVisual: Sistema ejecutando la acción (comprobante, WhatsApp, PDF o modal).\nLocución: \"En Kinetix registras servicios como corte o barba, asignas al barbero en un clic y el sistema calcula comisiones y ventas al instante.\"\n\n[00:14 - 00:19] Llamado a la acción:\nVisual: Tarjeta interactiva oficial invitando a probar la demo en vivo.\nLocución: \"Prueba este sistema gratis en tu celular o computadora. Comenta la palabra SISTEMA y te enviamos el enlace directo a tus mensajes privados.\"\nAcción: Comentar 'SISTEMA' para recibir el enlace por DM.",
+    "caption": "Controla servicios y comisiones en tu barbería o salón 🚀👇\n\nMira en este video la demostración práctica de KINETIX POS operando en tiempo real:\n1️⃣ SERVICIOS DE BARBERÍA EN POS: Deja de hacer cálculos a mano al final de la semana para saber cuánto cobrar y pagar comisiones en tu barbería o salón.\n2️⃣ ALTA DE NUEVO SERVICIO EN CATÁLOGO: En Kinetix registras servicios como corte o barba, asignas al barbero en un clic y el sistema calcula comisiones y ventas al instante.\n\n¿Por qué elegir Kinetix para tu negocio?\n✅ 100% Práctico e Intuitivo: Tu equipo lo domina en 5 minutos sin cursos complicados.\n✅ Multi-Dispositivo: Funciona en PC de mostrador, laptop y teléfono celular.\n✅ Cero Suscripciones: Olvídate de mensualidades abusivas por usuario.\n✅ Licencia Vitalicia Oficial: Un único pago de $89 USD para hasta 4 usuarios.\n✅ Soporte Incluido: 7 asistencias técnicas gratuitas anuales con atención directa por WhatsApp.\n\n👇 ¿Quieres probar la demo interactiva en tu celular o PC ahora mismo?\nComenta la palabra SISTEMA aquí abajo y te enviamos el enlace directo a tus mensajes privados para probar el sistema en vivo.\n\n🔗 Tienda y Demos en Vivo: https://tinyurl.com/kinetixsistemasPOS",
+    "keyword": "SISTEMA",
+    "link": "https://tinyurl.com/kinetixsistemasPOS",
+    "hashtags": "#reels #barberia #barbershop #estetica #peluqueria #spadebelleza #comisiones #kinetix"
+  },
+  {
+    "day": 5,
+    "week": 1,
+    "format": "🎥 REEL DEMO EN VIVO (INTERFAZ REAL)",
+    "product": "KINETIX POS · CONTROL FINANCIERO",
+    "title": "Registra gastos y salidas de caja chica en 5 segundos",
+    "hook": "Nadie te lo dice, pero las pequeñas compras y salidas de caja chica no registradas son la fuga invisible número uno que drena las utilidades de tu negocio.",
+    "mediaType": "video",
+    "mediaFiles": [
+      "reel_05_registro_gastos.mp4"
+    ],
+    "script": "[00:00 - 00:07] Paso 1: HISTORIAL DE GASTOS Y CAJA CHICA\nVisual: Pantalla real de KINETIX POS en Modo Claro operando en vivo.\nLocución: \"Nadie te lo dice, pero las pequeñas compras y salidas de caja chica no registradas son la fuga invisible número uno que drena las utilidades de tu negocio.\"\n\n[00:07 - 00:14] Paso 2: REGISTRAR NUEVA SALIDA OPERATIVA\nVisual: Sistema ejecutando la acción (comprobante, WhatsApp, PDF o modal).\nLocución: \"En el módulo de gastos ingresas el concepto, monto y categoría en cinco segundos, descontando cada salida de tu balance diario en tiempo real.\"\n\n[00:14 - 00:19] Llamado a la acción:\nVisual: Tarjeta interactiva oficial invitando a probar la demo en vivo.\nLocución: \"Prueba este sistema gratis en tu celular o computadora. Comenta la palabra SISTEMA y te enviamos el enlace directo a tus mensajes privados.\"\nAcción: Comentar 'SISTEMA' para recibir el enlace por DM.",
+    "caption": "Registra gastos y salidas de caja chica en 5 segundos 🚀👇\n\nMira en este video la demostración práctica de KINETIX POS operando en tiempo real:\n1️⃣ HISTORIAL DE GASTOS Y CAJA CHICA: Nadie te lo dice, pero las pequeñas compras y salidas de caja chica no registradas son la fuga invisible número uno que drena las utilidades de tu negocio.\n2️⃣ REGISTRAR NUEVA SALIDA OPERATIVA: En el módulo de gastos ingresas el concepto, monto y categoría en cinco segundos, descontando cada salida de tu balance diario en tiempo real.\n\n¿Por qué elegir Kinetix para tu negocio?\n✅ 100% Práctico e Intuitivo: Tu equipo lo domina en 5 minutos sin cursos complicados.\n✅ Multi-Dispositivo: Funciona en PC de mostrador, laptop y teléfono celular.\n✅ Cero Suscripciones: Olvídate de mensualidades abusivas por usuario.\n✅ Licencia Vitalicia Oficial: Un único pago de $89 USD para hasta 4 usuarios.\n✅ Soporte Incluido: 7 asistencias técnicas gratuitas anuales con atención directa por WhatsApp.\n\n👇 ¿Quieres probar la demo interactiva en tu celular o PC ahora mismo?\nComenta la palabra SISTEMA aquí abajo y te enviamos el enlace directo a tus mensajes privados para probar el sistema en vivo.\n\n🔗 Tienda y Demos en Vivo: https://tinyurl.com/kinetixsistemasPOS",
+    "keyword": "SISTEMA",
+    "link": "https://tinyurl.com/kinetixsistemasPOS",
+    "hashtags": "#reels #cajachica #gastosdelnegocio #controlfinanciero #finanzas #pymes #kinetix"
+  },
+  {
+    "day": 6,
+    "week": 1,
+    "format": "🎥 REEL DEMO EN VIVO (INTERFAZ REAL)",
+    "product": "KINETIX POS · CONTROL DE STOCK",
+    "title": "Carga nuevos productos y códigos de barra al instante",
+    "hook": "Si todavía usas hojas de Excel desactualizadas para contar tu mercancía, te aseguro que tienes pérdidas de stock o productos vencidos sin darte cuenta.",
+    "mediaType": "video",
+    "mediaFiles": [
+      "reel_06_agregar_inventario.mp4"
+    ],
+    "script": "[00:00 - 00:07] Paso 1: CATÁLOGO DE INVENTARIO Y STOCK\nVisual: Pantalla real de KINETIX POS en Modo Claro operando en vivo.\nLocución: \"Si todavía usas hojas de Excel desactualizadas para contar tu mercancía, te aseguro que tienes pérdidas de stock o productos vencidos sin darte cuenta.\"\n\n[00:07 - 00:14] Paso 2: ALTA RÁPIDA DE NUEVO PRODUCTO\nVisual: Sistema ejecutando la acción (comprobante, WhatsApp, PDF o modal).\nLocución: \"En Kinetix agregas productos, escaneas códigos de barra y programas alertas automáticas de stock mínimo para no quedarte sin mercancía.\"\n\n[00:14 - 00:19] Llamado a la acción:\nVisual: Tarjeta interactiva oficial invitando a probar la demo en vivo.\nLocución: \"Prueba este sistema gratis en tu celular o computadora. Comenta la palabra SISTEMA y te enviamos el enlace directo a tus mensajes privados.\"\nAcción: Comentar 'SISTEMA' para recibir el enlace por DM.",
+    "caption": "Carga nuevos productos y códigos de barra al instante 🚀👇\n\nMira en este video la demostración práctica de KINETIX POS operando en tiempo real:\n1️⃣ CATÁLOGO DE INVENTARIO Y STOCK: Si todavía usas hojas de Excel desactualizadas para contar tu mercancía, te aseguro que tienes pérdidas de stock o productos vencidos sin darte cuenta.\n2️⃣ ALTA RÁPIDA DE NUEVO PRODUCTO: En Kinetix agregas productos, escaneas códigos de barra y programas alertas automáticas de stock mínimo para no quedarte sin mercancía.\n\n¿Por qué elegir Kinetix para tu negocio?\n✅ 100% Práctico e Intuitivo: Tu equipo lo domina en 5 minutos sin cursos complicados.\n✅ Multi-Dispositivo: Funciona en PC de mostrador, laptop y teléfono celular.\n✅ Cero Suscripciones: Olvídate de mensualidades abusivas por usuario.\n✅ Licencia Vitalicia Oficial: Un único pago de $89 USD para hasta 4 usuarios.\n✅ Soporte Incluido: 7 asistencias técnicas gratuitas anuales con atención directa por WhatsApp.\n\n👇 ¿Quieres probar la demo interactiva en tu celular o PC ahora mismo?\nComenta la palabra SISTEMA aquí abajo y te enviamos el enlace directo a tus mensajes privados para probar el sistema en vivo.\n\n🔗 Tienda y Demos en Vivo: https://tinyurl.com/kinetixsistemasPOS",
+    "keyword": "SISTEMA",
+    "link": "https://tinyurl.com/kinetixsistemasPOS",
+    "hashtags": "#reels #inventario #stock #codigodebarras #almacen #controlstock #retail #kinetix"
+  },
+  {
+    "day": 7,
+    "week": 1,
+    "format": "🎥 REEL DEMO EN VIVO (INTERFAZ REAL)",
+    "product": "KINETIX POS · ARQUEO DE CAJA",
+    "title": "Corte de caja en 1 clic con desglose exacto X y Z",
+    "hook": "¿Qué es mejor? ¿Perder dos horas al final del día contando tickets y buscando descuadres, o hacer tu corte de caja exacto en un solo clic?",
+    "mediaType": "video",
+    "mediaFiles": [
+      "reel_07_corte_caja.mp4"
+    ],
+    "script": "[00:00 - 00:07] Paso 1: HISTORIAL DE FACTURAS EMITIDAS\nVisual: Pantalla real de KINETIX POS en Modo Claro operando en vivo.\nLocución: \"¿Qué es mejor? ¿Perder dos horas al final del día contando tickets y buscando descuadres, o hacer tu corte de caja exacto en un solo clic?\"\n\n[00:07 - 00:14] Paso 2: RESUMEN DE ARQUEO Y GANANCIA NETA\nVisual: Sistema ejecutando la acción (comprobante, WhatsApp, PDF o modal).\nLocución: \"Kinetix registra cada venta en efectivo, tarjeta o transferencia y te entrega el arqueo de caja con desglose de ingresos y ganancia neta en segundos.\"\n\n[00:14 - 00:19] Llamado a la acción:\nVisual: Tarjeta interactiva oficial invitando a probar la demo en vivo.\nLocución: \"Prueba este sistema gratis en tu celular o computadora. Comenta la palabra SISTEMA y te enviamos el enlace directo a tus mensajes privados.\"\nAcción: Comentar 'SISTEMA' para recibir el enlace por DM.",
+    "caption": "Corte de caja en 1 clic con desglose exacto X y Z 🚀👇\n\nMira en este video la demostración práctica de KINETIX POS operando en tiempo real:\n1️⃣ HISTORIAL DE FACTURAS EMITIDAS: ¿Qué es mejor? ¿Perder dos horas al final del día contando tickets y buscando descuadres, o hacer tu corte de caja exacto en un solo clic?\n2️⃣ RESUMEN DE ARQUEO Y GANANCIA NETA: Kinetix registra cada venta en efectivo, tarjeta o transferencia y te entrega el arqueo de caja con desglose de ingresos y ganancia neta en segundos.\n\n¿Por qué elegir Kinetix para tu negocio?\n✅ 100% Práctico e Intuitivo: Tu equipo lo domina en 5 minutos sin cursos complicados.\n✅ Multi-Dispositivo: Funciona en PC de mostrador, laptop y teléfono celular.\n✅ Cero Suscripciones: Olvídate de mensualidades abusivas por usuario.\n✅ Licencia Vitalicia Oficial: Un único pago de $89 USD para hasta 4 usuarios.\n✅ Soporte Incluido: 7 asistencias técnicas gratuitas anuales con atención directa por WhatsApp.\n\n👇 ¿Quieres probar la demo interactiva en tu celular o PC ahora mismo?\nComenta la palabra SISTEMA aquí abajo y te enviamos el enlace directo a tus mensajes privados para probar el sistema en vivo.\n\n🔗 Tienda y Demos en Vivo: https://tinyurl.com/kinetixsistemasPOS",
+    "keyword": "SISTEMA",
+    "link": "https://tinyurl.com/kinetixsistemasPOS",
+    "hashtags": "#reels #cortedecaja #arqueodecaja #cierredecaja #cajaregistradora #contabilidad #kinetix"
+  },
+  {
+    "day": 8,
+    "week": 2,
+    "format": "🎥 REEL DEMO EN VIVO (INTERFAZ REAL)",
+    "product": "KINETIX POS · SEGURIDAD & USUARIOS",
+    "title": "4 perfiles independientes con PIN exclusivo para cajeros",
+    "hook": "Nadie te lo dice, pero dejar que cualquier empleado altere precios, borre ventas o mueva inventarios sin permisos es una invitación al robo hormiga.",
+    "mediaType": "video",
+    "mediaFiles": [
+      "reel_08_usuarios_permisos.mp4"
+    ],
+    "script": "[00:00 - 00:07] Paso 1: PANEL DE 4 USUARIOS DE LICENCIA\nVisual: Pantalla real de KINETIX POS en Modo Claro operando en vivo.\nLocución: \"Nadie te lo dice, pero dejar que cualquier empleado altere precios, borre ventas o mueva inventarios sin permisos es una invitación al robo hormiga.\"\n\n[00:07 - 00:14] Paso 2: RESTRICCIONES Y PERMISOS POR ROL\nVisual: Sistema ejecutando la acción (comprobante, WhatsApp, PDF o modal).\nLocución: \"Con Kinetix configuras hasta cuatro usuarios con PIN exclusivo para que tus cajeros solo cobren, protegiendo tus costos y reportes confidenciales.\"\n\n[00:14 - 00:19] Llamado a la acción:\nVisual: Tarjeta interactiva oficial invitando a probar la demo en vivo.\nLocución: \"Prueba este sistema gratis en tu celular o computadora. Comenta la palabra SISTEMA y te enviamos el enlace directo a tus mensajes privados.\"\nAcción: Comentar 'SISTEMA' para recibir el enlace por DM.",
+    "caption": "4 perfiles independientes con PIN exclusivo para cajeros 🚀👇\n\nMira en este video la demostración práctica de KINETIX POS operando en tiempo real:\n1️⃣ PANEL DE 4 USUARIOS DE LICENCIA: Nadie te lo dice, pero dejar que cualquier empleado altere precios, borre ventas o mueva inventarios sin permisos es una invitación al robo hormiga.\n2️⃣ RESTRICCIONES Y PERMISOS POR ROL: Con Kinetix configuras hasta cuatro usuarios con PIN exclusivo para que tus cajeros solo cobren, protegiendo tus costos y reportes confidenciales.\n\n¿Por qué elegir Kinetix para tu negocio?\n✅ 100% Práctico e Intuitivo: Tu equipo lo domina en 5 minutos sin cursos complicados.\n✅ Multi-Dispositivo: Funciona en PC de mostrador, laptop y teléfono celular.\n✅ Cero Suscripciones: Olvídate de mensualidades abusivas por usuario.\n✅ Licencia Vitalicia Oficial: Un único pago de $89 USD para hasta 4 usuarios.\n✅ Soporte Incluido: 7 asistencias técnicas gratuitas anuales con atención directa por WhatsApp.\n\n👇 ¿Quieres probar la demo interactiva en tu celular o PC ahora mismo?\nComenta la palabra SISTEMA aquí abajo y te enviamos el enlace directo a tus mensajes privados para probar el sistema en vivo.\n\n🔗 Tienda y Demos en Vivo: https://tinyurl.com/kinetixsistemasPOS",
+    "keyword": "SISTEMA",
+    "link": "https://tinyurl.com/kinetixsistemasPOS",
+    "hashtags": "#reels #seguridadnegocio #cajeros #administracion #seguridad #pymes #kinetix"
+  },
+  {
+    "day": 9,
+    "week": 2,
+    "format": "🎥 REEL DEMO EN VIVO (INTERFAZ REAL)",
+    "product": "KINETIX POS · REPORTES FINANCIEROS",
+    "title": "Exporta tus ventas e inventarios a Excel en 1 clic",
+    "hook": "Cómo pasar de noches enteras cuadrando cuentas a mano a exportar todas las ventas, gastos e inventarios de tu empresa a Excel en un solo clic.",
+    "mediaType": "video",
+    "mediaFiles": [
+      "reel_09_exportar_excel.mp4"
+    ],
+    "script": "[00:00 - 00:07] Paso 1: EXPORTACIÓN DE STOCK Y COSTOS\nVisual: Pantalla real de KINETIX POS en Modo Claro operando en vivo.\nLocución: \"Cómo pasar de noches enteras cuadrando cuentas a mano a exportar todas las ventas, gastos e inventarios de tu empresa a Excel en un solo clic.\"\n\n[00:07 - 00:14] Paso 2: REPORTE COMPLETO DE VENTAS\nVisual: Sistema ejecutando la acción (comprobante, WhatsApp, PDF o modal).\nLocución: \"El sistema genera una hoja de cálculo limpia con todos tus productos, costos, precios y márgenes de ganancia listos para tu contador.\"\n\n[00:14 - 00:19] Llamado a la acción:\nVisual: Tarjeta interactiva oficial invitando a probar la demo en vivo.\nLocución: \"Prueba este sistema gratis en tu celular o computadora. Comenta la palabra SISTEMA y te enviamos el enlace directo a tus mensajes privados.\"\nAcción: Comentar 'SISTEMA' para recibir el enlace por DM.",
+    "caption": "Exporta tus ventas e inventarios a Excel en 1 clic 🚀👇\n\nMira en este video la demostración práctica de KINETIX POS operando en tiempo real:\n1️⃣ EXPORTACIÓN DE STOCK Y COSTOS: Cómo pasar de noches enteras cuadrando cuentas a mano a exportar todas las ventas, gastos e inventarios de tu empresa a Excel en un solo clic.\n2️⃣ REPORTE COMPLETO DE VENTAS: El sistema genera una hoja de cálculo limpia con todos tus productos, costos, precios y márgenes de ganancia listos para tu contador.\n\n¿Por qué elegir Kinetix para tu negocio?\n✅ 100% Práctico e Intuitivo: Tu equipo lo domina en 5 minutos sin cursos complicados.\n✅ Multi-Dispositivo: Funciona en PC de mostrador, laptop y teléfono celular.\n✅ Cero Suscripciones: Olvídate de mensualidades abusivas por usuario.\n✅ Licencia Vitalicia Oficial: Un único pago de $89 USD para hasta 4 usuarios.\n✅ Soporte Incluido: 7 asistencias técnicas gratuitas anuales con atención directa por WhatsApp.\n\n👇 ¿Quieres probar la demo interactiva en tu celular o PC ahora mismo?\nComenta la palabra SISTEMA aquí abajo y te enviamos el enlace directo a tus mensajes privados para probar el sistema en vivo.\n\n🔗 Tienda y Demos en Vivo: https://tinyurl.com/kinetixsistemasPOS",
+    "keyword": "SISTEMA",
+    "link": "https://tinyurl.com/kinetixsistemasPOS",
+    "hashtags": "#reels #excel #reportesfinancieros #contabilidad #datos #analisisdenegocio #kinetix"
+  },
+  {
+    "day": 10,
+    "week": 2,
+    "format": "🎥 REEL DEMO EN VIVO (INTERFAZ REAL)",
+    "product": "KINETIX SALUD · CLÍNICAS & CITAS",
+    "title": "Agenda citas médicas por consultorio y especialista en segundos",
+    "hook": "Si todavía usas una libreta de papel o chats dispersos para agendar pacientes, se te están cayendo citas valiosas todos los días.",
+    "mediaType": "video",
+    "mediaFiles": [
+      "reel_10_agendar_cita.mp4"
+    ],
+    "script": "[00:00 - 00:07] Paso 1: CALENDARIO GENERAL DE CITAS\nVisual: Pantalla real de KINETIX SALUD en Modo Claro operando en vivo.\nLocución: \"Si todavía usas una libreta de papel o chats dispersos para agendar pacientes, se te están cayendo citas valiosas todos los días.\"\n\n[00:07 - 00:14] Paso 2: NUEVA RESERVA DE PACIENTE\nVisual: Sistema ejecutando la acción (comprobante, WhatsApp, PDF o modal).\nLocución: \"En Kinetix Salud seleccionas la fecha, la hora disponible y el médico especialista en segundos, sin riesgo de sobrecupos ni citas duplicadas.\"\n\n[00:14 - 00:19] Llamado a la acción:\nVisual: Tarjeta interactiva oficial invitando a probar la demo en vivo.\nLocución: \"Prueba este sistema gratis en tu celular o computadora. Comenta la palabra SISTEMA y te enviamos el enlace directo a tus mensajes privados.\"\nAcción: Comentar 'SISTEMA' para recibir el enlace por DM.",
+    "caption": "Agenda citas médicas por consultorio y especialista en segundos 🚀👇\n\nMira en este video la demostración práctica de KINETIX SALUD operando en tiempo real:\n1️⃣ CALENDARIO GENERAL DE CITAS: Si todavía usas una libreta de papel o chats dispersos para agendar pacientes, se te están cayendo citas valiosas todos los días.\n2️⃣ NUEVA RESERVA DE PACIENTE: En Kinetix Salud seleccionas la fecha, la hora disponible y el médico especialista en segundos, sin riesgo de sobrecupos ni citas duplicadas.\n\n¿Por qué elegir Kinetix para tu negocio?\n✅ 100% Práctico e Intuitivo: Tu equipo lo domina en 5 minutos sin cursos complicados.\n✅ Multi-Dispositivo: Funciona en PC de mostrador, laptop y teléfono celular.\n✅ Cero Suscripciones: Olvídate de mensualidades abusivas por usuario.\n✅ Licencia Vitalicia Oficial: Un único pago de $89 USD para hasta 4 usuarios.\n✅ Soporte Incluido: 7 asistencias técnicas gratuitas anuales con atención directa por WhatsApp.\n\n👇 ¿Quieres probar la demo interactiva en tu celular o PC ahora mismo?\nComenta la palabra SISTEMA aquí abajo y te enviamos el enlace directo a tus mensajes privados para probar el sistema en vivo.\n\n🔗 Tienda y Demos en Vivo: https://tinyurl.com/kinetixsistemasPOS",
+    "keyword": "SISTEMA",
+    "link": "https://tinyurl.com/kinetixsistemasPOS",
+    "hashtags": "#reels #clinicamedica #citasmedicas #agendamedica #consultorio #softwaremedico #kinetix"
+  },
+  {
+    "day": 11,
+    "week": 2,
+    "format": "🎥 REEL DEMO EN VIVO (INTERFAZ REAL)",
+    "product": "KINETIX SALUD · NOTIFICACIONES WHATSAPP",
+    "title": "Confirma citas médicas por WhatsApp en 1 solo clic",
+    "hook": "Deja de perder horas llamando uno a uno a tus pacientes para recordarles su turno y evitar el ausentismo en tu clínica.",
+    "mediaType": "video",
+    "mediaFiles": [
+      "reel_11_confirmar_whatsapp.mp4"
+    ],
+    "script": "[00:00 - 00:07] Paso 1: RECORDATORIOS DE CITAS PENDIENTES\nVisual: Pantalla real de KINETIX SALUD en Modo Claro operando en vivo.\nLocución: \"Deja de perder horas llamando uno a uno a tus pacientes para recordarles su turno y evitar el ausentismo en tu clínica.\"\n\n[00:07 - 00:14] Paso 2: ENVÍO DE MENSAJE PERSONALIZADO\nVisual: Sistema ejecutando la acción (comprobante, WhatsApp, PDF o modal).\nLocución: \"Con un solo clic en la lista de citas abres un mensaje de confirmación por WhatsApp personalizado con fecha, hora y consultorio listo para enviar.\"\n\n[00:14 - 00:19] Llamado a la acción:\nVisual: Tarjeta interactiva oficial invitando a probar la demo en vivo.\nLocución: \"Prueba este sistema gratis en tu celular o computadora. Comenta la palabra SISTEMA y te enviamos el enlace directo a tus mensajes privados.\"\nAcción: Comentar 'SISTEMA' para recibir el enlace por DM.",
+    "caption": "Confirma citas médicas por WhatsApp en 1 solo clic 🚀👇\n\nMira en este video la demostración práctica de KINETIX SALUD operando en tiempo real:\n1️⃣ RECORDATORIOS DE CITAS PENDIENTES: Deja de perder horas llamando uno a uno a tus pacientes para recordarles su turno y evitar el ausentismo en tu clínica.\n2️⃣ ENVÍO DE MENSAJE PERSONALIZADO: Con un solo clic en la lista de citas abres un mensaje de confirmación por WhatsApp personalizado con fecha, hora y consultorio listo para enviar.\n\n¿Por qué elegir Kinetix para tu negocio?\n✅ 100% Práctico e Intuitivo: Tu equipo lo domina en 5 minutos sin cursos complicados.\n✅ Multi-Dispositivo: Funciona en PC de mostrador, laptop y teléfono celular.\n✅ Cero Suscripciones: Olvídate de mensualidades abusivas por usuario.\n✅ Licencia Vitalicia Oficial: Un único pago de $89 USD para hasta 4 usuarios.\n✅ Soporte Incluido: 7 asistencias técnicas gratuitas anuales con atención directa por WhatsApp.\n\n👇 ¿Quieres probar la demo interactiva en tu celular o PC ahora mismo?\nComenta la palabra SISTEMA aquí abajo y te enviamos el enlace directo a tus mensajes privados para probar el sistema en vivo.\n\n🔗 Tienda y Demos en Vivo: https://tinyurl.com/kinetixsistemasPOS",
+    "keyword": "SISTEMA",
+    "link": "https://tinyurl.com/kinetixsistemasPOS",
+    "hashtags": "#reels #whatsapp #confirmacioncitas #salud #odontologia #psicologia #consultorios #kinetix"
+  },
+  {
+    "day": 12,
+    "week": 2,
+    "format": "🎥 REEL DEMO EN VIVO (INTERFAZ REAL)",
+    "product": "KINETIX SALUD · EXPEDIENTE DIGITAL",
+    "title": "Expediente clínico confidencial y antecedentes médicos",
+    "hook": "Nadie te lo dice, pero perder el historial de un paciente o no tener sus antecedentes clínicos a la mano es un grave riesgo profesional y médico.",
+    "mediaType": "video",
+    "mediaFiles": [
+      "reel_12_expediente_clinico.mp4"
+    ],
+    "script": "[00:00 - 00:07] Paso 1: DIRECTORIO DE PACIENTES\nVisual: Pantalla real de KINETIX SALUD en Modo Claro operando en vivo.\nLocución: \"Nadie te lo dice, pero perder el historial de un paciente o no tener sus antecedentes clínicos a la mano es un grave riesgo profesional y médico.\"\n\n[00:07 - 00:14] Paso 2: APERTURA DE FICHA Y ANTECEDENTES\nVisual: Sistema ejecutando la acción (comprobante, WhatsApp, PDF o modal).\nLocución: \"Con el expediente digital de Kinetix consultas diagnósticos previos, alergias y evolución clínica en segundos con total seguridad y confidencialidad.\"\n\n[00:14 - 00:19] Llamado a la acción:\nVisual: Tarjeta interactiva oficial invitando a probar la demo en vivo.\nLocución: \"Prueba este sistema gratis en tu celular o computadora. Comenta la palabra SISTEMA y te enviamos el enlace directo a tus mensajes privados.\"\nAcción: Comentar 'SISTEMA' para recibir el enlace por DM.",
+    "caption": "Expediente clínico confidencial y antecedentes médicos 🚀👇\n\nMira en este video la demostración práctica de KINETIX SALUD operando en tiempo real:\n1️⃣ DIRECTORIO DE PACIENTES: Nadie te lo dice, pero perder el historial de un paciente o no tener sus antecedentes clínicos a la mano es un grave riesgo profesional y médico.\n2️⃣ APERTURA DE FICHA Y ANTECEDENTES: Con el expediente digital de Kinetix consultas diagnósticos previos, alergias y evolución clínica en segundos con total seguridad y confidencialidad.\n\n¿Por qué elegir Kinetix para tu negocio?\n✅ 100% Práctico e Intuitivo: Tu equipo lo domina en 5 minutos sin cursos complicados.\n✅ Multi-Dispositivo: Funciona en PC de mostrador, laptop y teléfono celular.\n✅ Cero Suscripciones: Olvídate de mensualidades abusivas por usuario.\n✅ Licencia Vitalicia Oficial: Un único pago de $89 USD para hasta 4 usuarios.\n✅ Soporte Incluido: 7 asistencias técnicas gratuitas anuales con atención directa por WhatsApp.\n\n👇 ¿Quieres probar la demo interactiva en tu celular o PC ahora mismo?\nComenta la palabra SISTEMA aquí abajo y te enviamos el enlace directo a tus mensajes privados para probar el sistema en vivo.\n\n🔗 Tienda y Demos en Vivo: https://tinyurl.com/kinetixsistemasPOS",
+    "keyword": "SISTEMA",
+    "link": "https://tinyurl.com/kinetixsistemasPOS",
+    "hashtags": "#reels #expedientemedico #historiaclinica #medicina #doctores #fichamedica #kinetix"
+  },
+  {
+    "day": 13,
+    "week": 2,
+    "format": "🎥 REEL DEMO EN VIVO (INTERFAZ REAL)",
+    "product": "KINETIX SALUD · FINANZAS MÉDICAS",
+    "title": "Cobro de consulta médica y emisión de recibo desglosado",
+    "hook": "¿Qué es mejor? ¿Tener recibos en papel perdidos por el consultorio, o cobrar consultas y emitir comprobantes profesionales digitales al instante?",
+    "mediaType": "video",
+    "mediaFiles": [
+      "reel_13_cobro_consulta.mp4"
+    ],
+    "script": "[00:00 - 00:07] Paso 1: CONSULTA & HONORARIOS MÉDICOS\nVisual: Pantalla real de KINETIX SALUD en Modo Claro operando en vivo.\nLocución: \"¿Qué es mejor? ¿Tener recibos en papel perdidos por el consultorio, o cobrar consultas y emitir comprobantes profesionales digitales al instante?\"\n\n[00:07 - 00:14] Paso 2: RECETA FORMAL Y COMPROBANTE\nVisual: Sistema ejecutando la acción (comprobante, WhatsApp, PDF o modal).\nLocución: \"Registras honorarios y suministros utilizados, y el sistema genera la receta y recibo membretado con el logo de tu consultorio en segundos.\"\n\n[00:14 - 00:19] Llamado a la acción:\nVisual: Tarjeta interactiva oficial invitando a probar la demo en vivo.\nLocución: \"Prueba este sistema gratis en tu celular o computadora. Comenta la palabra SISTEMA y te enviamos el enlace directo a tus mensajes privados.\"\nAcción: Comentar 'SISTEMA' para recibir el enlace por DM.",
+    "caption": "Cobro de consulta médica y emisión de recibo desglosado 🚀👇\n\nMira en este video la demostración práctica de KINETIX SALUD operando en tiempo real:\n1️⃣ CONSULTA & HONORARIOS MÉDICOS: ¿Qué es mejor? ¿Tener recibos en papel perdidos por el consultorio, o cobrar consultas y emitir comprobantes profesionales digitales al instante?\n2️⃣ RECETA FORMAL Y COMPROBANTE: Registras honorarios y suministros utilizados, y el sistema genera la receta y recibo membretado con el logo de tu consultorio en segundos.\n\n¿Por qué elegir Kinetix para tu negocio?\n✅ 100% Práctico e Intuitivo: Tu equipo lo domina en 5 minutos sin cursos complicados.\n✅ Multi-Dispositivo: Funciona en PC de mostrador, laptop y teléfono celular.\n✅ Cero Suscripciones: Olvídate de mensualidades abusivas por usuario.\n✅ Licencia Vitalicia Oficial: Un único pago de $89 USD para hasta 4 usuarios.\n✅ Soporte Incluido: 7 asistencias técnicas gratuitas anuales con atención directa por WhatsApp.\n\n👇 ¿Quieres probar la demo interactiva en tu celular o PC ahora mismo?\nComenta la palabra SISTEMA aquí abajo y te enviamos el enlace directo a tus mensajes privados para probar el sistema en vivo.\n\n🔗 Tienda y Demos en Vivo: https://tinyurl.com/kinetixsistemasPOS",
+    "keyword": "SISTEMA",
+    "link": "https://tinyurl.com/kinetixsistemasPOS",
+    "hashtags": "#reels #recibomedico #cobroconsultorio #honorarios #clinica #administracionmedica #kinetix"
+  },
+  {
+    "day": 14,
+    "week": 2,
+    "format": "🎥 REEL DEMO EN VIVO (INTERFAZ REAL)",
+    "product": "KINETIX SALUD · GESTIÓN CLÍNICA",
+    "title": "Administra médicos, turnos y comisiones por consulta",
+    "hook": "Deja de enredarte coordinando los horarios, especialidades y porcentajes de pago de múltiples doctores en tu policlínico.",
+    "mediaType": "video",
+    "mediaFiles": [
+      "reel_14_gestion_doctores.mp4"
+    ],
+    "script": "[00:00 - 00:07] Paso 1: DIRECTORIO DE ESPECIALISTAS\nVisual: Pantalla real de KINETIX SALUD en Modo Claro operando en vivo.\nLocución: \"Deja de enredarte coordinando los horarios, especialidades y porcentajes de pago de múltiples doctores en tu policlínico.\"\n\n[00:07 - 00:14] Paso 2: HORARIOS Y LIQUIDACIÓN MÉDICA\nVisual: Sistema ejecutando la acción (comprobante, WhatsApp, PDF o modal).\nLocución: \"Configura turnos, consultorios y liquidaciones automáticas de honorarios por cada paciente atendido de forma clara y sin desacuerdos.\"\n\n[00:14 - 00:19] Llamado a la acción:\nVisual: Tarjeta interactiva oficial invitando a probar la demo en vivo.\nLocución: \"Prueba este sistema gratis en tu celular o computadora. Comenta la palabra SISTEMA y te enviamos el enlace directo a tus mensajes privados.\"\nAcción: Comentar 'SISTEMA' para recibir el enlace por DM.",
+    "caption": "Administra médicos, turnos y comisiones por consulta 🚀👇\n\nMira en este video la demostración práctica de KINETIX SALUD operando en tiempo real:\n1️⃣ DIRECTORIO DE ESPECIALISTAS: Deja de enredarte coordinando los horarios, especialidades y porcentajes de pago de múltiples doctores en tu policlínico.\n2️⃣ HORARIOS Y LIQUIDACIÓN MÉDICA: Configura turnos, consultorios y liquidaciones automáticas de honorarios por cada paciente atendido de forma clara y sin desacuerdos.\n\n¿Por qué elegir Kinetix para tu negocio?\n✅ 100% Práctico e Intuitivo: Tu equipo lo domina en 5 minutos sin cursos complicados.\n✅ Multi-Dispositivo: Funciona en PC de mostrador, laptop y teléfono celular.\n✅ Cero Suscripciones: Olvídate de mensualidades abusivas por usuario.\n✅ Licencia Vitalicia Oficial: Un único pago de $89 USD para hasta 4 usuarios.\n✅ Soporte Incluido: 7 asistencias técnicas gratuitas anuales con atención directa por WhatsApp.\n\n👇 ¿Quieres probar la demo interactiva en tu celular o PC ahora mismo?\nComenta la palabra SISTEMA aquí abajo y te enviamos el enlace directo a tus mensajes privados para probar el sistema en vivo.\n\n🔗 Tienda y Demos en Vivo: https://tinyurl.com/kinetixsistemasPOS",
+    "keyword": "SISTEMA",
+    "link": "https://tinyurl.com/kinetixsistemasPOS",
+    "hashtags": "#reels #doctores #especialistas #policlinico #gestionclinica #saludprivada #kinetix"
+  },
+  {
+    "day": 15,
+    "week": 2,
+    "format": "🎥 REEL DEMO EN VIVO (INTERFAZ REAL)",
+    "product": "KINETIX SALUD · SALUD MÓVIL",
+    "title": "Tu clínica médica disponible en tu celular o tablet",
+    "hook": "Cómo pasar de estar amarrado al escritorio de tu consultorio a revisar tu agenda médica y expedientes desde cualquier lugar en tu celular.",
+    "mediaType": "video",
+    "mediaFiles": [
+      "reel_15_clinica_celular.mp4"
+    ],
+    "script": "[00:00 - 00:07] Paso 1: AGENDA CLÍNICA EN PANTALLA MÓVIL\nVisual: Pantalla real de KINETIX SALUD en Modo Claro operando en vivo.\nLocución: \"Cómo pasar de estar amarrado al escritorio de tu consultorio a revisar tu agenda médica y expedientes desde cualquier lugar en tu celular.\"\n\n[00:07 - 00:14] Paso 2: WHATSAPP Y CITAS DESDE SMARTPHONE\nVisual: Sistema ejecutando la acción (comprobante, WhatsApp, PDF o modal).\nLocución: \"Kinetix Salud se adapta a tu smartphone o tablet para confirmar pacientes y consultar fichas clínicas mientras te trasladas o visitas a domicilio.\"\n\n[00:14 - 00:19] Llamado a la acción:\nVisual: Tarjeta interactiva oficial invitando a probar la demo en vivo.\nLocución: \"Prueba este sistema gratis en tu celular o computadora. Comenta la palabra SISTEMA y te enviamos el enlace directo a tus mensajes privados.\"\nAcción: Comentar 'SISTEMA' para recibir el enlace por DM.",
+    "caption": "Tu clínica médica disponible en tu celular o tablet 🚀👇\n\nMira en este video la demostración práctica de KINETIX SALUD operando en tiempo real:\n1️⃣ AGENDA CLÍNICA EN PANTALLA MÓVIL: Cómo pasar de estar amarrado al escritorio de tu consultorio a revisar tu agenda médica y expedientes desde cualquier lugar en tu celular.\n2️⃣ WHATSAPP Y CITAS DESDE SMARTPHONE: Kinetix Salud se adapta a tu smartphone o tablet para confirmar pacientes y consultar fichas clínicas mientras te trasladas o visitas a domicilio.\n\n¿Por qué elegir Kinetix para tu negocio?\n✅ 100% Práctico e Intuitivo: Tu equipo lo domina en 5 minutos sin cursos complicados.\n✅ Multi-Dispositivo: Funciona en PC de mostrador, laptop y teléfono celular.\n✅ Cero Suscripciones: Olvídate de mensualidades abusivas por usuario.\n✅ Licencia Vitalicia Oficial: Un único pago de $89 USD para hasta 4 usuarios.\n✅ Soporte Incluido: 7 asistencias técnicas gratuitas anuales con atención directa por WhatsApp.\n\n👇 ¿Quieres probar la demo interactiva en tu celular o PC ahora mismo?\nComenta la palabra SISTEMA aquí abajo y te enviamos el enlace directo a tus mensajes privados para probar el sistema en vivo.\n\n🔗 Tienda y Demos en Vivo: https://tinyurl.com/kinetixsistemasPOS",
+    "keyword": "SISTEMA",
+    "link": "https://tinyurl.com/kinetixsistemasPOS",
+    "hashtags": "#reels #appmedica #saludmovil #medicoenmovimiento #tecnologiamedica #kinetix"
+  },
+  {
+    "day": 16,
+    "week": 3,
+    "format": "🎥 REEL DEMO EN VIVO (INTERFAZ REAL)",
+    "product": "KINETIX CRM · COTIZADOR B2B",
+    "title": "Genera cotizaciones formales en PDF en 10 segundos",
+    "hook": "Si todavía usas plantillas de Word para enviar presupuestos a tus clientes, tu negocio se ve lento y poco profesional.",
+    "mediaType": "video",
+    "mediaFiles": [
+      "reel_16_cotizacion_pdf.mp4"
+    ],
+    "script": "[00:00 - 00:07] Paso 1: CATÁLOGO DE PROPUESTAS COMERCIALES\nVisual: Pantalla real de KINETIX CRM en Modo Claro operando en vivo.\nLocución: \"Si todavía usas plantillas de Word para enviar presupuestos a tus clientes, tu negocio se ve lento y poco profesional.\"\n\n[00:07 - 00:14] Paso 2: DOCUMENTO PDF CON LOGO Y PARTIDAS\nVisual: Sistema ejecutando la acción (comprobante, WhatsApp, PDF o modal).\nLocución: \"En Kinetix CRM seleccionas el cliente, agregas las partidas y en diez segundos generas una cotización formal en PDF con tu marca y desglose.\"\n\n[00:14 - 00:19] Llamado a la acción:\nVisual: Tarjeta interactiva oficial invitando a probar la demo en vivo.\nLocución: \"Prueba este sistema gratis en tu celular o computadora. Comenta la palabra SISTEMA y te enviamos el enlace directo a tus mensajes privados.\"\nAcción: Comentar 'SISTEMA' para recibir el enlace por DM.",
+    "caption": "Genera cotizaciones formales en PDF en 10 segundos 🚀👇\n\nMira en este video la demostración práctica de KINETIX CRM operando en tiempo real:\n1️⃣ CATÁLOGO DE PROPUESTAS COMERCIALES: Si todavía usas plantillas de Word para enviar presupuestos a tus clientes, tu negocio se ve lento y poco profesional.\n2️⃣ DOCUMENTO PDF CON LOGO Y PARTIDAS: En Kinetix CRM seleccionas el cliente, agregas las partidas y en diez segundos generas una cotización formal en PDF con tu marca y desglose.\n\n¿Por qué elegir Kinetix para tu negocio?\n✅ 100% Práctico e Intuitivo: Tu equipo lo domina en 5 minutos sin cursos complicados.\n✅ Multi-Dispositivo: Funciona en PC de mostrador, laptop y teléfono celular.\n✅ Cero Suscripciones: Olvídate de mensualidades abusivas por usuario.\n✅ Licencia Vitalicia Oficial: Un único pago de $89 USD para hasta 4 usuarios.\n✅ Soporte Incluido: 7 asistencias técnicas gratuitas anuales con atención directa por WhatsApp.\n\n👇 ¿Quieres probar la demo interactiva en tu celular o PC ahora mismo?\nComenta la palabra SISTEMA aquí abajo y te enviamos el enlace directo a tus mensajes privados para probar el sistema en vivo.\n\n🔗 Tienda y Demos en Vivo: https://tinyurl.com/kinetixsistemasPOS",
+    "keyword": "SISTEMA",
+    "link": "https://tinyurl.com/kinetixsistemasPOS",
+    "hashtags": "#reels #cotizaciones #crm #ventasb2b #presupuestos #propuestacomercial #kinetix"
+  },
+  {
+    "day": 17,
+    "week": 3,
+    "format": "🎥 REEL DEMO EN VIVO (INTERFAZ REAL)",
+    "product": "KINETIX CRM · PIPELINE DE VENTAS",
+    "title": "Tablero Kanban visual para cerrar tratos sin perder clientes",
+    "hook": "Cómo pasar del desorden de no saber en qué etapa va cada cliente a tener un embudo comercial visual donde cerrar tratos es rápido y automático.",
+    "mediaType": "video",
+    "mediaFiles": [
+      "reel_17_tablero_kanban.mp4"
+    ],
+    "script": "[00:00 - 00:07] Paso 1: EMBUDO COMERCIAL EN ETAPAS\nVisual: Pantalla real de KINETIX CRM en Modo Claro operando en vivo.\nLocución: \"Cómo pasar del desorden de no saber en qué etapa va cada cliente a tener un embudo comercial visual donde cerrar tratos es rápido y automático.\"\n\n[00:07 - 00:14] Paso 2: TRATO CERRADO Y GANADO\nVisual: Sistema ejecutando la acción (comprobante, WhatsApp, PDF o modal).\nLocución: \"Arrastra las tarjetas en el tablero Kanban desde prospecto hasta negociación, y celebra cada venta ganada con control total de tus ingresos.\"\n\n[00:14 - 00:19] Llamado a la acción:\nVisual: Tarjeta interactiva oficial invitando a probar la demo en vivo.\nLocución: \"Prueba este sistema gratis en tu celular o computadora. Comenta la palabra SISTEMA y te enviamos el enlace directo a tus mensajes privados.\"\nAcción: Comentar 'SISTEMA' para recibir el enlace por DM.",
+    "caption": "Tablero Kanban visual para cerrar tratos sin perder clientes 🚀👇\n\nMira en este video la demostración práctica de KINETIX CRM operando en tiempo real:\n1️⃣ EMBUDO COMERCIAL EN ETAPAS: Cómo pasar del desorden de no saber en qué etapa va cada cliente a tener un embudo comercial visual donde cerrar tratos es rápido y automático.\n2️⃣ TRATO CERRADO Y GANADO: Arrastra las tarjetas en el tablero Kanban desde prospecto hasta negociación, y celebra cada venta ganada con control total de tus ingresos.\n\n¿Por qué elegir Kinetix para tu negocio?\n✅ 100% Práctico e Intuitivo: Tu equipo lo domina en 5 minutos sin cursos complicados.\n✅ Multi-Dispositivo: Funciona en PC de mostrador, laptop y teléfono celular.\n✅ Cero Suscripciones: Olvídate de mensualidades abusivas por usuario.\n✅ Licencia Vitalicia Oficial: Un único pago de $89 USD para hasta 4 usuarios.\n✅ Soporte Incluido: 7 asistencias técnicas gratuitas anuales con atención directa por WhatsApp.\n\n👇 ¿Quieres probar la demo interactiva en tu celular o PC ahora mismo?\nComenta la palabra SISTEMA aquí abajo y te enviamos el enlace directo a tus mensajes privados para probar el sistema en vivo.\n\n🔗 Tienda y Demos en Vivo: https://tinyurl.com/kinetixsistemasPOS",
+    "keyword": "SISTEMA",
+    "link": "https://tinyurl.com/kinetixsistemasPOS",
+    "hashtags": "#reels #kanban #crmventas #embudodeventas #pipeline #productividad #kinetix"
+  },
+  {
+    "day": 18,
+    "week": 3,
+    "format": "🎥 REEL DEMO EN VIVO (INTERFAZ REAL)",
+    "product": "KINETIX CRM · CAPTURA DE PROSPECTOS",
+    "title": "Registra nuevos leads y asigna vendedores al instante",
+    "hook": "Deja de perder prospectos valiosos de Instagram, campañas y WhatsApp en chats dispersos que nadie atiende a tiempo.",
+    "mediaType": "video",
+    "mediaFiles": [
+      "reel_18_registro_leads.mp4"
+    ],
+    "script": "[00:00 - 00:07] Paso 1: BASE DE CLIENTES Y PROSPECTOS\nVisual: Pantalla real de KINETIX CRM en Modo Claro operando en vivo.\nLocución: \"Deja de perder prospectos valiosos de Instagram, campañas y WhatsApp en chats dispersos que nadie atiende a tiempo.\"\n\n[00:07 - 00:14] Paso 2: ALTA RÁPIDA DE NUEVO LEAD\nVisual: Sistema ejecutando la acción (comprobante, WhatsApp, PDF o modal).\nLocución: \"Registra cada interesado en segundos, define el monto del negocio y asigna el vendedor responsable para brindarle atención inmediata.\"\n\n[00:14 - 00:19] Llamado a la acción:\nVisual: Tarjeta interactiva oficial invitando a probar la demo en vivo.\nLocución: \"Prueba este sistema gratis en tu celular o computadora. Comenta la palabra SISTEMA y te enviamos el enlace directo a tus mensajes privados.\"\nAcción: Comentar 'SISTEMA' para recibir el enlace por DM.",
+    "caption": "Registra nuevos leads y asigna vendedores al instante 🚀👇\n\nMira en este video la demostración práctica de KINETIX CRM operando en tiempo real:\n1️⃣ BASE DE CLIENTES Y PROSPECTOS: Deja de perder prospectos valiosos de Instagram, campañas y WhatsApp en chats dispersos que nadie atiende a tiempo.\n2️⃣ ALTA RÁPIDA DE NUEVO LEAD: Registra cada interesado en segundos, define el monto del negocio y asigna el vendedor responsable para brindarle atención inmediata.\n\n¿Por qué elegir Kinetix para tu negocio?\n✅ 100% Práctico e Intuitivo: Tu equipo lo domina en 5 minutos sin cursos complicados.\n✅ Multi-Dispositivo: Funciona en PC de mostrador, laptop y teléfono celular.\n✅ Cero Suscripciones: Olvídate de mensualidades abusivas por usuario.\n✅ Licencia Vitalicia Oficial: Un único pago de $89 USD para hasta 4 usuarios.\n✅ Soporte Incluido: 7 asistencias técnicas gratuitas anuales con atención directa por WhatsApp.\n\n👇 ¿Quieres probar la demo interactiva en tu celular o PC ahora mismo?\nComenta la palabra SISTEMA aquí abajo y te enviamos el enlace directo a tus mensajes privados para probar el sistema en vivo.\n\n🔗 Tienda y Demos en Vivo: https://tinyurl.com/kinetixsistemasPOS",
+    "keyword": "SISTEMA",
+    "link": "https://tinyurl.com/kinetixsistemasPOS",
+    "hashtags": "#reels #leads #prospectos #captacion #ventas #agenciadigital #servicios #kinetix"
+  },
+  {
+    "day": 19,
+    "week": 3,
+    "format": "🎥 REEL DEMO EN VIVO (INTERFAZ REAL)",
+    "product": "KINETIX CRM · SEGUIMIENTO COMERCIAL",
+    "title": "Seguimiento oportuno a cotizaciones pendientes",
+    "hook": "Nadie te lo dice, pero más del setenta por ciento de las ventas corporativas se pierden simplemente por no hacer seguimiento en el momento justo.",
+    "mediaType": "video",
+    "mediaFiles": [
+      "reel_19_seguimiento_cotizaciones.mp4"
+    ],
+    "script": "[00:00 - 00:07] Paso 1: COTIZACIONES EN NEGOCIACIÓN\nVisual: Pantalla real de KINETIX CRM en Modo Claro operando en vivo.\nLocución: \"Nadie te lo dice, pero más del setenta por ciento de las ventas corporativas se pierden simplemente por no hacer seguimiento en el momento justo.\"\n\n[00:07 - 00:14] Paso 2: DETALLE Y RE-ENVÍO POR WHATSAPP\nVisual: Sistema ejecutando la acción (comprobante, WhatsApp, PDF o modal).\nLocución: \"Tu tabla de cotizaciones te muestra qué propuestas siguen pendientes y te permite recontactar por WhatsApp en un clic para acelerar la compra.\"\n\n[00:14 - 00:19] Llamado a la acción:\nVisual: Tarjeta interactiva oficial invitando a probar la demo en vivo.\nLocución: \"Prueba este sistema gratis en tu celular o computadora. Comenta la palabra SISTEMA y te enviamos el enlace directo a tus mensajes privados.\"\nAcción: Comentar 'SISTEMA' para recibir el enlace por DM.",
+    "caption": "Seguimiento oportuno a cotizaciones pendientes 🚀👇\n\nMira en este video la demostración práctica de KINETIX CRM operando en tiempo real:\n1️⃣ COTIZACIONES EN NEGOCIACIÓN: Nadie te lo dice, pero más del setenta por ciento de las ventas corporativas se pierden simplemente por no hacer seguimiento en el momento justo.\n2️⃣ DETALLE Y RE-ENVÍO POR WHATSAPP: Tu tabla de cotizaciones te muestra qué propuestas siguen pendientes y te permite recontactar por WhatsApp en un clic para acelerar la compra.\n\n¿Por qué elegir Kinetix para tu negocio?\n✅ 100% Práctico e Intuitivo: Tu equipo lo domina en 5 minutos sin cursos complicados.\n✅ Multi-Dispositivo: Funciona en PC de mostrador, laptop y teléfono celular.\n✅ Cero Suscripciones: Olvídate de mensualidades abusivas por usuario.\n✅ Licencia Vitalicia Oficial: Un único pago de $89 USD para hasta 4 usuarios.\n✅ Soporte Incluido: 7 asistencias técnicas gratuitas anuales con atención directa por WhatsApp.\n\n👇 ¿Quieres probar la demo interactiva en tu celular o PC ahora mismo?\nComenta la palabra SISTEMA aquí abajo y te enviamos el enlace directo a tus mensajes privados para probar el sistema en vivo.\n\n🔗 Tienda y Demos en Vivo: https://tinyurl.com/kinetixsistemasPOS",
+    "keyword": "SISTEMA",
+    "link": "https://tinyurl.com/kinetixsistemasPOS",
+    "hashtags": "#reels #seguimientocomercial #cierresdeventas #vendedores #negociacion #b2b #kinetix"
+  },
+  {
+    "day": 20,
+    "week": 3,
+    "format": "🎥 REEL DEMO EN VIVO (INTERFAZ REAL)",
+    "product": "KINETIX CRM · METAS & COMISIONES",
+    "title": "Metas comerciales de vendedores y comisiones automáticas",
+    "hook": "Cómo pasar de confusiones y reclamos con tu equipo de ventas a tener metas comerciales claras y comisiones calculadas en tiempo real.",
+    "mediaType": "video",
+    "mediaFiles": [
+      "reel_20_metas_comisiones.mp4"
+    ],
+    "script": "[00:00 - 00:07] Paso 1: CUMPLIMIENTO DE CUOTA COMERCIAL\nVisual: Pantalla real de KINETIX CRM en Modo Claro operando en vivo.\nLocución: \"Cómo pasar de confusiones y reclamos con tu equipo de ventas a tener metas comerciales claras y comisiones calculadas en tiempo real.\"\n\n[00:07 - 00:14] Paso 2: USUARIOS Y COMISIONES POR VENTA\nVisual: Sistema ejecutando la acción (comprobante, WhatsApp, PDF o modal).\nLocución: \"Supervisa el avance de cada asesor hacia su cuota mensual y deja que el sistema calcule sus incentivos por venta de forma automática y transparente.\"\n\n[00:14 - 00:19] Llamado a la acción:\nVisual: Tarjeta interactiva oficial invitando a probar la demo en vivo.\nLocución: \"Prueba este sistema gratis en tu celular o computadora. Comenta la palabra SISTEMA y te enviamos el enlace directo a tus mensajes privados.\"\nAcción: Comentar 'SISTEMA' para recibir el enlace por DM.",
+    "caption": "Metas comerciales de vendedores y comisiones automáticas 🚀👇\n\nMira en este video la demostración práctica de KINETIX CRM operando en tiempo real:\n1️⃣ CUMPLIMIENTO DE CUOTA COMERCIAL: Cómo pasar de confusiones y reclamos con tu equipo de ventas a tener metas comerciales claras y comisiones calculadas en tiempo real.\n2️⃣ USUARIOS Y COMISIONES POR VENTA: Supervisa el avance de cada asesor hacia su cuota mensual y deja que el sistema calcule sus incentivos por venta de forma automática y transparente.\n\n¿Por qué elegir Kinetix para tu negocio?\n✅ 100% Práctico e Intuitivo: Tu equipo lo domina en 5 minutos sin cursos complicados.\n✅ Multi-Dispositivo: Funciona en PC de mostrador, laptop y teléfono celular.\n✅ Cero Suscripciones: Olvídate de mensualidades abusivas por usuario.\n✅ Licencia Vitalicia Oficial: Un único pago de $89 USD para hasta 4 usuarios.\n✅ Soporte Incluido: 7 asistencias técnicas gratuitas anuales con atención directa por WhatsApp.\n\n👇 ¿Quieres probar la demo interactiva en tu celular o PC ahora mismo?\nComenta la palabra SISTEMA aquí abajo y te enviamos el enlace directo a tus mensajes privados para probar el sistema en vivo.\n\n🔗 Tienda y Demos en Vivo: https://tinyurl.com/kinetixsistemasPOS",
+    "keyword": "SISTEMA",
+    "link": "https://tinyurl.com/kinetixsistemasPOS",
+    "hashtags": "#reels #metasdeventas #comisiones #equipodeventas #liderazgo #ventas #kinetix"
+  },
+  {
+    "day": 21,
+    "week": 3,
+    "format": "🎥 REEL DEMO EN VIVO (INTERFAZ REAL)",
+    "product": "KINETIX POS · TALLERES MECÁNICOS",
+    "title": "Cobro de mano de obra y refacciones en un mismo ticket",
+    "hook": "¿Qué es mejor? ¿Anotar reparaciones en libretas grasientas, o facturar mano de obra y repuestos organizados desde tu tablet o celular?",
+    "mediaType": "video",
+    "mediaFiles": [
+      "reel_21_taller_servicios.mp4"
+    ],
+    "script": "[00:00 - 00:07] Paso 1: ORDEN DE TALLER: SERVICIOS Y REPUESTOS\nVisual: Pantalla real de KINETIX POS en Modo Claro operando en vivo.\nLocución: \"¿Qué es mejor? ¿Anotar reparaciones en libretas grasientas, o facturar mano de obra y repuestos organizados desde tu tablet o celular?\"\n\n[00:07 - 00:14] Paso 2: COMPROBANTE CON PLACA Y KILOMETRAJE\nVisual: Sistema ejecutando la acción (comprobante, WhatsApp, PDF o modal).\nLocución: \"En Kinetix registras la placa, kilometraje y piezas utilizadas en una sola orden de servicio clara y profesional que genera confianza inmediata.\"\n\n[00:14 - 00:19] Llamado a la acción:\nVisual: Tarjeta interactiva oficial invitando a probar la demo en vivo.\nLocución: \"Prueba este sistema gratis en tu celular o computadora. Comenta la palabra SISTEMA y te enviamos el enlace directo a tus mensajes privados.\"\nAcción: Comentar 'SISTEMA' para recibir el enlace por DM.",
+    "caption": "Cobro de mano de obra y refacciones en un mismo ticket 🚀👇\n\nMira en este video la demostración práctica de KINETIX POS operando en tiempo real:\n1️⃣ ORDEN DE TALLER: SERVICIOS Y REPUESTOS: ¿Qué es mejor? ¿Anotar reparaciones en libretas grasientas, o facturar mano de obra y repuestos organizados desde tu tablet o celular?\n2️⃣ COMPROBANTE CON PLACA Y KILOMETRAJE: En Kinetix registras la placa, kilometraje y piezas utilizadas en una sola orden de servicio clara y profesional que genera confianza inmediata.\n\n¿Por qué elegir Kinetix para tu negocio?\n✅ 100% Práctico e Intuitivo: Tu equipo lo domina en 5 minutos sin cursos complicados.\n✅ Multi-Dispositivo: Funciona en PC de mostrador, laptop y teléfono celular.\n✅ Cero Suscripciones: Olvídate de mensualidades abusivas por usuario.\n✅ Licencia Vitalicia Oficial: Un único pago de $89 USD para hasta 4 usuarios.\n✅ Soporte Incluido: 7 asistencias técnicas gratuitas anuales con atención directa por WhatsApp.\n\n👇 ¿Quieres probar la demo interactiva en tu celular o PC ahora mismo?\nComenta la palabra SISTEMA aquí abajo y te enviamos el enlace directo a tus mensajes privados para probar el sistema en vivo.\n\n🔗 Tienda y Demos en Vivo: https://tinyurl.com/kinetixsistemasPOS",
+    "keyword": "SISTEMA",
+    "link": "https://tinyurl.com/kinetixsistemasPOS",
+    "hashtags": "#reels #tallermecanico #mecanica #serviciotecnico #repuestos #refaccionaria #kinetix"
+  },
+  {
+    "day": 22,
+    "week": 3,
+    "format": "🎥 REEL DEMO EN VIVO (INTERFAZ REAL)",
+    "product": "KINETIX POS · RESTAURANTES & CAFETERÍAS",
+    "title": "Atención rápida por combos, bebidas y control de mesas",
+    "hook": "Si todavía usas comandas en papel que se pierden o confunden en cocina, tu restaurante o cafetería está sufriendo demoras innecesarias.",
+    "mediaType": "video",
+    "mediaFiles": [
+      "reel_22_restaurante_combos.mp4"
+    ],
+    "script": "[00:00 - 00:07] Paso 1: PEDIDO DE COMIDAS & COMBOS EN POS\nVisual: Pantalla real de KINETIX POS en Modo Claro operando en vivo.\nLocución: \"Si todavía usas comandas en papel que se pierden o confunden en cocina, tu restaurante o cafetería está sufriendo demoras innecesarias.\"\n\n[00:07 - 00:14] Paso 2: TICKET DE MESA Y ORDEN DE COCINA\nVisual: Sistema ejecutando la acción (comprobante, WhatsApp, PDF o modal).\nLocución: \"Con botones táctiles rápidos registras combos, bebidas y mesas, cobras en segundos y despachas los pedidos sin errores ni demoras.\"\n\n[00:14 - 00:19] Llamado a la acción:\nVisual: Tarjeta interactiva oficial invitando a probar la demo en vivo.\nLocución: \"Prueba este sistema gratis en tu celular o computadora. Comenta la palabra SISTEMA y te enviamos el enlace directo a tus mensajes privados.\"\nAcción: Comentar 'SISTEMA' para recibir el enlace por DM.",
+    "caption": "Atención rápida por combos, bebidas y control de mesas 🚀👇\n\nMira en este video la demostración práctica de KINETIX POS operando en tiempo real:\n1️⃣ PEDIDO DE COMIDAS & COMBOS EN POS: Si todavía usas comandas en papel que se pierden o confunden en cocina, tu restaurante o cafetería está sufriendo demoras innecesarias.\n2️⃣ TICKET DE MESA Y ORDEN DE COCINA: Con botones táctiles rápidos registras combos, bebidas y mesas, cobras en segundos y despachas los pedidos sin errores ni demoras.\n\n¿Por qué elegir Kinetix para tu negocio?\n✅ 100% Práctico e Intuitivo: Tu equipo lo domina en 5 minutos sin cursos complicados.\n✅ Multi-Dispositivo: Funciona en PC de mostrador, laptop y teléfono celular.\n✅ Cero Suscripciones: Olvídate de mensualidades abusivas por usuario.\n✅ Licencia Vitalicia Oficial: Un único pago de $89 USD para hasta 4 usuarios.\n✅ Soporte Incluido: 7 asistencias técnicas gratuitas anuales con atención directa por WhatsApp.\n\n👇 ¿Quieres probar la demo interactiva en tu celular o PC ahora mismo?\nComenta la palabra SISTEMA aquí abajo y te enviamos el enlace directo a tus mensajes privados para probar el sistema en vivo.\n\n🔗 Tienda y Demos en Vivo: https://tinyurl.com/kinetixsistemasPOS",
+    "keyword": "SISTEMA",
+    "link": "https://tinyurl.com/kinetixsistemasPOS",
+    "hashtags": "#reels #restaurante #cafeteria #comidarapida #bares #hosteleria #kinetix"
+  },
+  {
+    "day": 23,
+    "week": 4,
+    "format": "🎥 REEL DEMO EN VIVO (INTERFAZ REAL)",
+    "product": "KINETIX POS · FARMACIAS & MINIMARKETS",
+    "title": "Búsqueda veloz de medicamentos y códigos de barra",
+    "hook": "Deja de buscar medicamentos a ciegas entre cientos de estantes sin saber cuánto stock te queda ni qué lote está por vencer en tu farmacia.",
+    "mediaType": "video",
+    "mediaFiles": [
+      "reel_23_farmacia_busqueda.mp4"
+    ],
+    "script": "[00:00 - 00:07] Paso 1: BÚSQUEDA Y SELECCIÓN DE MEDICAMENTOS\nVisual: Pantalla real de KINETIX POS en Modo Claro operando en vivo.\nLocución: \"Deja de buscar medicamentos a ciegas entre cientos de estantes sin saber cuánto stock te queda ni qué lote está por vencer en tu farmacia.\"\n\n[00:07 - 00:14] Paso 2: TICKET DE FARMACIA Y RECETA\nVisual: Sistema ejecutando la acción (comprobante, WhatsApp, PDF o modal).\nLocución: \"Busca por nombre, principio activo o código de barras al instante, revisa la fecha de vencimiento y despacha con total agilidad y exactitud.\"\n\n[00:14 - 00:19] Llamado a la acción:\nVisual: Tarjeta interactiva oficial invitando a probar la demo en vivo.\nLocución: \"Prueba este sistema gratis en tu celular o computadora. Comenta la palabra SISTEMA y te enviamos el enlace directo a tus mensajes privados.\"\nAcción: Comentar 'SISTEMA' para recibir el enlace por DM.",
+    "caption": "Búsqueda veloz de medicamentos y códigos de barra 🚀👇\n\nMira en este video la demostración práctica de KINETIX POS operando en tiempo real:\n1️⃣ BÚSQUEDA Y SELECCIÓN DE MEDICAMENTOS: Deja de buscar medicamentos a ciegas entre cientos de estantes sin saber cuánto stock te queda ni qué lote está por vencer en tu farmacia.\n2️⃣ TICKET DE FARMACIA Y RECETA: Busca por nombre, principio activo o código de barras al instante, revisa la fecha de vencimiento y despacha con total agilidad y exactitud.\n\n¿Por qué elegir Kinetix para tu negocio?\n✅ 100% Práctico e Intuitivo: Tu equipo lo domina en 5 minutos sin cursos complicados.\n✅ Multi-Dispositivo: Funciona en PC de mostrador, laptop y teléfono celular.\n✅ Cero Suscripciones: Olvídate de mensualidades abusivas por usuario.\n✅ Licencia Vitalicia Oficial: Un único pago de $89 USD para hasta 4 usuarios.\n✅ Soporte Incluido: 7 asistencias técnicas gratuitas anuales con atención directa por WhatsApp.\n\n👇 ¿Quieres probar la demo interactiva en tu celular o PC ahora mismo?\nComenta la palabra SISTEMA aquí abajo y te enviamos el enlace directo a tus mensajes privados para probar el sistema en vivo.\n\n🔗 Tienda y Demos en Vivo: https://tinyurl.com/kinetixsistemasPOS",
+    "keyword": "SISTEMA",
+    "link": "https://tinyurl.com/kinetixsistemasPOS",
+    "hashtags": "#reels #farmacia #drogueria #minimarket #medicamentos #inventario #kinetix"
+  },
+  {
+    "day": 24,
+    "week": 4,
+    "format": "🎥 REEL DEMO EN VIVO (INTERFAZ REAL)",
+    "product": "KINETIX POS · MULTI-PANTALLA LOCAL",
+    "title": "Hasta 4 computadoras o tablets conectadas en red local",
+    "hook": "Casi nadie en tu sector está aprovechando esto: conectar hasta cuatro computadoras o tablets en tu negocio sin pagar servidores caros ni rentas mensuales.",
+    "mediaType": "video",
+    "mediaFiles": [
+      "reel_24_multi_pantalla.mp4"
+    ],
+    "script": "[00:00 - 00:07] Paso 1: CONFIGURACIÓN DE RED Y TERMINALES\nVisual: Pantalla real de KINETIX POS en Modo Claro operando en vivo.\nLocución: \"Casi nadie en tu sector está aprovechando esto: conectar hasta cuatro computadoras o tablets en tu negocio sin pagar servidores caros ni rentas mensuales.\"\n\n[00:07 - 00:14] Paso 2: SINCRONIZACIÓN SIMULTÁNEA EN VIVO\nVisual: Sistema ejecutando la acción (comprobante, WhatsApp, PDF o modal).\nLocución: \"Con Kinetix tu mostrador principal, la oficina y tus vendedores operan sincronizados al mismo tiempo en red local con total estabilidad y rapidez.\"\n\n[00:14 - 00:19] Llamado a la acción:\nVisual: Tarjeta interactiva oficial invitando a probar la demo en vivo.\nLocución: \"Prueba este sistema gratis en tu celular o computadora. Comenta la palabra SISTEMA y te enviamos el enlace directo a tus mensajes privados.\"\nAcción: Comentar 'SISTEMA' para recibir el enlace por DM.",
+    "caption": "Hasta 4 computadoras o tablets conectadas en red local 🚀👇\n\nMira en este video la demostración práctica de KINETIX POS operando en tiempo real:\n1️⃣ CONFIGURACIÓN DE RED Y TERMINALES: Casi nadie en tu sector está aprovechando esto: conectar hasta cuatro computadoras o tablets en tu negocio sin pagar servidores caros ni rentas mensuales.\n2️⃣ SINCRONIZACIÓN SIMULTÁNEA EN VIVO: Con Kinetix tu mostrador principal, la oficina y tus vendedores operan sincronizados al mismo tiempo en red local con total estabilidad y rapidez.\n\n¿Por qué elegir Kinetix para tu negocio?\n✅ 100% Práctico e Intuitivo: Tu equipo lo domina en 5 minutos sin cursos complicados.\n✅ Multi-Dispositivo: Funciona en PC de mostrador, laptop y teléfono celular.\n✅ Cero Suscripciones: Olvídate de mensualidades abusivas por usuario.\n✅ Licencia Vitalicia Oficial: Un único pago de $89 USD para hasta 4 usuarios.\n✅ Soporte Incluido: 7 asistencias técnicas gratuitas anuales con atención directa por WhatsApp.\n\n👇 ¿Quieres probar la demo interactiva en tu celular o PC ahora mismo?\nComenta la palabra SISTEMA aquí abajo y te enviamos el enlace directo a tus mensajes privados para probar el sistema en vivo.\n\n🔗 Tienda y Demos en Vivo: https://tinyurl.com/kinetixsistemasPOS",
+    "keyword": "SISTEMA",
+    "link": "https://tinyurl.com/kinetixsistemasPOS",
+    "hashtags": "#reels #redlocal #multiterminal #puntodeventa #tecnologia #pymes #kinetix"
+  },
+  {
+    "day": 25,
+    "week": 4,
+    "format": "🎥 REEL DEMO EN VIVO (INTERFAZ REAL)",
+    "product": "KINETIX POS · SEGURIDAD DE DATOS",
+    "title": "Respaldo seguro en USB: tu información siempre bajo tu control",
+    "hook": "Nadie te lo dice, pero depender de sistemas en la nube que se caen cuando se va el internet o te bloquean si no pagas arriesga tu negocio.",
+    "mediaType": "video",
+    "mediaFiles": [
+      "reel_25_respaldo_seguro.mp4"
+    ],
+    "script": "[00:00 - 00:07] Paso 1: PANEL DE COPIA DE SEGURIDAD LOCAL\nVisual: Pantalla real de KINETIX POS en Modo Claro operando en vivo.\nLocución: \"Nadie te lo dice, pero depender de sistemas en la nube que se caen cuando se va el internet o te bloquean si no pagas arriesga tu negocio.\"\n\n[00:07 - 00:14] Paso 2: EXPORTACIÓN SEGURA DE INVENTARIO\nVisual: Sistema ejecutando la acción (comprobante, WhatsApp, PDF o modal).\nLocución: \"En Kinetix tu información comercial es cien por ciento tuya: respaldas tu base de datos completa a tu PC o memoria USB en un solo clic.\"\n\n[00:14 - 00:19] Llamado a la acción:\nVisual: Tarjeta interactiva oficial invitando a probar la demo en vivo.\nLocución: \"Prueba este sistema gratis en tu celular o computadora. Comenta la palabra SISTEMA y te enviamos el enlace directo a tus mensajes privados.\"\nAcción: Comentar 'SISTEMA' para recibir el enlace por DM.",
+    "caption": "Respaldo seguro en USB: tu información siempre bajo tu control 🚀👇\n\nMira en este video la demostración práctica de KINETIX POS operando en tiempo real:\n1️⃣ PANEL DE COPIA DE SEGURIDAD LOCAL: Nadie te lo dice, pero depender de sistemas en la nube que se caen cuando se va el internet o te bloquean si no pagas arriesga tu negocio.\n2️⃣ EXPORTACIÓN SEGURA DE INVENTARIO: En Kinetix tu información comercial es cien por ciento tuya: respaldas tu base de datos completa a tu PC o memoria USB en un solo clic.\n\n¿Por qué elegir Kinetix para tu negocio?\n✅ 100% Práctico e Intuitivo: Tu equipo lo domina en 5 minutos sin cursos complicados.\n✅ Multi-Dispositivo: Funciona en PC de mostrador, laptop y teléfono celular.\n✅ Cero Suscripciones: Olvídate de mensualidades abusivas por usuario.\n✅ Licencia Vitalicia Oficial: Un único pago de $89 USD para hasta 4 usuarios.\n✅ Soporte Incluido: 7 asistencias técnicas gratuitas anuales con atención directa por WhatsApp.\n\n👇 ¿Quieres probar la demo interactiva en tu celular o PC ahora mismo?\nComenta la palabra SISTEMA aquí abajo y te enviamos el enlace directo a tus mensajes privados para probar el sistema en vivo.\n\n🔗 Tienda y Demos en Vivo: https://tinyurl.com/kinetixsistemasPOS",
+    "keyword": "SISTEMA",
+    "link": "https://tinyurl.com/kinetixsistemasPOS",
+    "hashtags": "#reels #seguridadinformacion #backup #respaldo #basededatos #tranquilidad #kinetix"
+  },
+  {
+    "day": 26,
+    "week": 4,
+    "format": "🎥 REEL DEMO EN VIVO (INTERFAZ REAL)",
+    "product": "KINETIX POS · INVERSIÓN INTELIGENTE",
+    "title": "$89 USD de por vida vs $600 anuales de suscripción",
+    "hook": "¿Qué es mejor? ¿Pagar 600 dólares todos los años en suscripciones de software que nunca son tuyas, o pagar 89 dólares una sola vez en la vida?",
+    "mediaType": "video",
+    "mediaFiles": [
+      "reel_26_licencia_vitalicia.mp4"
+    ],
+    "script": "[00:00 - 00:07] Paso 1: LICENCIA VITALICIA 4 USUARIOS ACTIVA\nVisual: Pantalla real de KINETIX POS en Modo Claro operando en vivo.\nLocución: \"¿Qué es mejor? ¿Pagar 600 dólares todos los años en suscripciones de software que nunca son tuyas, o pagar 89 dólares una sola vez en la vida?\"\n\n[00:07 - 00:14] Paso 2: CERO MENSUALIDADES NI RENTAS\nVisual: Sistema ejecutando la acción (comprobante, WhatsApp, PDF o modal).\nLocución: \"Con Kinetix aseguras una licencia vitalicia completa para hasta cuatro usuarios sin pagos recurrentes, sin letras pequeñas y con soporte incluido.\"\n\n[00:14 - 00:19] Llamado a la acción:\nVisual: Tarjeta interactiva oficial invitando a probar la demo en vivo.\nLocución: \"Prueba este sistema gratis en tu celular o computadora. Comenta la palabra SISTEMA y te enviamos el enlace directo a tus mensajes privados.\"\nAcción: Comentar 'SISTEMA' para recibir el enlace por DM.",
+    "caption": "$89 USD de por vida vs $600 anuales de suscripción 🚀👇\n\nMira en este video la demostración práctica de KINETIX POS operando en tiempo real:\n1️⃣ LICENCIA VITALICIA 4 USUARIOS ACTIVA: ¿Qué es mejor? ¿Pagar 600 dólares todos los años en suscripciones de software que nunca son tuyas, o pagar 89 dólares una sola vez en la vida?\n2️⃣ CERO MENSUALIDADES NI RENTAS: Con Kinetix aseguras una licencia vitalicia completa para hasta cuatro usuarios sin pagos recurrentes, sin letras pequeñas y con soporte incluido.\n\n¿Por qué elegir Kinetix para tu negocio?\n✅ 100% Práctico e Intuitivo: Tu equipo lo domina en 5 minutos sin cursos complicados.\n✅ Multi-Dispositivo: Funciona en PC de mostrador, laptop y teléfono celular.\n✅ Cero Suscripciones: Olvídate de mensualidades abusivas por usuario.\n✅ Licencia Vitalicia Oficial: Un único pago de $89 USD para hasta 4 usuarios.\n✅ Soporte Incluido: 7 asistencias técnicas gratuitas anuales con atención directa por WhatsApp.\n\n👇 ¿Quieres probar la demo interactiva en tu celular o PC ahora mismo?\nComenta la palabra SISTEMA aquí abajo y te enviamos el enlace directo a tus mensajes privados para probar el sistema en vivo.\n\n🔗 Tienda y Demos en Vivo: https://tinyurl.com/kinetixsistemasPOS",
+    "keyword": "SISTEMA",
+    "link": "https://tinyurl.com/kinetixsistemasPOS",
+    "hashtags": "#reels #ahorrointeligente #softwarevitalicio #sinrentas #inversionrentable #finanzas #kinetix"
+  },
+  {
+    "day": 27,
+    "week": 4,
+    "format": "🎥 REEL DEMO EN VIVO (INTERFAZ REAL)",
+    "product": "KINETIX POS · SOPORTE & GARANTÍA",
+    "title": "7 asistencias técnicas anuales y soporte humano directo",
+    "hook": "Casi nadie en tu sector está aprovechando esto: adquirir un software empresarial que incluye soporte técnico humano garantizado y cero mensualidades.",
+    "mediaType": "video",
+    "mediaFiles": [
+      "reel_27_soporte_garantia.mp4"
+    ],
+    "script": "[00:00 - 00:07] Paso 1: CONFIGURACIÓN Y CONTACTO DE SOPORTE\nVisual: Pantalla real de KINETIX POS en Modo Claro operando en vivo.\nLocución: \"Casi nadie en tu sector está aprovechando esto: adquirir un software empresarial que incluye soporte técnico humano garantizado y cero mensualidades.\"\n\n[00:07 - 00:14] Paso 2: 4 PUESTOS DE TRABAJO ACTIVOS\nVisual: Sistema ejecutando la acción (comprobante, WhatsApp, PDF o modal).\nLocución: \"Tu licencia vitalicia incluye siete asistencias técnicas durante el primer año con atención personalizada por WhatsApp para cualquier duda o configuración.\"\n\n[00:14 - 00:19] Llamado a la acción:\nVisual: Tarjeta interactiva oficial invitando a probar la demo en vivo.\nLocución: \"Prueba este sistema gratis en tu celular o computadora. Comenta la palabra SISTEMA y te enviamos el enlace directo a tus mensajes privados.\"\nAcción: Comentar 'SISTEMA' para recibir el enlace por DM.",
+    "caption": "7 asistencias técnicas anuales y soporte humano directo 🚀👇\n\nMira en este video la demostración práctica de KINETIX POS operando en tiempo real:\n1️⃣ CONFIGURACIÓN Y CONTACTO DE SOPORTE: Casi nadie en tu sector está aprovechando esto: adquirir un software empresarial que incluye soporte técnico humano garantizado y cero mensualidades.\n2️⃣ 4 PUESTOS DE TRABAJO ACTIVOS: Tu licencia vitalicia incluye siete asistencias técnicas durante el primer año con atención personalizada por WhatsApp para cualquier duda o configuración.\n\n¿Por qué elegir Kinetix para tu negocio?\n✅ 100% Práctico e Intuitivo: Tu equipo lo domina en 5 minutos sin cursos complicados.\n✅ Multi-Dispositivo: Funciona en PC de mostrador, laptop y teléfono celular.\n✅ Cero Suscripciones: Olvídate de mensualidades abusivas por usuario.\n✅ Licencia Vitalicia Oficial: Un único pago de $89 USD para hasta 4 usuarios.\n✅ Soporte Incluido: 7 asistencias técnicas gratuitas anuales con atención directa por WhatsApp.\n\n👇 ¿Quieres probar la demo interactiva en tu celular o PC ahora mismo?\nComenta la palabra SISTEMA aquí abajo y te enviamos el enlace directo a tus mensajes privados para probar el sistema en vivo.\n\n🔗 Tienda y Demos en Vivo: https://tinyurl.com/kinetixsistemasPOS",
+    "keyword": "SISTEMA",
+    "link": "https://tinyurl.com/kinetixsistemasPOS",
+    "hashtags": "#reels #soportetecnico #garantia #atencioncliente #tranquilidad #kinetix #respaldo"
+  },
+  {
+    "day": 28,
+    "week": 4,
+    "format": "🎥 REEL DEMO EN VIVO (INTERFAZ REAL)",
+    "product": "KINETIX POS · TOUR EN VIVO POS",
+    "title": "Tour completo Kinetix POS: ventas, stock y arqueo",
+    "hook": "Cómo pasar del caos de atender con filas lentas y stock descontrolado a tener una terminal de facturación rápida, moderna y profesional en tu local.",
+    "mediaType": "video",
+    "mediaFiles": [
+      "reel_28_tour_pos.mp4"
+    ],
+    "script": "[00:00 - 00:07] Paso 1: TERMINAL COMPLETA DE PUNTO DE VENTA\nVisual: Pantalla real de KINETIX POS en Modo Claro operando en vivo.\nLocución: \"Cómo pasar del caos de atender con filas lentas y stock descontrolado a tener una terminal de facturación rápida, moderna y profesional en tu local.\"\n\n[00:07 - 00:14] Paso 2: FACTURACIÓN Y LICENCIA VITALICIA\nVisual: Sistema ejecutando la acción (comprobante, WhatsApp, PDF o modal).\nLocución: \"Controla ventas, inventario con alertas de reposición y arqueo diario en una interfaz clara que cualquier colaborador domina en cinco minutos.\"\n\n[00:14 - 00:19] Llamado a la acción:\nVisual: Tarjeta interactiva oficial invitando a probar la demo en vivo.\nLocución: \"Prueba este sistema gratis en tu celular o computadora. Comenta la palabra SISTEMA y te enviamos el enlace directo a tus mensajes privados.\"\nAcción: Comentar 'SISTEMA' para recibir el enlace por DM.",
+    "caption": "Tour completo Kinetix POS: ventas, stock y arqueo 🚀👇\n\nMira en este video la demostración práctica de KINETIX POS operando en tiempo real:\n1️⃣ TERMINAL COMPLETA DE PUNTO DE VENTA: Cómo pasar del caos de atender con filas lentas y stock descontrolado a tener una terminal de facturación rápida, moderna y profesional en tu local.\n2️⃣ FACTURACIÓN Y LICENCIA VITALICIA: Controla ventas, inventario con alertas de reposición y arqueo diario en una interfaz clara que cualquier colaborador domina en cinco minutos.\n\n¿Por qué elegir Kinetix para tu negocio?\n✅ 100% Práctico e Intuitivo: Tu equipo lo domina en 5 minutos sin cursos complicados.\n✅ Multi-Dispositivo: Funciona en PC de mostrador, laptop y teléfono celular.\n✅ Cero Suscripciones: Olvídate de mensualidades abusivas por usuario.\n✅ Licencia Vitalicia Oficial: Un único pago de $89 USD para hasta 4 usuarios.\n✅ Soporte Incluido: 7 asistencias técnicas gratuitas anuales con atención directa por WhatsApp.\n\n👇 ¿Quieres probar la demo interactiva en tu celular o PC ahora mismo?\nComenta la palabra SISTEMA aquí abajo y te enviamos el enlace directo a tus mensajes privados para probar el sistema en vivo.\n\n🔗 Tienda y Demos en Vivo: https://tinyurl.com/kinetixsistemasPOS",
+    "keyword": "SISTEMA",
+    "link": "https://tinyurl.com/kinetixsistemasPOS",
+    "hashtags": "#reels #demopos #tourvirtual #puntodeventa #probarsoftware #kinetix #demovivo"
+  },
+  {
+    "day": 29,
+    "week": 4,
+    "format": "🎥 REEL DEMO EN VIVO (INTERFAZ REAL)",
+    "product": "KINETIX SALUD · TOUR EN VIVO SALUD",
+    "title": "Tour completo Kinetix Salud: agenda, WhatsApp y expedientes",
+    "hook": "Casi nadie en tu sector está aprovechando esto: digitalizar expedientes, citas por consultorio y recordatorios automáticos por una fracción de lo habitual.",
+    "mediaType": "video",
+    "mediaFiles": [
+      "reel_29_tour_clinica.mp4"
+    ],
+    "script": "[00:00 - 00:07] Paso 1: AGENDA MULTI-DOCTOR EN TIEMPO REAL\nVisual: Pantalla real de KINETIX SALUD en Modo Claro operando en vivo.\nLocución: \"Casi nadie en tu sector está aprovechando esto: digitalizar expedientes, citas por consultorio y recordatorios automáticos por una fracción de lo habitual.\"\n\n[00:07 - 00:14] Paso 2: EXPEDIENTE Y RECETA MÉDICA FORMAL\nVisual: Sistema ejecutando la acción (comprobante, WhatsApp, PDF o modal).\nLocución: \"Kinetix Salud organiza tu consultorio con agenda visual, notificaciones de WhatsApp y cobro transparente de consultas desde cualquier dispositivo.\"\n\n[00:14 - 00:19] Llamado a la acción:\nVisual: Tarjeta interactiva oficial invitando a probar la demo en vivo.\nLocución: \"Prueba este sistema gratis en tu celular o computadora. Comenta la palabra SISTEMA y te enviamos el enlace directo a tus mensajes privados.\"\nAcción: Comentar 'SISTEMA' para recibir el enlace por DM.",
+    "caption": "Tour completo Kinetix Salud: agenda, WhatsApp y expedientes 🚀👇\n\nMira en este video la demostración práctica de KINETIX SALUD operando en tiempo real:\n1️⃣ AGENDA MULTI-DOCTOR EN TIEMPO REAL: Casi nadie en tu sector está aprovechando esto: digitalizar expedientes, citas por consultorio y recordatorios automáticos por una fracción de lo habitual.\n2️⃣ EXPEDIENTE Y RECETA MÉDICA FORMAL: Kinetix Salud organiza tu consultorio con agenda visual, notificaciones de WhatsApp y cobro transparente de consultas desde cualquier dispositivo.\n\n¿Por qué elegir Kinetix para tu negocio?\n✅ 100% Práctico e Intuitivo: Tu equipo lo domina en 5 minutos sin cursos complicados.\n✅ Multi-Dispositivo: Funciona en PC de mostrador, laptop y teléfono celular.\n✅ Cero Suscripciones: Olvídate de mensualidades abusivas por usuario.\n✅ Licencia Vitalicia Oficial: Un único pago de $89 USD para hasta 4 usuarios.\n✅ Soporte Incluido: 7 asistencias técnicas gratuitas anuales con atención directa por WhatsApp.\n\n👇 ¿Quieres probar la demo interactiva en tu celular o PC ahora mismo?\nComenta la palabra SISTEMA aquí abajo y te enviamos el enlace directo a tus mensajes privados para probar el sistema en vivo.\n\n🔗 Tienda y Demos en Vivo: https://tinyurl.com/kinetixsistemasPOS",
+    "keyword": "SISTEMA",
+    "link": "https://tinyurl.com/kinetixsistemasPOS",
+    "hashtags": "#reels #democlinica #softwaremedico #saludintegral #doctores #kinetix #demovivo"
+  },
+  {
+    "day": 30,
+    "week": 4,
+    "format": "🎥 REEL DEMO EN VIVO (INTERFAZ REAL)",
+    "product": "KINETIX CRM · TOUR EN VIVO CRM",
+    "title": "Tour completo Kinetix CRM: Kanban y cotizaciones PDF",
+    "hook": "Casi nadie en tu sector está aprovechando esto: automatizar todo tu ciclo de ventas con CRM y cotizaciones en PDF con licencia vitalicia para cuatro usuarios.",
+    "mediaType": "video",
+    "mediaFiles": [
+      "reel_30_tour_crm.mp4"
+    ],
+    "script": "[00:00 - 00:07] Paso 1: PIPELINE KANBAN Y CIERRE DE TRATOS\nVisual: Pantalla real de KINETIX CRM en Modo Claro operando en vivo.\nLocución: \"Casi nadie en tu sector está aprovechando esto: automatizar todo tu ciclo de ventas con CRM y cotizaciones en PDF con licencia vitalicia para cuatro usuarios.\"\n\n[00:07 - 00:14] Paso 2: COTIZADOR PDF EN 10 SEGUNDOS\nVisual: Sistema ejecutando la acción (comprobante, WhatsApp, PDF o modal).\nLocución: \"Aprovecha los últimos días para probar los tres sistemas en vivo y equipar tu empresa con la herramienta definitiva por un único pago de 89 dólares.\"\n\n[00:14 - 00:19] Llamado a la acción:\nVisual: Tarjeta interactiva oficial invitando a probar la demo en vivo.\nLocución: \"Prueba este sistema gratis en tu celular o computadora. Comenta la palabra SISTEMA y te enviamos el enlace directo a tus mensajes privados.\"\nAcción: Comentar 'SISTEMA' para recibir el enlace por DM.",
+    "caption": "Tour completo Kinetix CRM: Kanban y cotizaciones PDF 🚀👇\n\nMira en este video la demostración práctica de KINETIX CRM operando en tiempo real:\n1️⃣ PIPELINE KANBAN Y CIERRE DE TRATOS: Casi nadie en tu sector está aprovechando esto: automatizar todo tu ciclo de ventas con CRM y cotizaciones en PDF con licencia vitalicia para cuatro usuarios.\n2️⃣ COTIZADOR PDF EN 10 SEGUNDOS: Aprovecha los últimos días para probar los tres sistemas en vivo y equipar tu empresa con la herramienta definitiva por un único pago de 89 dólares.\n\n¿Por qué elegir Kinetix para tu negocio?\n✅ 100% Práctico e Intuitivo: Tu equipo lo domina en 5 minutos sin cursos complicados.\n✅ Multi-Dispositivo: Funciona en PC de mostrador, laptop y teléfono celular.\n✅ Cero Suscripciones: Olvídate de mensualidades abusivas por usuario.\n✅ Licencia Vitalicia Oficial: Un único pago de $89 USD para hasta 4 usuarios.\n✅ Soporte Incluido: 7 asistencias técnicas gratuitas anuales con atención directa por WhatsApp.\n\n👇 ¿Quieres probar la demo interactiva en tu celular o PC ahora mismo?\nComenta la palabra SISTEMA aquí abajo y te enviamos el enlace directo a tus mensajes privados para probar el sistema en vivo.\n\n🔗 Tienda y Demos en Vivo: https://tinyurl.com/kinetixsistemasPOS",
+    "keyword": "SISTEMA",
+    "link": "https://tinyurl.com/kinetixsistemasPOS",
+    "hashtags": "#reels #democrm #oportunidadunica #cierreoferta #lanzamiento #ventas #kinetix"
+  }
+];
+
+    let currentSelectedDay = 1;
+    let currentSlideIndex = 0;
+    let activeMediaFiles = [];
+
+    function renderDaysList(filter = 'all') {
+      const container = document.getElementById('days-list');
+      container.innerHTML = '';
+
+      const filtered = CAMPAIGN_DAYS.filter(d => filter === 'all' || d.week === filter);
+
+      filtered.forEach(item => {
+        const isActive = item.day === currentSelectedDay;
+        const card = document.createElement('div');
+        card.className = `glass-card p-4 rounded-2xl cursor-pointer transition flex items-center justify-between gap-3 border ${
+          isActive ? 'glass-card-active' : 'hover:opacity-90'
+        }`;
+        card.onclick = () => selectDay(item.day);
+
+        const formatIcon = item.format.includes('REEL') ? '🎥' : (item.format.includes('CARRUSEL') ? '📑' : '🖼️');
+
+        card.innerHTML = `
+          <div class="flex items-center gap-3">
+            <span class="w-8 h-8 rounded-xl ${isActive ? 'bg-emerald-500 text-slate-950 font-black' : 'bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-slate-300 font-bold'} flex items-center justify-center font-mono text-xs">
+              ${item.day < 10 ? '0' + item.day : item.day}
+            </span>
+            <div>
+              <div class="flex items-center gap-2">
+                <span class="text-[10px] uppercase font-mono px-2 py-0.5 rounded bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-slate-300 font-bold">${formatIcon} Sem ${item.week}</span>
+                <span class="text-[10px] font-mono text-emerald-600 dark:text-emerald-400 font-extrabold">${item.keyword}</span>
+              </div>
+              <p class="text-xs font-semibold title-text mt-1 line-clamp-1">${item.title}</p>
+            </div>
+          </div>
+          <span class="text-slate-400 text-xs font-bold">&rarr;</span>
+        `;
+        container.appendChild(card);
+      });
+    }
+
+    function selectDay(dayNumber) {
+      currentSelectedDay = dayNumber;
+      const data = CAMPAIGN_DAYS.find(d => d.day === dayNumber);
+      if (!data) return;
+
+      document.getElementById('detail-day-badge').innerText = `Día ${data.day < 10 ? '0' + data.day : data.day}`;
+      document.getElementById('detail-format-badge').innerText = data.format;
+      document.getElementById('detail-product-badge').innerText = data.product;
+      document.getElementById('detail-title').innerText = data.title;
+      document.getElementById('detail-hook').innerText = data.hook;
+      document.getElementById('detail-script').innerText = data.script;
+      document.getElementById('detail-caption').innerText = data.caption;
+      document.getElementById('detail-keyword').innerText = data.keyword;
+      document.getElementById('detail-link').innerText = data.link;
+      document.getElementById('detail-hashtags').innerText = data.hashtags;
+
+      // Update Media Preview
+      activeMediaFiles = data.mediaFiles || [];
+      currentSlideIndex = 0;
+      updateMediaPreview(data.mediaType);
+
+      // Detail files text
+      document.getElementById('detail-files').innerText = activeMediaFiles.join(', ');
+      document.getElementById('btn-open-file').href = activeMediaFiles[0] || '#';
+
+      // Re-render list
+      const currentTab = document.querySelector('.filter-tab.bg-emerald-500')?.id || 'tab-all';
+      const week = currentTab === 'tab-all' ? 'all' : parseInt(currentTab.replace('tab-', ''));
+      renderDaysList(week);
+    }
+
+    function updateMediaPreview(mediaType) {
+      const box = document.getElementById('media-preview-box');
+      const carouselControls = document.getElementById('carousel-controls');
+
+      if (mediaType === 'video') {
+        carouselControls.classList.add('hidden');
+        const videoSrc = activeMediaFiles[0];
+        box.innerHTML = `
+          <video controls autoplay muted playsinline class="max-h-[460px] max-w-full rounded-xl shadow-2xl object-contain border border-slate-700/50" src="${videoSrc}">
+            Tu navegador no soporta video HTML5.
+          </video>
+        `;
+      } else if (mediaType === 'carousel') {
+        carouselControls.classList.remove('hidden');
+        renderCurrentSlide();
+      } else {
+        // Image
+        carouselControls.classList.add('hidden');
+        const imgSrc = activeMediaFiles[0];
+        box.innerHTML = `
+          <img src="${imgSrc}" alt="Post Preview" class="max-h-[460px] max-w-full rounded-xl shadow-2xl object-contain border border-slate-700/50 cursor-pointer" onclick="window.open('${imgSrc}', '_blank')" />
+        `;
+      }
+    }
+
+    function renderCurrentSlide() {
+      const box = document.getElementById('media-preview-box');
+      const indicator = document.getElementById('slide-indicator');
+      const currentImg = activeMediaFiles[currentSlideIndex];
+
+      indicator.innerText = `${currentSlideIndex + 1} / ${activeMediaFiles.length}`;
+      box.innerHTML = `
+        <img src="${currentImg}" alt="Slide ${currentSlideIndex + 1}" class="max-h-[460px] max-w-full rounded-xl shadow-2xl object-contain border border-slate-700/50 cursor-pointer" onclick="window.open('${currentImg}', '_blank')" />
+      `;
+      document.getElementById('btn-open-file').href = currentImg;
+    }
+
+    function prevSlide() {
+      if (activeMediaFiles.length <= 1) return;
+      currentSlideIndex = (currentSlideIndex - 1 + activeMediaFiles.length) % activeMediaFiles.length;
+      renderCurrentSlide();
+    }
+
+    function nextSlide() {
+      if (activeMediaFiles.length <= 1) return;
+      currentSlideIndex = (currentSlideIndex + 1) % activeMediaFiles.length;
+      renderCurrentSlide();
+    }
+
+    function filterWeek(week) {
+      document.querySelectorAll('.filter-tab').forEach(b => {
+        b.className = 'filter-tab px-3 py-1.5 rounded-lg text-xs font-semibold text-slate-500 dark:text-slate-400 hover:text-emerald-500 transition';
+      });
+      const activeBtn = document.getElementById(week === 'all' ? 'tab-all' : `tab-${week}`);
+      if (activeBtn) {
+        activeBtn.className = 'filter-tab px-3 py-1.5 rounded-lg text-xs font-bold bg-emerald-500 text-slate-950 transition';
+      }
+      renderDaysList(week);
+    }
+
+    function copyElementText(id, btn) {
+      const text = document.getElementById(id).innerText;
+      navigator.clipboard.writeText(text).then(() => {
+        const original = btn.innerText;
+        btn.innerText = '✅ ¡Copiado!';
+        setTimeout(() => { btn.innerText = original; }, 2000);
+      });
+    }
+
+    function copyDayFullCaption() {
+      const caption = document.getElementById('detail-caption').innerText;
+      navigator.clipboard.writeText(caption).then(() => {
+        alert('✅ ¡Caption del Día ' + currentSelectedDay + ' copiado al portapapeles! Listo para pegar en Meta Business Suite Planner o Instagram.');
+      });
+    }
+
+    // THEME TOGGLE (MODO CLARO ODOO / MODO OSCURO)
+    function toggleTheme() {
+      const html = document.documentElement;
+      const isLight = html.classList.contains('light');
+      if (isLight) {
+        html.classList.remove('light');
+        html.classList.add('dark');
+        document.getElementById('theme-icon').innerText = '🌙';
+        document.getElementById('theme-text').innerText = 'Modo Oscuro';
+        localStorage.setItem('kinetix_panel_theme', 'dark');
+      } else {
+        html.classList.remove('dark');
+        html.classList.add('light');
+        document.getElementById('theme-icon').innerText = '☀️';
+        document.getElementById('theme-text').innerText = 'Modo Claro (Odoo)';
+        localStorage.setItem('kinetix_panel_theme', 'light');
+      }
+      renderDaysList(document.querySelector('.filter-tab.bg-emerald-500')?.id === 'tab-all' ? 'all' : parseInt(document.querySelector('.filter-tab.bg-emerald-500')?.id.replace('tab-', '')));
+    }
+
+    // Init Theme from LocalStorage (Default to Light Odoo Style as requested)
+    const savedTheme = localStorage.getItem('kinetix_panel_theme') || 'light';
+    if (savedTheme === 'dark') {
+      document.documentElement.classList.remove('light');
+      document.documentElement.classList.add('dark');
+      document.getElementById('theme-icon').innerText = '🌙';
+      document.getElementById('theme-text').innerText = 'Modo Oscuro';
+    } else {
+      document.documentElement.classList.remove('dark');
+      document.documentElement.classList.add('light');
+      document.getElementById('theme-icon').innerText = '☀️';
+      document.getElementById('theme-text').innerText = 'Modo Claro (Odoo)';
+    }
+
+    // Inicializar
+    window.addEventListener('DOMContentLoaded', () => {
+      renderDaysList('all');
+      selectDay(1);
+    });
+  </script>
+</body>
+</html>
