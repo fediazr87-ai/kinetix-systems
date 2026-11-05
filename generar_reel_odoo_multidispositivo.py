@@ -17,7 +17,7 @@ os.makedirs(TEMP_DIR, exist_ok=True)
 
 CHROME_PATH = r"C:\Program Files\Google\Chrome\Application\chrome.exe"
 FFMPEG_EXE = imageio_ffmpeg.get_ffmpeg_exe()
-VOICE = "es-MX-JorgeNeural"
+VOICE = "es-MX-DaliaNeural"
 BG_MUSIC_PATH = os.path.join(BASE_DIR, "musica_corporativa_confianza.mp3")
 
 def img_to_base64(path):
@@ -194,7 +194,7 @@ html_shell = """<!DOCTYPE html>
       display: flex;
       flex-direction: column;
       justify-content: space-between;
-      padding: 90px 80px;
+      padding: 80px 80px 240px 80px; /* Safe zone: 240px bottom margin so player controls / Reels UI never cover subtitles */
       position: relative;
     }
   </style>
@@ -215,14 +215,18 @@ html_shell = """<!DOCTYPE html>
   </div>
 
   <!-- Body Content -->
-  <div class="relative z-10 flex-1 flex flex-col justify-center py-6">
+  <div class="relative z-10 flex-1 flex flex-col justify-center py-4">
     __CONTENT__
   </div>
 
-  <!-- Footer Subtitle Overlay Box -->
+  <!-- Footer Subtitle Overlay Box (Elevated & Larger) -->
   <div class="relative z-10 border-t border-slate-200 pt-6">
-    <div class="bg-white/95 backdrop-blur-md rounded-2xl p-6 border border-slate-200 shadow-xl text-center">
-      <p class="text-3xl font-extrabold text-slate-800 leading-snug">
+    <div class="bg-white/95 backdrop-blur-md rounded-3xl p-7 border-2 border-emerald-500/40 shadow-2xl text-center">
+      <div class="flex items-center justify-center gap-2 text-xs font-mono font-extrabold text-emerald-600 uppercase tracking-widest mb-2">
+        <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse"></span>
+        <span>🎙️ LOCUCIÓN OFICIAL</span>
+      </div>
+      <p class="text-4xl font-black text-slate-950 leading-snug tracking-tight">
         __SUBTITLE__
       </p>
     </div>

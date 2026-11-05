@@ -17,7 +17,7 @@ os.makedirs(TEMP_DIR, exist_ok=True)
 
 CHROME_PATH = r"C:\Program Files\Google\Chrome\Application\chrome.exe"
 FFMPEG_EXE = imageio_ffmpeg.get_ffmpeg_exe()
-VOICE = "es-MX-JorgeNeural"
+VOICE = "es-MX-DaliaNeural"
 BG_MUSIC_PATH = os.path.join(BASE_DIR, "musica_corporativa_confianza.mp3")
 
 # Definition of the 28 reels with specific real screen bindings and scripts
@@ -468,7 +468,7 @@ def get_system_step_html(system, tag, title, step_num, step_title, voice_text, k
       display: flex;
       flex-direction: column;
       justify-content: space-between;
-      padding: 70px 60px 80px 60px;
+      padding: 70px 60px 240px 60px; /* Zona segura inferior de 240px para evitar controles de video y UI de Reels */
       position: relative;
     }}
   </style>
@@ -501,10 +501,10 @@ def get_system_step_html(system, tag, title, step_num, step_title, voice_text, k
   </div>
 
   <!-- Center Window Mockup with REAL Interface -->
-  <div class="my-auto">
+  <div class="my-auto py-2">
     <div class="bg-white rounded-3xl border-2 border-slate-300 shadow-2xl overflow-hidden">
       <!-- Window Titlebar -->
-      <div class="bg-slate-100 border-b border-slate-200 px-5 py-3.5 flex items-center justify-between">
+      <div class="bg-slate-100 border-b border-slate-200 px-5 py-3 flex items-center justify-between">
         <div class="flex items-center gap-2">
           <div class="w-3.5 h-3.5 rounded-full bg-rose-400"></div>
           <div class="w-3.5 h-3.5 rounded-full bg-amber-400"></div>
@@ -517,33 +517,34 @@ def get_system_step_html(system, tag, title, step_num, step_title, voice_text, k
       </div>
       <!-- Real Interface Screenshot -->
       <div class="p-2.5 bg-slate-50 flex items-center justify-center">
-        <img src="{img_b64}" class="w-full h-auto max-h-[960px] object-contain rounded-xl border border-slate-200 shadow-inner">
+        <img src="{img_b64}" class="w-full h-auto max-h-[820px] object-contain rounded-xl border border-slate-200 shadow-inner">
       </div>
     </div>
   </div>
 
-  <!-- Bottom Lower Third Subtitles & CTA -->
+  <!-- Bottom Lower Third Subtitles & CTA (Elevado y con tipografía grande de alto impacto) -->
   <div class="space-y-4">
     <!-- Subtitle Card -->
-    <div class="p-6 rounded-2xl bg-white border border-slate-200 shadow-lg">
-      <div class="flex items-center gap-2 text-xs font-mono font-bold text-slate-400 uppercase tracking-wider mb-1">
-        <span>🎙️</span> LOCUCIÓN OFICIAL:
+    <div class="p-7 rounded-3xl bg-white border-2 border-emerald-500/40 shadow-2xl">
+      <div class="flex items-center gap-2 text-xs font-mono font-extrabold text-emerald-600 uppercase tracking-widest mb-2.5">
+        <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse"></span>
+        <span>🎙️ LOCUCIÓN OFICIAL</span>
       </div>
-      <p class="text-lg font-bold text-slate-900 leading-snug">
+      <p class="text-[32px] font-black text-slate-950 leading-[1.25] tracking-tight">
         "{voice_text}"
       </p>
     </div>
 
     <!-- Call to action pill -->
-    <div class="p-5 rounded-2xl bg-slate-900 text-white flex items-center justify-between shadow-xl">
+    <div class="p-5 rounded-2xl bg-slate-900 text-white flex items-center justify-between shadow-xl border border-slate-800">
       <div class="flex items-center gap-3">
-        <span class="text-2xl">💬</span>
+        <span class="text-3xl">💬</span>
         <div>
           <div class="text-xs text-emerald-400 font-mono font-extrabold uppercase">PRUÉBALO EN TU CELULAR AHORA:</div>
-          <div class="text-sm font-black text-white">Comenta "{keyword}" y te enviamos la demo directa</div>
+          <div class="text-lg font-black text-white">Comenta "<span class="text-amber-300">{keyword}</span>" y te enviamos la demo directa</div>
         </div>
       </div>
-      <div class="px-3.5 py-1.5 rounded-xl bg-emerald-500 text-slate-950 font-black text-xs font-mono">
+      <div class="px-4 py-2 rounded-xl bg-emerald-500 text-slate-950 font-black text-sm font-mono shadow-md">
         $89 VITALICIO
       </div>
     </div>
@@ -568,6 +569,16 @@ def get_cta_card_html(keyword, title):
       font-family: 'Plus Jakarta Sans', sans-serif;
       background: radial-gradient(circle at 50% 30%, #1e293b 0%, #090d16 100%);
       color: #ffffff;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 90px 80px 220px 80px; /* Safe from bottom controls */
+      position: relative;
+    }}
+  </style>
+</head>
+<body>
       overflow: hidden;
       display: flex;
       flex-direction: column;
