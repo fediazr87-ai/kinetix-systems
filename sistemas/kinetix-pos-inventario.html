@@ -51,15 +51,32 @@
     html.light * {
       scrollbar-color: #94a3b8 #e2e8f0;
     }
-    html.light .pos-metric-pill {
-      background-color: #f1f5f9 !important;
+    html.light .pos-metric-pill, html.light .pos-topbar-box {
+      background-color: #ffffff !important;
       border-color: #cbd5e1 !important;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.06) !important;
     }
-    html.light .pos-metric-pill .pill-label {
+    html.light .pos-metric-pill .pill-label, html.light .pos-topbar-box .pos-box-label {
       color: #64748b !important;
     }
     html.light #pos-topbar-initial {
       color: #0f172a !important;
+    }
+    html.light #pos-topbar-sales {
+      color: #059669 !important;
+    }
+    html.light #pos-topbar-outflows {
+      color: #dc2626 !important;
+    }
+    html.light #pos-topbar-drawer {
+      color: #0284c7 !important;
+    }
+    html.light #pos-topbar-profit {
+      color: #d97706 !important;
+    }
+    html.light .pos-topbar-box-focus {
+      background-color: #f0fdf4 !important;
+      border-color: #0284c7 !important;
     }
     /* Soporte Modo Claro Impecable y de Alto Contraste */
     html.light body { background-color: #f8fafc !important; color: #0f172a !important; }
@@ -481,50 +498,57 @@
 
       <!-- TAB 1: TERMINAL PUNTO DE VENTA (POS) -->
       <section id="tab-pos" class="space-y-4">
-        <!-- BARRA SUPERIOR DE BALANCE DE CAJA Y DIARIO (COMPACTA Y DESPLEGABLE) -->
-        <div class="glass rounded-2xl border border-emerald-500/40 overflow-hidden shadow-lg transition-all">
-          <!-- Franja de Resumen Compacto en POS -->
-          <div class="p-3 sm:px-4 flex flex-wrap items-center justify-between gap-3 bg-slate-900/90 text-xs">
-            <div class="flex items-center gap-2">
-              <span class="p-1.5 rounded-lg bg-emerald-500/20 text-emerald-400 font-bold text-sm">📅</span>
+        <!-- BARRA SUPERIOR DE BALANCE DE CAJA Y DIARIO (AMPLIADA, ELEGANTE Y DESPLEGABLE) -->
+        <div class="glass rounded-2xl border border-emerald-500/40 overflow-hidden shadow-xl transition-all">
+          <!-- Franja de Resumen en POS con Cuadros Más Grandes y Claros -->
+          <div class="p-3.5 sm:px-5 flex flex-wrap items-center justify-between gap-3 sm:gap-4 bg-slate-900/95 text-xs">
+            <div class="flex items-center gap-3">
+              <span class="p-2.5 rounded-xl bg-emerald-500/20 text-emerald-400 font-bold text-base border border-emerald-500/30 shadow-inner">📅</span>
               <div>
-                <span class="text-[10px] font-mono text-emerald-400 font-bold uppercase tracking-wider block">Balance de Caja Hoy</span>
-                <span id="pos-topbar-date-label" class="text-xs font-bold text-white">Día en curso</span>
+                <span class="text-[10px] font-mono text-emerald-400 font-bold uppercase tracking-wider block">Balance de Caja Diario</span>
+                <span id="pos-topbar-date-label" class="text-xs sm:text-sm font-black text-white">Mié, 4 nov (Hoy)</span>
               </div>
             </div>
 
-            <!-- Mini Métricas Rápidas en una sola línea -->
-            <div class="flex items-center gap-2 sm:gap-3 flex-wrap font-mono">
-              <div class="pos-metric-pill flex items-center gap-1.5 bg-slate-800/80 dark:bg-slate-950/70 border border-slate-600/50 dark:border-slate-800 rounded-xl px-2.5 py-1">
-                <span class="pill-label text-[10px] text-slate-300 dark:text-slate-400 font-semibold">💵 Inicio:</span>
-                <span id="pos-topbar-initial" class="font-bold text-white dark:text-slate-200">$0.00</span>
-                <button type="button" onclick="openQuickInitialCashPrompt()" title="Modificar fondo inicial de caja" class="text-[10px] text-emerald-400 hover:text-emerald-300 ml-0.5 cursor-pointer">✏️</button>
+            <!-- Cuadros del Diario Digital Ampliados y Jerárquicos -->
+            <div class="flex items-center gap-2.5 sm:gap-3 flex-wrap font-mono">
+              <!-- Cuadro 1: Inicio de Caja -->
+              <div class="pos-topbar-box flex flex-col justify-center px-3.5 py-2 rounded-xl bg-slate-800/90 dark:bg-slate-950/70 border border-slate-600/70 dark:border-slate-800 shadow-md min-w-[110px] transition hover:border-slate-500">
+                <div class="flex items-center justify-between gap-1">
+                  <span class="pos-box-label text-[10px] uppercase font-bold text-slate-300 dark:text-slate-400 tracking-wider">💵 Inicio</span>
+                  <button type="button" onclick="openQuickInitialCashPrompt()" title="Modificar fondo inicial de caja" class="text-xs text-emerald-400 hover:text-emerald-300 cursor-pointer transition">✏️</button>
+                </div>
+                <span id="pos-topbar-initial" class="text-base sm:text-lg font-black font-mono text-white dark:text-slate-200 tracking-tight mt-0.5">$0.00</span>
               </div>
 
-              <div class="pos-metric-pill flex items-center gap-1.5 bg-emerald-500/15 border border-emerald-500/40 rounded-xl px-2.5 py-1">
-                <span class="pill-label text-[10px] text-emerald-600 dark:text-emerald-400 font-semibold">🛒 Ventas:</span>
-                <span id="pos-topbar-sales" class="font-extrabold text-emerald-600 dark:text-emerald-400">$0.00</span>
+              <!-- Cuadro 2: Ventas del Día -->
+              <div class="pos-topbar-box flex flex-col justify-center px-3.5 py-2 rounded-xl bg-emerald-500/15 border border-emerald-500/50 shadow-md min-w-[118px] transition hover:border-emerald-400">
+                <span class="pos-box-label text-[10px] uppercase font-bold text-emerald-600 dark:text-emerald-400 tracking-wider">🛒 Ventas (+)</span>
+                <span id="pos-topbar-sales" class="text-base sm:text-lg font-black font-mono text-emerald-600 dark:text-emerald-400 tracking-tight mt-0.5">$0.00</span>
               </div>
 
-              <div class="pos-metric-pill flex items-center gap-1.5 bg-rose-500/15 border border-rose-500/40 rounded-xl px-2.5 py-1">
-                <span class="pill-label text-[10px] text-rose-600 dark:text-rose-400 font-semibold">💸 Egresos:</span>
-                <span id="pos-topbar-outflows" class="font-extrabold text-rose-600 dark:text-rose-400">-$0.00</span>
+              <!-- Cuadro 3: Egresos y Compras -->
+              <div class="pos-topbar-box flex flex-col justify-center px-3.5 py-2 rounded-xl bg-rose-500/15 border border-rose-500/50 shadow-md min-w-[118px] transition hover:border-rose-400">
+                <span class="pos-box-label text-[10px] uppercase font-bold text-rose-600 dark:text-rose-400 tracking-wider">💸 Egresos (-)</span>
+                <span id="pos-topbar-outflows" class="text-base sm:text-lg font-black font-mono text-rose-600 dark:text-rose-400 tracking-tight mt-0.5">-$0.00</span>
               </div>
 
-              <div class="pos-metric-pill flex items-center gap-1.5 bg-cyan-500/20 border border-cyan-500/50 rounded-xl px-2.5 py-1">
-                <span class="pill-label text-[10px] text-cyan-600 dark:text-cyan-300 font-bold">📥 En Caja:</span>
-                <span id="pos-topbar-drawer" class="font-black text-cyan-600 dark:text-cyan-300 text-sm">$0.00</span>
+              <!-- Cuadro 4: En Caja (Destacado) -->
+              <div class="pos-topbar-box pos-topbar-box-focus flex flex-col justify-center px-4 py-2 rounded-xl bg-cyan-500/20 border-2 border-cyan-400/70 shadow-lg min-w-[132px] transition hover:border-cyan-300">
+                <span class="pos-box-label text-[10px] uppercase font-extrabold text-cyan-600 dark:text-cyan-300 tracking-wider">📥 En Caja (=)</span>
+                <span id="pos-topbar-drawer" class="text-base sm:text-lg font-black font-mono text-cyan-600 dark:text-cyan-300 tracking-tight mt-0.5">$0.00</span>
               </div>
 
-              <div class="pos-metric-pill flex items-center gap-1.5 bg-amber-500/20 border border-amber-500/50 rounded-xl px-2.5 py-1">
-                <span class="pill-label text-[10px] text-amber-600 dark:text-amber-300 font-bold">📈 Utilidad:</span>
-                <span id="pos-topbar-profit" class="font-black text-amber-600 dark:text-amber-400">+$0.00</span>
+              <!-- Cuadro 5: Utilidad Neta -->
+              <div class="pos-topbar-box flex flex-col justify-center px-3.5 py-2 rounded-xl bg-amber-500/20 border border-amber-500/50 shadow-md min-w-[122px] transition hover:border-amber-400">
+                <span class="pos-box-label text-[10px] uppercase font-bold text-amber-600 dark:text-amber-300 tracking-wider">📈 Utilidad Neta</span>
+                <span id="pos-topbar-profit" class="text-base sm:text-lg font-black font-mono text-amber-600 dark:text-amber-400 tracking-tight mt-0.5">+$0.00</span>
               </div>
             </div>
 
             <!-- Botones de Acción -->
-            <div class="flex items-center gap-1.5">
-              <button type="button" onclick="togglePosDailyDrawer()" id="btn-toggle-pos-daily" class="px-3 py-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 font-bold text-xs transition flex items-center gap-1 border border-slate-700 cursor-pointer shadow-sm">
+            <div class="flex items-center gap-2">
+              <button type="button" onclick="togglePosDailyDrawer()" id="btn-toggle-pos-daily" class="px-3.5 py-2.5 rounded-xl bg-emerald-500/20 hover:bg-emerald-500 text-emerald-300 hover:text-slate-950 font-bold text-xs transition flex items-center gap-1.5 border border-emerald-500/40 cursor-pointer shadow-sm">
                 <span id="pos-daily-toggle-icon">▼</span> 
                 <span id="pos-daily-toggle-text">Ver Diario / Cuadre</span>
               </button>
@@ -1192,7 +1216,7 @@
             </div>
           </div>
 
-          <!-- Datos Fiscales y Moneda -->
+          <!-- Datos Fiscales, Moneda, País y Zona Horaria -->
           <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
             <div>
               <label class="text-xs font-bold text-slate-400 block mb-1">RUC / NIT / RFC Fiscal</label>
@@ -1206,6 +1230,67 @@
               <label class="text-xs font-bold text-slate-400 block mb-1">Símbolo de Moneda</label>
               <input id="set-currency" type="text" placeholder="$ / C$ / MX$ / €" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2.5 text-sm text-white mono">
             </div>
+
+            <!-- UBICACIÓN, PAÍS Y ZONA HORARIA -->
+            <div>
+              <label class="text-xs font-bold text-emerald-400 block mb-1">🌎 País del Negocio</label>
+              <select id="set-country" onchange="onSettingCountryChange(this.value)" class="w-full bg-slate-900 border border-emerald-500/50 rounded-xl px-3 py-2.5 text-sm text-white font-medium">
+                <option value="Nicaragua">🇳🇮 Nicaragua</option>
+                <option value="Costa Rica">🇨🇷 Costa Rica</option>
+                <option value="México">🇲🇽 México</option>
+                <option value="Colombia">🇨🇴 Colombia</option>
+                <option value="Perú">🇵🇪 Perú</option>
+                <option value="Chile">🇨🇱 Chile</option>
+                <option value="Argentina">🇦🇷 Argentina</option>
+                <option value="España">🇪🇸 España</option>
+                <option value="Estados Unidos">🇺🇸 Estados Unidos</option>
+                <option value="Guatemala">🇬🇹 Guatemala</option>
+                <option value="El Salvador">🇸🇻 El Salvador</option>
+                <option value="Honduras">🇭🇳 Honduras</option>
+                <option value="Panamá">🇵🇦 Panamá</option>
+                <option value="República Dominicana">🇩🇴 República Dominicana</option>
+                <option value="Ecuador">🇪🇨 Ecuador</option>
+                <option value="Bolivia">🇧🇴 Bolivia</option>
+                <option value="Paraguay">🇵🇾 Paraguay</option>
+                <option value="Uruguay">🇺🇾 Uruguay</option>
+                <option value="Venezuela">🇻🇪 Venezuela</option>
+                <option value="Otro">🌐 Otro País / Internacional</option>
+              </select>
+            </div>
+            <div>
+              <label class="text-xs font-bold text-emerald-400 block mb-1">🏙️ Ciudad / Región</label>
+              <input id="set-city" type="text" placeholder="Ej: Managua" class="w-full bg-slate-900 border border-emerald-500/50 rounded-xl px-3 py-2.5 text-sm text-white">
+            </div>
+            <div>
+              <label class="text-xs font-bold text-emerald-400 block mb-1">⏰ Zona Horaria (Fecha & Hora)</label>
+              <select id="set-timezone" onchange="previewTimezoneTime()" class="w-full bg-slate-900 border border-emerald-500/50 rounded-xl px-3 py-2.5 text-xs text-white font-mono">
+                <option value="America/Managua">America/Managua (UTC-6 Managua)</option>
+                <option value="America/Costa_Rica">America/Costa_Rica (UTC-6 San José)</option>
+                <option value="America/Mexico_City">America/Mexico_City (UTC-6 CDMX)</option>
+                <option value="America/Cancun">America/Cancun (UTC-5 Cancún)</option>
+                <option value="America/Tijuana">America/Tijuana (UTC-8 Tijuana)</option>
+                <option value="America/Guatemala">America/Guatemala (UTC-6)</option>
+                <option value="America/El_Salvador">America/El_Salvador (UTC-6)</option>
+                <option value="America/Tegucigalpa">America/Tegucigalpa (UTC-6)</option>
+                <option value="America/Panama">America/Panama (UTC-5)</option>
+                <option value="America/Bogota">America/Bogota (UTC-5 Bogotá)</option>
+                <option value="America/Lima">America/Lima (UTC-5 Lima)</option>
+                <option value="America/Guayaquil">America/Guayaquil (UTC-5 Quito)</option>
+                <option value="America/Caracas">America/Caracas (UTC-4 Caracas)</option>
+                <option value="America/La_Paz">America/La_Paz (UTC-4 La Paz)</option>
+                <option value="America/Santo_Domingo">America/Santo_Domingo (UTC-4)</option>
+                <option value="America/Santiago">America/Santiago (UTC-4/-3)</option>
+                <option value="America/Asuncion">America/Asuncion (UTC-4/-3)</option>
+                <option value="America/Buenos_Aires">America/Buenos_Aires (UTC-3)</option>
+                <option value="America/Montevideo">America/Montevideo (UTC-3)</option>
+                <option value="America/New_York">America/New_York (UTC-5/-4 Miami/NY)</option>
+                <option value="America/Chicago">America/Chicago (UTC-6/-5)</option>
+                <option value="America/Los_Angeles">America/Los_Angeles (UTC-8/-7)</option>
+                <option value="Europe/Madrid">Europe/Madrid (UTC+1/+2 Madrid)</option>
+              </select>
+              <div id="set-timezone-preview" class="text-[11px] text-emerald-400 font-mono mt-1 font-semibold truncate"></div>
+            </div>
+
             <div>
               <label class="text-xs font-bold text-slate-400 block mb-1">% Impuesto (IVA / ISV / IGV)</label>
               <input id="set-tax-rate" type="number" step="0.1" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2.5 text-sm text-white mono">
@@ -1773,26 +1858,105 @@
     let lastInvoice = null;
     let currentFinanceSubTab = 'all';
 
+    const COUNTRY_TZ_MAP = {
+      'Nicaragua': { tz: 'America/Managua', city: 'Managua' },
+      'Costa Rica': { tz: 'America/Costa_Rica', city: 'San José' },
+      'México': { tz: 'America/Mexico_City', city: 'Ciudad de México' },
+      'Colombia': { tz: 'America/Bogota', city: 'Bogotá' },
+      'Perú': { tz: 'America/Lima', city: 'Lima' },
+      'Chile': { tz: 'America/Santiago', city: 'Santiago' },
+      'Argentina': { tz: 'America/Buenos_Aires', city: 'Buenos Aires' },
+      'España': { tz: 'Europe/Madrid', city: 'Madrid' },
+      'Estados Unidos': { tz: 'America/New_York', city: 'Miami' },
+      'Guatemala': { tz: 'America/Guatemala', city: 'Ciudad de Guatemala' },
+      'El Salvador': { tz: 'America/El_Salvador', city: 'San Salvador' },
+      'Honduras': { tz: 'America/Tegucigalpa', city: 'Tegucigalpa' },
+      'Panamá': { tz: 'America/Panama', city: 'Ciudad de Panamá' },
+      'República Dominicana': { tz: 'America/Santo_Domingo', city: 'Santo Domingo' },
+      'Ecuador': { tz: 'America/Guayaquil', city: 'Quito' },
+      'Bolivia': { tz: 'America/La_Paz', city: 'La Paz' },
+      'Paraguay': { tz: 'America/Asuncion', city: 'Asunción' },
+      'Uruguay': { tz: 'America/Montevideo', city: 'Montevideo' },
+      'Venezuela': { tz: 'America/Caracas', city: 'Caracas' }
+    };
+
+    var state = null;
+
+    function getTimezone() {
+      try {
+        if (state && state.settings && state.settings.timezone) {
+          return state.settings.timezone;
+        }
+      } catch(e) {}
+      try {
+        return Intl.DateTimeFormat().resolvedOptions().timeZone || 'America/Managua';
+      } catch(e) {
+        return 'America/Managua';
+      }
+    }
+
     function todayISO() {
-      return new Date().toISOString().slice(0, 10);
+      const tz = getTimezone();
+      try {
+        return new Intl.DateTimeFormat('en-CA', {
+          timeZone: tz,
+          year: 'numeric',
+          month: '2-digit',
+          day: '2-digit'
+        }).format(new Date());
+      } catch (e) {
+        const d = new Date();
+        return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+      }
+    }
+
+    function shiftDateISO(baseISO, offsetDays) {
+      const parts = (baseISO || todayISO()).split('-');
+      const d = new Date(Number(parts[0]), Number(parts[1]) - 1, Number(parts[2]));
+      d.setDate(d.getDate() + offsetDays);
+      const yyyy = d.getFullYear();
+      const mm = String(d.getMonth() + 1).padStart(2, '0');
+      const dd = String(d.getDate()).padStart(2, '0');
+      return `${yyyy}-${mm}-${dd}`;
     }
 
     function daysAgoISO(days) {
-      const d = new Date();
-      d.setDate(d.getDate() - days);
-      return d.toISOString().slice(0, 10);
+      return shiftDateISO(todayISO(), -days);
     }
 
     function daysAheadISO(days) {
-      const d = new Date();
-      d.setDate(d.getDate() + days);
-      return d.toISOString().slice(0, 10);
+      return shiftDateISO(todayISO(), days);
+    }
+
+    function getNowTimeStr() {
+      const tz = getTimezone();
+      try {
+        const parts = new Intl.DateTimeFormat('en-US', {
+          timeZone: tz,
+          hour: '2-digit',
+          minute: '2-digit',
+          hour12: true
+        }).formatToParts(new Date());
+        const h = (parts.find(p => p.type === 'hour') || {}).value || '12';
+        const m = (parts.find(p => p.type === 'minute') || {}).value || '00';
+        const dp = ((parts.find(p => p.type === 'dayPeriod') || {}).value || 'PM').toUpperCase();
+        return `${h}:${m} ${dp}`;
+      } catch (e) {
+        const now = new Date();
+        const hh = String(now.getHours() % 12 || 12).padStart(2, '0');
+        const mm = String(now.getMinutes()).padStart(2, '0');
+        const ap = now.getHours() >= 12 ? 'PM' : 'AM';
+        return `${hh}:${mm} ${ap}`;
+      }
     }
 
     const defaultState = {
       settings: {
         companyName: 'Comercial & Retail Kinetix',
         businessType: 'Tienda / Retail',
+        country: 'Nicaragua',
+        city: 'Managua',
+        timezone: 'America/Managua',
         taxId: 'NIT-9012834-1',
         phone: '+505 8888-0000',
         address: 'Av. Central Corporativa, Local 4',
@@ -1887,7 +2051,7 @@
       }
     };
 
-    let state = loadState();
+    state = loadState();
 
     function extractISODate(str) {
       if (!str) return todayISO();
@@ -1928,6 +2092,42 @@
         parsed.payables.forEach(p => { if (!p.dateISO) p.dateISO = extractISODate(p.date); });
 
         if (!parsed.dailyLogs) parsed.dailyLogs = {};
+        if (!parsed.settings) parsed.settings = JSON.parse(JSON.stringify(defaultState.settings));
+        if (!parsed.settings.country) parsed.settings.country = 'Nicaragua';
+        if (!parsed.settings.city) parsed.settings.city = 'Managua';
+        if (!parsed.settings.timezone) {
+          try {
+            parsed.settings.timezone = Intl.DateTimeFormat().resolvedOptions().timeZone || 'America/Managua';
+          } catch(e) {
+            parsed.settings.timezone = 'America/Managua';
+          }
+        }
+
+        // Migración de cortesía: corregir registros que se guardaron erróneamente en UTC como 2026-11-05
+        if (todayISO() === '2026-11-04') {
+          if (parsed.dailyLogs['2026-11-05'] && !parsed.dailyLogs['2026-11-04']) {
+            parsed.dailyLogs['2026-11-04'] = parsed.dailyLogs['2026-11-05'];
+          }
+          (parsed.sales || []).forEach(s => {
+            if (s.dateISO === '2026-11-05') {
+              s.dateISO = '2026-11-04';
+              s.date = (s.date || '').replace('2026-11-05', '2026-11-04');
+            }
+          });
+          (parsed.expenses || []).forEach(e => {
+            if (e.dateISO === '2026-11-05') {
+              e.dateISO = '2026-11-04';
+              e.date = (e.date || '').replace('2026-11-05', '2026-11-04');
+            }
+          });
+          (parsed.purchases || []).forEach(p => {
+            if (p.dateISO === '2026-11-05') {
+              p.dateISO = '2026-11-04';
+              p.date = (p.date || '').replace('2026-11-05', '2026-11-04');
+            }
+          });
+        }
+
         if (!parsed.dailyLogs[todayISO()]) {
           parsed.dailyLogs[todayISO()] = { initialCash: 100.00, notes: 'Apertura de turno' };
         }
@@ -2386,13 +2586,10 @@
           existing.by = document.getElementById('exp-cashier').value || existing.by;
         }
       } else {
-        const now = new Date();
-        const hh = String(now.getHours() % 12 || 12).padStart(2, '0');
-        const mm = String(now.getMinutes()).padStart(2, '0');
-        const ap = now.getHours() >= 12 ? 'PM' : 'AM';
+        const timeStr = getNowTimeStr();
         state.expenses.unshift({
           id: Date.now(),
-          date: `${dateISO} ${hh}:${mm} ${ap}`,
+          date: `${dateISO} ${timeStr}`,
           dateISO,
           concept,
           category: document.getElementById('exp-category').value,
@@ -3121,11 +3318,7 @@
       const method = document.getElementById('pos-payment-method').value;
       const folio = 'FAC-' + String(state.sales.length + 1001);
       const tISO = todayISO();
-      const now = new Date();
-      const hh = String(now.getHours() % 12 || 12).padStart(2, '0');
-      const mm = String(now.getMinutes()).padStart(2, '0');
-      const ap = now.getHours() >= 12 ? 'PM' : 'AM';
-      const dateStr = `${tISO} ${hh}:${mm} ${ap}`;
+      const dateStr = `${tISO} ${getNowTimeStr()}`;
 
       // Descontar Stock en Tiempo Real
       cart.forEach(item => {
@@ -3323,9 +3516,7 @@
         el.disabled = false;
         el.classList.remove('opacity-30', 'cursor-not-allowed');
         if (!el.value) {
-          const d = new Date();
-          d.setMonth(d.getMonth() + 6);
-          el.value = d.toISOString().slice(0, 10);
+          el.value = shiftDateISO(todayISO(), 180);
         }
       }
     }
@@ -3374,7 +3565,7 @@
       let totalUnits = 0;
       let totalValue = 0;
       let lowCount = 0;
-      const todayStr = new Date().toISOString().slice(0, 10);
+      const todayStr = todayISO();
 
       state.products.forEach(p => {
         totalUnits += Number(p.stock);
@@ -3847,19 +4038,60 @@
     // PERSONALIZACIÓN WHITE-LABEL
     function loadSettingsForm() {
       const s = state.settings;
-      document.getElementById('set-business-type').value = s.businessType;
-      document.getElementById('set-company-name').value = s.companyName;
-      document.getElementById('set-tax-id').value = s.taxId;
-      document.getElementById('set-phone').value = s.phone;
-      document.getElementById('set-currency').value = s.currency;
-      document.getElementById('set-tax-rate').value = s.taxRate;
-      document.getElementById('set-address').value = s.address;
-      document.getElementById('set-footer').value = s.footer;
+      document.getElementById('set-business-type').value = s.businessType || 'Tienda / Retail';
+      document.getElementById('set-company-name').value = s.companyName || '';
+      document.getElementById('set-country').value = s.country || 'Nicaragua';
+      document.getElementById('set-city').value = s.city || 'Managua';
+      document.getElementById('set-timezone').value = s.timezone || 'America/Managua';
+      document.getElementById('set-tax-id').value = s.taxId || '';
+      document.getElementById('set-phone').value = s.phone || '';
+      document.getElementById('set-currency').value = s.currency || '$';
+      document.getElementById('set-tax-rate').value = s.taxRate || 0;
+      document.getElementById('set-address').value = s.address || '';
+      document.getElementById('set-footer').value = s.footer || '';
+      previewTimezoneTime();
+    }
+
+    function onSettingCountryChange(country) {
+      const info = COUNTRY_TZ_MAP[country];
+      if (info) {
+        const cityInput = document.getElementById('set-city');
+        if (cityInput) cityInput.value = info.city;
+        const tzSelect = document.getElementById('set-timezone');
+        if (tzSelect) tzSelect.value = info.tz;
+      }
+      previewTimezoneTime();
+    }
+
+    function previewTimezoneTime() {
+      const tzEl = document.getElementById('set-timezone');
+      const prevEl = document.getElementById('set-timezone-preview');
+      if (!tzEl || !prevEl) return;
+      const tz = tzEl.value;
+      try {
+        const dateStr = new Intl.DateTimeFormat('es-ES', {
+          timeZone: tz,
+          weekday: 'short',
+          year: 'numeric',
+          month: 'short',
+          day: 'numeric',
+          hour: '2-digit',
+          minute: '2-digit',
+          second: '2-digit',
+          hour12: true
+        }).format(new Date());
+        prevEl.textContent = `⏰ Hora actual en ${tz}: ${dateStr}`;
+      } catch (e) {
+        prevEl.textContent = '';
+      }
     }
 
     function saveSettings() {
       state.settings.businessType = document.getElementById('set-business-type').value;
       state.settings.companyName = document.getElementById('set-company-name').value.trim() || 'Mi Empresa';
+      state.settings.country = document.getElementById('set-country').value;
+      state.settings.city = document.getElementById('set-city').value.trim() || 'Managua';
+      state.settings.timezone = document.getElementById('set-timezone').value || 'America/Managua';
       state.settings.taxId = document.getElementById('set-tax-id').value.trim();
       state.settings.phone = document.getElementById('set-phone').value.trim();
       state.settings.currency = document.getElementById('set-currency').value.trim() || '$';
@@ -3867,11 +4099,15 @@
       state.settings.address = document.getElementById('set-address').value.trim();
       state.settings.footer = document.getElementById('set-footer').value.trim();
       saveState();
+      applyBrandingUI();
       renderPOSProducts();
       renderCart();
       renderInventory();
       renderSales();
-      alert('✅ Marca y parámetros guardados correctamente en todo el sistema.');
+      currentDailyDate = todayISO();
+      renderDailySheet();
+      updateDailyMetrics();
+      alert('✅ Marca, ubicación y zona horaria guardadas correctamente. Todas las fechas del sistema se han sincronizado con tu horario local.');
     }
 
     function handleLogoUpload(e) {

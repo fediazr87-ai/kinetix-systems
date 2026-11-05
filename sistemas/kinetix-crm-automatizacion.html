@@ -551,6 +551,67 @@
                 <label class="text-slate-300 font-bold block mb-1">Símbolo de Moneda</label>
                 <input id="set-crm-currency" type="text" class="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2.5 text-white mono">
               </div>
+
+              <!-- UBICACIÓN, PAÍS Y ZONA HORARIA CRM -->
+              <div>
+                <label class="text-indigo-400 font-bold block mb-1">🌎 País de la Empresa</label>
+                <select id="set-crm-country" onchange="onCRMCountryChange(this.value)" class="w-full bg-slate-950 border border-indigo-500/50 rounded-xl px-3 py-2.5 text-white font-medium">
+                  <option value="Nicaragua">🇳🇮 Nicaragua</option>
+                  <option value="Costa Rica">🇨🇷 Costa Rica</option>
+                  <option value="México">🇲🇽 México</option>
+                  <option value="Colombia">🇨🇴 Colombia</option>
+                  <option value="Perú">🇵🇪 Perú</option>
+                  <option value="Chile">🇨🇱 Chile</option>
+                  <option value="Argentina">🇦🇷 Argentina</option>
+                  <option value="España">🇪🇸 España</option>
+                  <option value="Estados Unidos">🇺🇸 Estados Unidos</option>
+                  <option value="Guatemala">🇬🇹 Guatemala</option>
+                  <option value="El Salvador">🇸🇻 El Salvador</option>
+                  <option value="Honduras">🇭🇳 Honduras</option>
+                  <option value="Panamá">🇵🇦 Panamá</option>
+                  <option value="República Dominicana">🇩🇴 República Dominicana</option>
+                  <option value="Ecuador">🇪🇨 Ecuador</option>
+                  <option value="Bolivia">🇧🇴 Bolivia</option>
+                  <option value="Paraguay">🇵🇾 Paraguay</option>
+                  <option value="Uruguay">🇺🇾 Uruguay</option>
+                  <option value="Venezuela">🇻🇪 Venezuela</option>
+                  <option value="Otro">🌐 Otro País / Internacional</option>
+                </select>
+              </div>
+              <div>
+                <label class="text-indigo-400 font-bold block mb-1">🏙️ Ciudad / Región</label>
+                <input id="set-crm-city" type="text" placeholder="Ej: Managua" class="w-full bg-slate-950 border border-indigo-500/50 rounded-xl px-3 py-2.5 text-white">
+              </div>
+              <div class="sm:col-span-2">
+                <label class="text-indigo-400 font-bold block mb-1">⏰ Zona Horaria (Fecha & Leads)</label>
+                <select id="set-crm-timezone" onchange="previewCRMTimezoneTime()" class="w-full bg-slate-950 border border-indigo-500/50 rounded-xl px-3 py-2.5 text-xs text-white font-mono">
+                  <option value="America/Managua">America/Managua (UTC-6 Managua)</option>
+                  <option value="America/Costa_Rica">America/Costa_Rica (UTC-6 San José)</option>
+                  <option value="America/Mexico_City">America/Mexico_City (UTC-6 CDMX)</option>
+                  <option value="America/Cancun">America/Cancun (UTC-5 Cancún)</option>
+                  <option value="America/Tijuana">America/Tijuana (UTC-8 Tijuana)</option>
+                  <option value="America/Guatemala">America/Guatemala (UTC-6)</option>
+                  <option value="America/El_Salvador">America/El_Salvador (UTC-6)</option>
+                  <option value="America/Tegucigalpa">America/Tegucigalpa (UTC-6)</option>
+                  <option value="America/Panama">America/Panama (UTC-5)</option>
+                  <option value="America/Bogota">America/Bogota (UTC-5 Bogotá)</option>
+                  <option value="America/Lima">America/Lima (UTC-5 Lima)</option>
+                  <option value="America/Guayaquil">America/Guayaquil (UTC-5 Quito)</option>
+                  <option value="America/Caracas">America/Caracas (UTC-4 Caracas)</option>
+                  <option value="America/La_Paz">America/La_Paz (UTC-4 La Paz)</option>
+                  <option value="America/Santo_Domingo">America/Santo_Domingo (UTC-4)</option>
+                  <option value="America/Santiago">America/Santiago (UTC-4/-3)</option>
+                  <option value="America/Asuncion">America/Asuncion (UTC-4/-3)</option>
+                  <option value="America/Buenos_Aires">America/Buenos_Aires (UTC-3)</option>
+                  <option value="America/Montevideo">America/Montevideo (UTC-3)</option>
+                  <option value="America/New_York">America/New_York (UTC-5/-4 Miami/NY)</option>
+                  <option value="America/Chicago">America/Chicago (UTC-6/-5)</option>
+                  <option value="America/Los_Angeles">America/Los_Angeles (UTC-8/-7)</option>
+                  <option value="Europe/Madrid">Europe/Madrid (UTC+1/+2 Madrid)</option>
+                </select>
+                <div id="set-crm-timezone-preview" class="text-[11px] text-indigo-400 font-mono mt-1 font-semibold truncate"></div>
+              </div>
+
               <div>
                 <label class="text-slate-300 font-bold block mb-1">Teléfono Comercial</label>
                 <input id="set-crm-phone" type="text" class="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2.5 text-white">
@@ -754,11 +815,85 @@
     const STAGES = ['Nuevo Lead', 'Contactado', 'Cotización Enviada', 'En Negociación', 'Cerrado Ganado'];
     let currentUser = null;
     let activeQuote = null;
-    const todayISO = new Date().toISOString().slice(0, 10);
+
+    const COUNTRY_TZ_MAP = {
+      'Nicaragua': { tz: 'America/Managua', city: 'Managua' },
+      'Costa Rica': { tz: 'America/Costa_Rica', city: 'San José' },
+      'México': { tz: 'America/Mexico_City', city: 'Ciudad de México' },
+      'Colombia': { tz: 'America/Bogota', city: 'Bogotá' },
+      'Perú': { tz: 'America/Lima', city: 'Lima' },
+      'Chile': { tz: 'America/Santiago', city: 'Santiago' },
+      'Argentina': { tz: 'America/Buenos_Aires', city: 'Buenos Aires' },
+      'España': { tz: 'Europe/Madrid', city: 'Madrid' },
+      'Estados Unidos': { tz: 'America/New_York', city: 'Miami' },
+      'Guatemala': { tz: 'America/Guatemala', city: 'Ciudad de Guatemala' },
+      'El Salvador': { tz: 'America/El_Salvador', city: 'San Salvador' },
+      'Honduras': { tz: 'America/Tegucigalpa', city: 'Tegucigalpa' },
+      'Panamá': { tz: 'America/Panama', city: 'Ciudad de Panamá' },
+      'República Dominicana': { tz: 'America/Santo_Domingo', city: 'Santo Domingo' },
+      'Ecuador': { tz: 'America/Guayaquil', city: 'Quito' },
+      'Bolivia': { tz: 'America/La_Paz', city: 'La Paz' },
+      'Paraguay': { tz: 'America/Asuncion', city: 'Asunción' },
+      'Uruguay': { tz: 'America/Montevideo', city: 'Montevideo' },
+      'Venezuela': { tz: 'America/Caracas', city: 'Caracas' }
+    };
+
+    var state = null;
+
+    function getCrmTimezone() {
+      try {
+        if (state && state.settings && state.settings.timezone) {
+          return state.settings.timezone;
+        }
+      } catch(e) {}
+      try {
+        return Intl.DateTimeFormat().resolvedOptions().timeZone || 'America/Managua';
+      } catch(e) {
+        return 'America/Managua';
+      }
+    }
+
+    function crmTodayISO() {
+      const tz = getCrmTimezone();
+      try {
+        return new Intl.DateTimeFormat('en-CA', {
+          timeZone: tz,
+          year: 'numeric',
+          month: '2-digit',
+          day: '2-digit'
+        }).format(new Date());
+      } catch (e) {
+        const d = new Date();
+        return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+      }
+    }
+
+    function crmShiftDateISO(baseISO, offsetDays) {
+      const parts = (baseISO || crmTodayISO()).split('-');
+      const d = new Date(Number(parts[0]), Number(parts[1]) - 1, Number(parts[2]));
+      d.setDate(d.getDate() + offsetDays);
+      const yyyy = d.getFullYear();
+      const mm = String(d.getMonth() + 1).padStart(2, '0');
+      const dd = String(d.getDate()).padStart(2, '0');
+      return `${yyyy}-${mm}-${dd}`;
+    }
+
+    function crmDaysAgoISO(days) {
+      return crmShiftDateISO(crmTodayISO(), -days);
+    }
+
+    function crmDaysAheadISO(days) {
+      return crmShiftDateISO(crmTodayISO(), days);
+    }
+
+    const todayISO = crmTodayISO();
 
     const defaultState = {
       settings: {
         companyName: 'Kinetix Solutions & Consulting',
+        country: 'Nicaragua',
+        city: 'Managua',
+        timezone: 'America/Managua',
         currency: '$',
         phone: '+505 8888-9999',
         bankInfo: 'Cuenta Corporativa BAC #360912834 · PayPal Disponible',
@@ -795,13 +930,23 @@
       ]
     };
 
-    let state = loadState();
+    state = loadState();
 
     function loadState() {
       try {
         const raw = localStorage.getItem(STORAGE_KEY);
         if (!raw) return JSON.parse(JSON.stringify(defaultState));
         const parsed = JSON.parse(raw);
+        if (!parsed.settings) parsed.settings = JSON.parse(JSON.stringify(defaultState.settings));
+        if (!parsed.settings.country) parsed.settings.country = 'Nicaragua';
+        if (!parsed.settings.city) parsed.settings.city = 'Managua';
+        if (!parsed.settings.timezone) {
+          try {
+            parsed.settings.timezone = Intl.DateTimeFormat().resolvedOptions().timeZone || 'America/Managua';
+          } catch(e) {
+            parsed.settings.timezone = 'America/Managua';
+          }
+        }
         if (!parsed.users || parsed.users.length !== 4) parsed.users = defaultState.users;
         if (!Array.isArray(parsed.finances)) parsed.finances = JSON.parse(JSON.stringify(defaultState.finances));
         if (!Array.isArray(parsed.suppliers) || parsed.suppliers.length === 0) parsed.suppliers = JSON.parse(JSON.stringify(defaultState.suppliers));
@@ -934,15 +1079,12 @@
       const fromEl = document.getElementById('crm-dash-from');
       const toEl = document.getElementById('crm-dash-to');
       if (!fromEl || !toEl) return;
-      const now = new Date();
-      const today = now.toISOString().slice(0, 10);
+      const today = crmTodayISO();
       if (preset === 'today') {
         fromEl.value = today;
         toEl.value = today;
       } else if (preset === 'week') {
-        const d = new Date(now);
-        d.setDate(d.getDate() - 6);
-        fromEl.value = d.toISOString().slice(0, 10);
+        fromEl.value = crmShiftDateISO(today, -6);
         toEl.value = today;
       } else if (preset === 'month') {
         fromEl.value = today.slice(0, 8) + '01';
@@ -1052,7 +1194,7 @@
         stage: 'Nuevo Lead',
         notes: document.getElementById('lead-notes').value.trim() || 'Interesado en servicios',
         owner: currentUser ? currentUser.name : 'Ejecutivo',
-        date: new Date().toISOString().slice(0, 10)
+        date: crmTodayISO()
       });
       saveState();
       renderPipeline();
@@ -1075,7 +1217,7 @@
         validity: document.getElementById('quote-validity').value.trim(),
         terms: document.getElementById('quote-terms').value.trim(),
         status: 'Enviada',
-        date: new Date().toISOString().slice(0,10)
+        date: crmTodayISO()
       };
       state.quotes.unshift(q);
       if (lead.stage === 'Nuevo Lead' || lead.stage === 'Contactado') lead.stage = 'Cotización Enviada';
@@ -1199,7 +1341,7 @@
       const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
       const a = document.createElement('a');
       a.href = URL.createObjectURL(blob);
-      a.download = `Leads_Pipeline_CRM_${new Date().toISOString().slice(0,10)}.csv`;
+      a.download = `Leads_Pipeline_CRM_${crmTodayISO()}.csv`;
       a.click();
     }
 
@@ -1208,15 +1350,12 @@
       const fromEl = document.getElementById('crm-fin-from');
       const toEl = document.getElementById('crm-fin-to');
       if (!fromEl || !toEl) return;
-      const now = new Date();
-      const today = now.toISOString().slice(0, 10);
+      const today = crmTodayISO();
       if (preset === 'today') {
         fromEl.value = today;
         toEl.value = today;
       } else if (preset === 'week') {
-        const d = new Date(now);
-        d.setDate(d.getDate() - 6);
-        fromEl.value = d.toISOString().slice(0, 10);
+        fromEl.value = crmShiftDateISO(today, -6);
         toEl.value = today;
       } else if (preset === 'month') {
         fromEl.value = today.slice(0, 8) + '01';
@@ -1240,7 +1379,7 @@
         CXP: '📤 Registrar Cuenta por Pagar (Comisión / Proveedor)'
       };
       document.getElementById('crm-fin-modal-title').textContent = titles[type] || 'Registrar Movimiento';
-      document.getElementById('crm-fin-date').value = new Date().toISOString().slice(0, 10);
+      document.getElementById('crm-fin-date').value = crmTodayISO();
       document.getElementById('crm-fin-concept').value = '';
       document.getElementById('crm-fin-amount').value = '';
 
@@ -1273,7 +1412,7 @@
       const submitBtn = document.getElementById('crm-fin-submit-btn');
       if (submitBtn) submitBtn.textContent = '💾 Guardar Cambios';
 
-      document.getElementById('crm-fin-date').value = rec.date || new Date().toISOString().slice(0, 10);
+      document.getElementById('crm-fin-date').value = rec.date || crmTodayISO();
       document.getElementById('crm-fin-category').value = rec.category || '';
       document.getElementById('crm-fin-concept').value = rec.concept || '';
       document.getElementById('crm-fin-amount').value = rec.amount != null ? rec.amount : '';
@@ -1421,7 +1560,7 @@
     function saveCRMFinanceRecord() {
       const editId = Number((document.getElementById('crm-fin-edit-id') || {}).value);
       const type = document.getElementById('crm-fin-modal-type').value;
-      const date = document.getElementById('crm-fin-date').value || new Date().toISOString().slice(0, 10);
+      const date = document.getElementById('crm-fin-date').value || crmTodayISO();
       const category = document.getElementById('crm-fin-category').value;
       const supplier = ((document.getElementById('crm-fin-supplier') || {}).value || '').trim();
       const rawConcept = document.getElementById('crm-fin-concept').value.trim();
@@ -1490,7 +1629,7 @@
 
       state.finances.unshift({
         id: Date.now(),
-        date: new Date().toISOString().slice(0, 10),
+        date: crmTodayISO(),
         type: rec.type === 'CXC' ? 'INGRESO' : 'GASTO',
         category: rec.category,
         concept: `Abono/Liquidación ${rec.type}: ${rec.concept}`,
@@ -1521,7 +1660,7 @@
         labelEl.textContent = (fromStr || toStr) ? `Filtro: ${fromStr || 'Inicio'} → ${toStr || 'Hoy'}` : 'Mostrando Todo el Historial';
       }
 
-      const today = new Date().toISOString().slice(0, 10);
+      const today = crmTodayISO();
       const allFins = state.finances || [];
       const inRange = allFins.filter(f => crmDateInRange(f.date, fromStr, toStr));
 
@@ -1587,7 +1726,7 @@
       const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
       const a = document.createElement('a');
       a.href = URL.createObjectURL(blob);
-      a.download = `Reporte_${label}_CRM_${new Date().toISOString().slice(0,10)}.csv`;
+      a.download = `Reporte_${label}_CRM_${crmTodayISO()}.csv`;
       a.click();
     }
 
@@ -1602,7 +1741,7 @@
       const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
       const a = document.createElement('a');
       a.href = URL.createObjectURL(blob);
-      a.download = `Reporte_Finanzas_CRM_${new Date().toISOString().slice(0,10)}.csv`;
+      a.download = `Reporte_Finanzas_CRM_${crmTodayISO()}.csv`;
       a.click();
     }
 
@@ -1660,20 +1799,62 @@
 
     function loadSettingsForm() {
       const s = state.settings;
-      document.getElementById('set-crm-name').value = s.companyName;
-      document.getElementById('set-crm-currency').value = s.currency;
-      document.getElementById('set-crm-phone').value = s.phone;
-      document.getElementById('set-crm-bank').value = s.bankInfo;
+      document.getElementById('set-crm-name').value = s.companyName || '';
+      document.getElementById('set-crm-currency').value = s.currency || '$';
+      document.getElementById('set-crm-country').value = s.country || 'Nicaragua';
+      document.getElementById('set-crm-city').value = s.city || 'Managua';
+      document.getElementById('set-crm-timezone').value = s.timezone || 'America/Managua';
+      document.getElementById('set-crm-phone').value = s.phone || '';
+      document.getElementById('set-crm-bank').value = s.bankInfo || '';
+      previewCRMTimezoneTime();
+    }
+
+    function onCRMCountryChange(country) {
+      const info = COUNTRY_TZ_MAP[country];
+      if (info) {
+        const cityInput = document.getElementById('set-crm-city');
+        if (cityInput) cityInput.value = info.city;
+        const tzSelect = document.getElementById('set-crm-timezone');
+        if (tzSelect) tzSelect.value = info.tz;
+      }
+      previewCRMTimezoneTime();
+    }
+
+    function previewCRMTimezoneTime() {
+      const tzEl = document.getElementById('set-crm-timezone');
+      const prevEl = document.getElementById('set-crm-timezone-preview');
+      if (!tzEl || !prevEl) return;
+      const tz = tzEl.value;
+      try {
+        const dateStr = new Intl.DateTimeFormat('es-ES', {
+          timeZone: tz,
+          weekday: 'short',
+          year: 'numeric',
+          month: 'short',
+          day: 'numeric',
+          hour: '2-digit',
+          minute: '2-digit',
+          second: '2-digit',
+          hour12: true
+        }).format(new Date());
+        prevEl.textContent = `⏰ Hora actual en ${tz}: ${dateStr}`;
+      } catch (e) {
+        prevEl.textContent = '';
+      }
     }
 
     function saveCRMSettings() {
       state.settings.companyName = document.getElementById('set-crm-name').value.trim() || 'Mi Empresa';
       state.settings.currency = document.getElementById('set-crm-currency').value.trim() || '$';
+      state.settings.country = document.getElementById('set-crm-country').value;
+      state.settings.city = document.getElementById('set-crm-city').value.trim() || 'Managua';
+      state.settings.timezone = document.getElementById('set-crm-timezone').value || 'America/Managua';
       state.settings.phone = document.getElementById('set-crm-phone').value.trim();
       state.settings.bankInfo = document.getElementById('set-crm-bank').value.trim();
       saveState();
       renderPipeline();
-      alert('✅ Configuración de marca del CRM guardada.');
+      renderFinances();
+      alert('✅ Marca, país y zona horaria guardadas correctamente en el CRM.');
     }
 
     function uploadCRMLogo(e) {
