@@ -162,6 +162,9 @@
 
         <!-- Menu Links -->
         <nav class="p-3 flex lg:flex-col gap-1.5 overflow-x-auto">
+          <button id="nav-daily" onclick="switchTab('daily')" class="nav-btn flex items-center gap-3 px-4 py-3 rounded-xl text-xs sm:text-sm font-semibold text-slate-300 hover:bg-slate-900 transition whitespace-nowrap">
+            <span>📅</span> <span>Diario & Balance del Día</span>
+          </button>
           <button id="nav-pos" onclick="switchTab('pos')" class="nav-btn flex items-center gap-3 px-4 py-3 rounded-xl text-xs sm:text-sm font-bold transition whitespace-nowrap bg-emerald-500 text-slate-950">
             <span>🛒</span> <span>Punto de Venta (POS)</span>
           </button>
@@ -205,6 +208,231 @@
 
     <!-- CONTENIDO PRINCIPAL -->
     <main class="flex-1 p-4 md:p-6 overflow-y-auto no-print">
+
+      <!-- TAB 0: DIARIO DE MOVIMIENTOS & BALANCE DEL DÍA -->
+      <section id="tab-daily" class="space-y-6 hidden">
+        <!-- Encabezado del Módulo -->
+        <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
+          <div>
+            <div class="flex items-center gap-2">
+              <span class="text-xs font-mono uppercase text-emerald-400 font-bold tracking-wider">LIBRO DIARIO DIGITAL · ARQUEO & BALANCE EN TIEMPO REAL</span>
+              <span id="daily-status-badge" class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">Día de Hoy</span>
+            </div>
+            <h2 class="text-2xl font-extrabold text-white mt-1">📅 Diario del Balance y Movimientos del Día</h2>
+            <p class="text-xs text-slate-400">Control de inicio de caja, ventas (efectivo y tarjeta), compras, egresos del día y utilidad neta histórica.</p>
+          </div>
+          <div class="flex flex-wrap gap-2">
+            <button onclick="exportDailySheetCSV()" class="px-3.5 py-2.5 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-extrabold text-xs transition flex items-center gap-1.5 shadow-lg cursor-pointer">
+              📥 Descargar Diario del Día (Excel CSV)
+            </button>
+            <button onclick="window.print()" class="px-3.5 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 font-bold text-xs transition flex items-center gap-1.5 cursor-pointer">
+              🖨️ Imprimir Cuadre
+            </button>
+          </div>
+        </div>
+
+        <!-- Barra de Navegación de Fechas e Historial del Diario -->
+        <div class="glass p-4 rounded-2xl border border-slate-800 flex flex-col md:flex-row md:items-center justify-between gap-4 text-xs">
+          <div class="flex flex-wrap items-center gap-2">
+            <span class="font-bold text-slate-300 uppercase font-mono flex items-center gap-1.5">
+              <span>🗓️</span> <span>Fecha Consultada:</span>
+            </span>
+            <div class="flex items-center gap-1.5 bg-slate-900 border border-slate-700 rounded-xl px-3 py-1.5">
+              <input id="daily-date-input" type="date" onchange="changeDailyDate(this.value)" class="bg-transparent text-white font-mono font-bold text-xs focus:outline-none">
+            </div>
+            <div class="flex items-center gap-1">
+              <button onclick="shiftDailyDate(-1)" title="Ver día anterior" class="px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold transition flex items-center gap-1 cursor-pointer">
+                ⏪ Día Anterior
+              </button>
+              <button onclick="setDailyDateToday()" class="px-3 py-1.5 rounded-lg bg-emerald-500/20 text-emerald-300 hover:bg-emerald-500 hover:text-slate-950 font-bold transition cursor-pointer">
+                📅 Hoy
+              </button>
+              <button onclick="shiftDailyDate(1)" title="Ver día siguiente" class="px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold transition flex items-center gap-1 cursor-pointer">
+                Día Siguiente ⏩
+              </button>
+            </div>
+          </div>
+
+          <div class="flex items-center gap-2">
+            <span id="daily-date-label" class="px-3 py-1.5 rounded-xl bg-slate-900 border border-slate-700 text-white font-bold text-xs font-mono">
+              Cargando fecha...
+            </span>
+          </div>
+        </div>
+
+        <!-- Espacio para digitar el Inicio de Caja -->
+        <div class="glass p-5 rounded-3xl border-2 border-emerald-500/40 bg-gradient-to-r from-emerald-950/30 via-slate-900 to-slate-900 flex flex-col md:flex-row md:items-center justify-between gap-4">
+          <div class="space-y-1">
+            <div class="flex items-center gap-2">
+              <span class="p-2 rounded-xl bg-emerald-500/20 text-emerald-400 text-xl font-bold">💵</span>
+              <div>
+                <h3 class="text-sm sm:text-base font-extrabold text-white">Inicio de Caja / Fondo de Apertura del Día</h3>
+                <p class="text-xs text-slate-400">Digita el monto en efectivo con el que abre la caja. Se guarda automáticamente en el historial de esta fecha.</p>
+              </div>
+            </div>
+          </div>
+          <div class="flex items-center gap-3">
+            <div class="relative">
+              <span class="absolute left-3.5 top-2.5 text-emerald-400 font-mono font-black text-lg">$</span>
+              <input id="daily-initial-cash-input" type="number" step="0.01" min="0" oninput="saveDailyInitialCash(this.value)" placeholder="0.00" class="pl-8 pr-4 py-2.5 rounded-2xl bg-slate-950 border-2 border-emerald-500/60 text-white font-mono font-black text-lg w-44 focus:outline-none focus:border-emerald-300 shadow-inner">
+            </div>
+            <span class="text-[11px] text-emerald-400 font-semibold bg-emerald-500/10 border border-emerald-500/30 px-2.5 py-1.5 rounded-xl hidden sm:inline-block">
+              ✓ Guardado automático
+            </span>
+          </div>
+        </div>
+
+        <!-- Resumen Financiero y KPIs del Día -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
+          <!-- KPI 1: Inicio de Caja -->
+          <div class="glass p-4 rounded-2xl border-l-4 border-slate-400 space-y-1">
+            <span class="text-[11px] text-slate-400 font-semibold block">1. Fondo Inicio de Caja</span>
+            <p id="kpi-daily-initial" class="text-2xl font-black text-slate-200 mono">$0.00</p>
+            <span class="text-[10px] text-slate-400 font-mono">Efectivo de apertura digitado</span>
+          </div>
+
+          <!-- KPI 2: Total Vendido del Día -->
+          <div class="glass p-4 rounded-2xl border-l-4 border-emerald-400 space-y-1">
+            <span class="text-[11px] text-slate-400 font-semibold block">2. Total Vendido del Día (+)</span>
+            <p id="kpi-daily-sales" class="text-2xl font-black text-emerald-400 mono">$0.00</p>
+            <span id="kpi-daily-sales-breakdown" class="text-[10px] text-emerald-300/80 font-mono">Ef: $0.00 | Tarj: $0.00</span>
+          </div>
+
+          <!-- KPI 3: Compras & Pagos del Día -->
+          <div class="glass p-4 rounded-2xl border-l-4 border-rose-400 space-y-1">
+            <span class="text-[11px] text-slate-400 font-semibold block">3. Compras & Egresos (-)</span>
+            <p id="kpi-daily-outflows" class="text-2xl font-black text-rose-400 mono">-$0.00</p>
+            <span id="kpi-daily-outflows-breakdown" class="text-[10px] text-rose-300/80 font-mono">Gastos: $0.00 | Compras: $0.00</span>
+          </div>
+
+          <!-- KPI 4: Resultado Total Caja del Día -->
+          <div class="glass p-4 rounded-2xl border-l-4 border-cyan-400 space-y-1">
+            <span class="text-[11px] text-slate-400 font-semibold block">4. Total Caja del Día (=)</span>
+            <p id="kpi-daily-cash-drawer" class="text-2xl font-black text-cyan-300 mono">$0.00</p>
+            <span id="kpi-daily-cash-drawer-sub" class="text-[10px] text-cyan-400 font-mono">Efectivo Físico en Gaveta</span>
+          </div>
+
+          <!-- KPI 5: Utilidad Diaria -->
+          <div class="glass p-4 rounded-2xl border-l-4 border-amber-400 space-y-1 bg-amber-500/5">
+            <span class="text-[11px] text-amber-300 font-semibold block">5. Utilidad Diaria Neta</span>
+            <p id="kpi-daily-profit" class="text-2xl font-black text-amber-400 mono">+$0.00</p>
+            <span id="kpi-daily-profit-margin" class="text-[10px] text-amber-300/80 font-mono">Margen Neto: 0%</span>
+          </div>
+        </div>
+
+        <!-- Desglose de Caja por Método de Pago & Cuadre Matemático -->
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-4 text-xs">
+          <div class="glass p-4 rounded-2xl border border-slate-800 space-y-2">
+            <div class="flex items-center justify-between border-b border-slate-800 pb-2">
+              <span class="font-bold text-emerald-400 flex items-center gap-1">💵 Efectivo Físico de Caja</span>
+              <span id="sub-daily-cash-total" class="font-mono font-black text-white text-sm">$0.00</span>
+            </div>
+            <div class="space-y-1 text-slate-300 text-[11px]">
+              <div class="flex justify-between">
+                <span>(+) Inicio / Fondo de Apertura:</span>
+                <span id="sub-cash-initial" class="font-mono font-bold">$0.00</span>
+              </div>
+              <div class="flex justify-between">
+                <span>(+) Ventas Cobradas en Efectivo:</span>
+                <span id="sub-cash-sales" class="font-mono font-bold text-emerald-400">+$0.00</span>
+              </div>
+              <div class="flex justify-between">
+                <span>(-) Gastos Pagados en Efectivo:</span>
+                <span id="sub-cash-expenses" class="font-mono font-bold text-rose-400">-$0.00</span>
+              </div>
+              <div class="flex justify-between">
+                <span>(-) Compras al Contado (Caja):</span>
+                <span id="sub-cash-purchases" class="font-mono font-bold text-rose-400">-$0.00</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="glass p-4 rounded-2xl border border-slate-800 space-y-2">
+            <div class="flex items-center justify-between border-b border-slate-800 pb-2">
+              <span class="font-bold text-cyan-400 flex items-center gap-1">💳 Tarjetas & Pagos Digitales</span>
+              <span id="sub-daily-card-total" class="font-mono font-black text-white text-sm">$0.00</span>
+            </div>
+            <div class="space-y-1 text-slate-300 text-[11px]">
+              <div class="flex justify-between">
+                <span>Ventas con Tarjeta / Datáfono:</span>
+                <span id="sub-card-sales" class="font-mono font-bold text-cyan-300">$0.00</span>
+              </div>
+              <div class="flex justify-between">
+                <span>Comprobantes Tarjeta Emitidos:</span>
+                <span id="sub-card-count" class="font-mono font-bold">0 transacciones</span>
+              </div>
+              <div class="flex justify-between text-slate-400">
+                <span>Disponibilidad en Banco:</span>
+                <span class="font-mono text-emerald-400 font-semibold">Inmediata / Lote</span>
+              </div>
+              <div class="flex justify-between border-t border-slate-800 pt-1 text-white font-bold">
+                <span>Total Facturación del Día:</span>
+                <span id="sub-grand-sales" class="font-mono text-emerald-400">$0.00</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="glass p-4 rounded-2xl border border-slate-800 space-y-2 bg-gradient-to-br from-amber-950/20 to-slate-900">
+            <div class="flex items-center justify-between border-b border-slate-800 pb-2">
+              <span class="font-bold text-amber-300 flex items-center gap-1">📈 Desglose de Utilidad Diaria</span>
+              <span id="sub-daily-profit-total" class="font-mono font-black text-amber-400 text-sm">$0.00</span>
+            </div>
+            <div class="space-y-1 text-slate-300 text-[11px]">
+              <div class="flex justify-between">
+                <span>(+) Ganancia Bruta (Ventas - Costos):</span>
+                <span id="sub-gross-profit" class="font-mono font-bold text-emerald-400">+$0.00</span>
+              </div>
+              <div class="flex justify-between">
+                <span>(-) Gastos Operativos del Día:</span>
+                <span id="sub-profit-expenses" class="font-mono font-bold text-rose-400">-$0.00</span>
+              </div>
+              <div class="flex justify-between border-t border-slate-800 pt-1 text-white font-extrabold">
+                <span>(=) Utilidad Neta Diaria:</span>
+                <span id="sub-net-profit" class="font-mono text-amber-400">+$0.00</span>
+              </div>
+              <div class="text-[10px] text-slate-400 pt-0.5">
+                Rendimiento neto real del negocio después de descontar el costo de mercancía y los gastos.
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Tabla Cronológica del Libro Diario de Movimientos del Día -->
+        <div class="glass rounded-3xl p-5 border border-slate-800 space-y-4">
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-800 pb-3">
+            <div class="flex items-center gap-2">
+              <span class="p-2 rounded-xl bg-cyan-500/20 text-cyan-400 text-lg">📑</span>
+              <div>
+                <h3 class="text-sm sm:text-base font-extrabold text-white">Historial de Movimientos de la Fecha</h3>
+                <span id="daily-table-count" class="text-xs text-slate-400 font-mono">0 transacciones registradas</span>
+              </div>
+            </div>
+            <div class="flex items-center gap-2">
+              <input id="daily-search-filter" type="text" oninput="renderDailyMovementsTable()" placeholder="🔍 Filtrar movimiento..." class="bg-slate-900 border border-slate-700 rounded-xl px-3 py-1.5 text-xs text-white">
+            </div>
+          </div>
+
+          <div class="overflow-x-auto">
+            <table class="w-full text-left text-xs">
+              <thead class="bg-slate-900/80 text-slate-400 text-[11px] font-mono uppercase border-b border-slate-800">
+                <tr>
+                  <th class="py-3 px-4">Hora</th>
+                  <th class="py-3 px-4">Tipo Movimiento</th>
+                  <th class="py-3 px-4">Referencia / Comprobante</th>
+                  <th class="py-3 px-4">Cliente / Proveedor / Responsable</th>
+                  <th class="py-3 px-4">Método / Condición</th>
+                  <th class="py-3 px-4 text-right">Entrada (+)</th>
+                  <th class="py-3 px-4 text-right">Salida (-)</th>
+                  <th class="py-3 px-4 text-right">Utilidad ($)</th>
+                </tr>
+              </thead>
+              <tbody id="daily-movements-tbody" class="divide-y divide-slate-800/60 font-medium">
+                <!-- Se llena dinámicamente con JavaScript -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
 
       <!-- TAB 1: TERMINAL PUNTO DE VENTA (POS) -->
       <section id="tab-pos" class="space-y-6">
@@ -962,21 +1190,71 @@
           <span class="text-[10px] text-slate-500 block">Perecederos / Alimentos / Farmacia</span>
         </div>
 
-        <div>
-          <label class="text-slate-400 font-bold block mb-1">Costo Compra ($)</label>
-          <input id="prod-cost" type="number" step="0.01" value="0" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-white mono">
+        <!-- Stock y Alerta Mínima -->
+        <div class="col-span-2 sm:col-span-1 grid grid-cols-2 gap-2 bg-slate-950/80 border border-slate-800 rounded-2xl p-2.5">
+          <div>
+            <label class="text-slate-400 font-bold block mb-1 text-[11px]">Stock Actual</label>
+            <input id="prod-stock" type="number" value="25" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-1.5 text-white mono font-bold text-xs">
+          </div>
+          <div>
+            <label class="text-slate-400 font-bold block mb-1 text-[11px]">Alerta Mínimo</label>
+            <input id="prod-min" type="number" value="5" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-1.5 text-white mono text-xs">
+          </div>
         </div>
-        <div>
-          <label class="text-slate-400 font-bold block mb-1">Precio Venta ($)</label>
-          <input id="prod-price" type="number" step="0.01" value="10" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-white mono font-bold text-emerald-400">
-        </div>
-        <div>
-          <label class="text-slate-400 font-bold block mb-1">Stock Actual</label>
-          <input id="prod-stock" type="number" value="25" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-white mono font-bold">
-        </div>
-        <div class="col-span-2 sm:col-span-1">
-          <label class="text-slate-400 font-bold block mb-1">Alerta Stock Mínimo</label>
-          <input id="prod-min" type="number" value="5" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-white mono">
+
+        <!-- CÁLCULO DE MARGEN, PRECIO SUGERIDO Y PRECIO FINAL -->
+        <div class="col-span-2 bg-slate-950/90 border border-emerald-500/40 rounded-2xl p-3.5 space-y-3">
+          <div class="flex items-center justify-between border-b border-slate-800/80 pb-2">
+            <span class="text-emerald-400 font-bold text-xs flex items-center gap-1.5">
+              <span>📈</span> <span>Cálculo de Margen, Ganancia y Precio de Venta</span>
+            </span>
+            <span id="prod-profit-badge" class="text-[11px] font-mono px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 font-bold border border-emerald-500/30">
+              Ganancia: +$0.00 (0%)
+            </span>
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+            <div>
+              <label class="text-slate-300 font-bold block mb-1 text-[11px]">Costo Compra ($):</label>
+              <input id="prod-cost" type="number" step="0.01" min="0" value="0" oninput="calcProductPricing('cost')" placeholder="0.00" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-white mono font-bold text-sm focus:border-emerald-400">
+            </div>
+
+            <div>
+              <div class="flex items-center justify-between mb-1">
+                <label class="text-slate-300 font-bold block text-[11px]">% Margen Ganancia:</label>
+                <span class="text-[10px] text-cyan-400 font-mono">% s/ costo</span>
+              </div>
+              <div class="relative">
+                <input id="prod-margin-pct" type="number" step="1" min="0" value="30" oninput="calcProductPricing('margin')" placeholder="30" class="w-full bg-slate-900 border border-cyan-500/40 rounded-xl pl-3 pr-7 py-2 text-cyan-300 mono font-extrabold text-sm focus:border-cyan-400">
+                <span class="absolute right-3 top-2 text-cyan-400 font-bold text-xs">%</span>
+              </div>
+            </div>
+
+            <div>
+              <div class="flex items-center justify-between mb-1">
+                <label class="text-slate-300 font-bold block text-[11px]">Precio Venta Final ($):</label>
+                <span class="text-[10px] text-emerald-400 font-bold">Manual o Sugerido</span>
+              </div>
+              <input id="prod-price" type="number" step="0.01" min="0" value="10" oninput="calcProductPricing('price')" placeholder="0.00" class="w-full bg-slate-900 border border-emerald-500/60 rounded-xl px-3 py-2 text-emerald-400 mono font-black text-sm focus:border-emerald-300 shadow-inner">
+            </div>
+          </div>
+
+          <!-- Presets rápidos de Margen y Botón de Aplicar Precio Sugerido -->
+          <div class="flex flex-wrap items-center justify-between gap-2 pt-1 border-t border-slate-900">
+            <div class="flex items-center gap-1.5 flex-wrap">
+              <span class="text-[10px] text-slate-400 font-bold">Presets:</span>
+              <button type="button" onclick="setProductMarginPreset(20)" class="px-2 py-0.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 text-[10px] font-bold transition cursor-pointer">+20%</button>
+              <button type="button" onclick="setProductMarginPreset(30)" class="px-2 py-0.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 text-[10px] font-bold transition cursor-pointer">+30%</button>
+              <button type="button" onclick="setProductMarginPreset(40)" class="px-2 py-0.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 text-[10px] font-bold transition cursor-pointer">+40%</button>
+              <button type="button" onclick="setProductMarginPreset(50)" class="px-2 py-0.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 text-[10px] font-bold transition cursor-pointer">+50%</button>
+              <button type="button" onclick="setProductMarginPreset(100)" class="px-2 py-0.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-emerald-300 text-[10px] font-bold transition cursor-pointer">+100%</button>
+            </div>
+            <div id="prod-suggested-pill" class="text-[11px] text-slate-300 bg-slate-900 px-3 py-1 rounded-xl border border-slate-700 flex items-center gap-1.5 cursor-pointer hover:border-emerald-400 transition" onclick="applySuggestedPrice()" title="Hacer clic para fijar precio sugerido">
+              <span class="text-amber-400">💡</span> 
+              <span>Sugerido: <strong id="prod-suggested-val" class="text-white font-mono">$0.00</strong></span>
+              <span class="text-[9px] text-emerald-400 font-bold underline">(Aplicar)</span>
+            </div>
+          </div>
         </div>
       </div>
       <div class="flex justify-end gap-2 pt-3 border-t border-slate-800">
@@ -1457,7 +1735,11 @@
       payables: [
         { id: 501, ref: 'FAC-PRV-090', date: daysAgoISO(2), dateISO: daysAgoISO(2), due: daysAheadISO(20), supplier: 'Importadora Tecnológica Global', phone: '50588889999', concept: 'Lote Audífonos Inalámbricos y Accesorios', total: 210.00, paid: 60.00 },
         { id: 502, ref: 'FAC-PRV-075', date: daysAgoISO(5), dateISO: daysAgoISO(5), due: daysAheadISO(10), supplier: 'Suministros & Empaques Comerciales S.A.', phone: '50588882020', concept: 'Bolsas impresas con logo y papelería térmica', total: 95.00, paid: 0.00 }
-      ]
+      ],
+      dailyLogs: {
+        [todayISO()]: { initialCash: 100.00, notes: 'Apertura normal turno matutino' },
+        [daysAgoISO(1)]: { initialCash: 100.00, notes: 'Apertura normal' }
+      }
     };
 
     let state = loadState();
@@ -1499,6 +1781,15 @@
         parsed.purchases.forEach(p => { if (!p.dateISO) p.dateISO = extractISODate(p.date); });
         parsed.receivables.forEach(r => { if (!r.dateISO) r.dateISO = extractISODate(r.date); });
         parsed.payables.forEach(p => { if (!p.dateISO) p.dateISO = extractISODate(p.date); });
+
+        if (!parsed.dailyLogs) parsed.dailyLogs = {};
+        if (!parsed.dailyLogs[todayISO()]) {
+          parsed.dailyLogs[todayISO()] = { initialCash: 100.00, notes: 'Apertura de turno' };
+        }
+        if (!parsed.dailyLogs[daysAgoISO(1)]) {
+          parsed.dailyLogs[daysAgoISO(1)] = { initialCash: 100.00, notes: 'Apertura de turno' };
+        }
+
         return parsed;
       } catch (e) {
         return JSON.parse(JSON.stringify(defaultState));
@@ -1610,6 +1901,7 @@
       populateSupplierCategorySelect();
       renderPOSProducts();
       renderCart();
+      renderDailySheet();
       renderInventory();
       renderSales();
       renderExpenses();
@@ -1628,6 +1920,7 @@
     // Permisos por Rol (RBAC)
     function applyRolePermissions() {
       const r = currentUser.role;
+      const showDaily = ['ADMIN', 'CAJERO', 'SUPERVISOR', 'INVENTARIO'].includes(r);
       const showPOS = ['ADMIN', 'CAJERO', 'SUPERVISOR'].includes(r);
       const showInv = ['ADMIN', 'INVENTARIO', 'SUPERVISOR'].includes(r);
       const showSales = ['ADMIN', 'CAJERO', 'SUPERVISOR'].includes(r);
@@ -1636,6 +1929,8 @@
       const showUsers = r === 'ADMIN';
       const showSettings = r === 'ADMIN';
 
+      const navDaily = document.getElementById('nav-daily');
+      if (navDaily) navDaily.classList.toggle('hidden', !showDaily);
       document.getElementById('nav-pos').classList.toggle('hidden', !showPOS);
       document.getElementById('nav-inventory').classList.toggle('hidden', !showInv);
       document.getElementById('nav-sales').classList.toggle('hidden', !showSales);
@@ -2496,7 +2791,7 @@
     }
 
     function switchTab(tab) {
-      ['pos', 'inventory', 'sales', 'expenses', 'suppliers', 'users', 'settings'].forEach(t => {
+      ['daily', 'pos', 'inventory', 'sales', 'expenses', 'suppliers', 'users', 'settings'].forEach(t => {
         const el = document.getElementById(`tab-${t}`);
         if (el) el.classList.toggle('hidden', t !== tab);
         const btn = document.getElementById(`nav-${t}`);
@@ -2508,6 +2803,7 @@
           }
         }
       });
+      if (tab === 'daily') renderDailySheet();
       if (tab === 'inventory') renderInventory();
       if (tab === 'sales') renderSales();
       if (tab === 'expenses') renderExpenses();
@@ -3048,6 +3344,7 @@
 
         onProductCategoryChange('');
       }
+      calcProductPricing('price');
       modal.classList.remove('hidden');
       modal.classList.add('flex');
     }
@@ -3326,6 +3623,7 @@
           });
         }
       }
+      if (typeof renderDailySheet === 'function') renderDailySheet();
     }
 
     function reprintSale(idx) {
@@ -3608,6 +3906,448 @@
 
     function installAppPrompt() {
       alert('📲 MODO APLICACIÓN INSTALABLE:\n\n• En PC (Chrome/Edge): Haz clic en el icono de computadora con flecha en la barra de direcciones (arriba a la derecha) o Menú ⋮ -> "Guardar y compartir" -> "Instalar página como aplicación".\n• En Android / iPhone / Tablet: Abre el menú del navegador y selecciona "Agregar a pantalla de inicio".');
+    }
+
+    // =========================================================================
+    // CÁLCULO DE MARGEN Y PRECIO SUGERIDO DE PRODUCTOS
+    // =========================================================================
+    function calcProductPricing(source) {
+      const costEl = document.getElementById('prod-cost');
+      const marginEl = document.getElementById('prod-margin-pct');
+      const priceEl = document.getElementById('prod-price');
+      const badgeEl = document.getElementById('prod-profit-badge');
+      const suggestedValEl = document.getElementById('prod-suggested-val');
+
+      let cost = Math.max(0, parseFloat(costEl ? costEl.value : 0) || 0);
+      let margin = parseFloat(marginEl ? marginEl.value : 30) || 0;
+      let price = Math.max(0, parseFloat(priceEl ? priceEl.value : 0) || 0);
+
+      if (source === 'cost' || source === 'margin') {
+        const suggested = cost * (1 + margin / 100);
+        if (suggestedValEl) suggestedValEl.textContent = fmt(suggested);
+        if (priceEl) priceEl.value = suggested.toFixed(2);
+        price = suggested;
+      } else if (source === 'price') {
+        if (cost > 0) {
+          margin = ((price - cost) / cost) * 100;
+          if (marginEl) marginEl.value = margin.toFixed(1);
+          const suggested = cost * (1 + margin / 100);
+          if (suggestedValEl) suggestedValEl.textContent = fmt(suggested);
+        } else {
+          if (marginEl) marginEl.value = '100';
+          if (suggestedValEl) suggestedValEl.textContent = fmt(price);
+        }
+      }
+
+      const profit = price - cost;
+      const profitPct = cost > 0 ? ((profit / cost) * 100).toFixed(1) : (price > 0 ? '100.0' : '0.0');
+      if (badgeEl) {
+        const sign = profit >= 0 ? '+' : '';
+        badgeEl.textContent = `Ganancia: ${sign}${fmt(profit)} (${profitPct}%)`;
+        badgeEl.className = profit >= 0
+          ? 'text-[11px] font-mono px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 font-bold border border-emerald-500/30'
+          : 'text-[11px] font-mono px-2 py-0.5 rounded-full bg-rose-500/20 text-rose-300 font-bold border border-rose-500/30';
+      }
+    }
+
+    function setProductMarginPreset(pct) {
+      const marginEl = document.getElementById('prod-margin-pct');
+      if (marginEl) marginEl.value = pct;
+      calcProductPricing('margin');
+    }
+
+    function applySuggestedPrice() {
+      const costEl = document.getElementById('prod-cost');
+      const marginEl = document.getElementById('prod-margin-pct');
+      const cost = Math.max(0, parseFloat(costEl ? costEl.value : 0) || 0);
+      const margin = parseFloat(marginEl ? marginEl.value : 30) || 0;
+      const suggested = cost * (1 + margin / 100);
+      const priceEl = document.getElementById('prod-price');
+      if (priceEl) priceEl.value = suggested.toFixed(2);
+      calcProductPricing('price');
+    }
+
+    // =========================================================================
+    // MÓDULO: DIARIO DIGITAL, BALANCE & ARQUEO DE MOVIMIENTOS DEL DÍA
+    // =========================================================================
+    let currentDailyDate = todayISO();
+
+    function setDailyDateToday() {
+      currentDailyDate = todayISO();
+      renderDailySheet();
+    }
+
+    function shiftDailyDate(offsetDays) {
+      const parts = currentDailyDate.split('-');
+      const d = new Date(Number(parts[0]), Number(parts[1]) - 1, Number(parts[2]));
+      d.setDate(d.getDate() + offsetDays);
+      const yyyy = d.getFullYear();
+      const mm = String(d.getMonth() + 1).padStart(2, '0');
+      const dd = String(d.getDate()).padStart(2, '0');
+      currentDailyDate = `${yyyy}-${mm}-${dd}`;
+      renderDailySheet();
+    }
+
+    function changeDailyDate(newDate) {
+      if (!newDate) return;
+      currentDailyDate = newDate;
+      renderDailySheet();
+    }
+
+    function saveDailyInitialCash(val) {
+      state.dailyLogs = state.dailyLogs || {};
+      state.dailyLogs[currentDailyDate] = state.dailyLogs[currentDailyDate] || { initialCash: 0, notes: '' };
+      state.dailyLogs[currentDailyDate].initialCash = Math.max(0, parseFloat(val) || 0);
+      saveState();
+      updateDailyMetrics();
+      renderDailyMovementsTable();
+    }
+
+    function getDailyAggregates(dateISO) {
+      const targetDate = dateISO || currentDailyDate;
+      const initialCash = (state.dailyLogs && state.dailyLogs[targetDate]) 
+        ? Number(state.dailyLogs[targetDate].initialCash || 0) 
+        : 0;
+
+      const daySales = (state.sales || []).filter(s => (s.dateISO || extractISODate(s.date)) === targetDate);
+      const totalSales = daySales.reduce((a, s) => a + Number(s.total || 0), 0);
+      const cashSales = daySales.filter(s => s.method === 'Efectivo').reduce((a, s) => a + Number(s.total || 0), 0);
+      const cardSales = daySales.filter(s => s.method !== 'Efectivo').reduce((a, s) => a + Number(s.total || 0), 0);
+      const grossProfit = daySales.reduce((a, s) => a + Number(s.profit || 0), 0);
+
+      const dayExpenses = (state.expenses || []).filter(e => (e.dateISO || extractISODate(e.date)) === targetDate);
+      const totalExpenses = dayExpenses.reduce((a, e) => a + Number(e.amount || 0), 0);
+
+      const dayPurchases = (state.purchases || []).filter(p => (p.dateISO || extractISODate(p.date)) === targetDate);
+      const totalPurchases = dayPurchases.reduce((a, p) => a + Number(p.amount || 0), 0);
+      const cashPurchases = dayPurchases.filter(p => (p.condition || 'Contado') === 'Contado').reduce((a, p) => a + Number(p.amount || 0), 0);
+
+      const totalOutflows = totalExpenses + totalPurchases;
+      const cashOutflows = totalExpenses + cashPurchases; // salieron de la caja física
+
+      const cashInDrawer = initialCash + cashSales - cashOutflows;
+      const cardTotal = cardSales;
+      const totalDayCashRegister = cashInDrawer + cardTotal;
+
+      const dailyNetProfit = grossProfit - totalExpenses;
+      const netMarginPct = totalSales > 0 ? ((dailyNetProfit / totalSales) * 100).toFixed(1) : '0.0';
+
+      return {
+        targetDate,
+        initialCash,
+        daySales,
+        totalSales,
+        cashSales,
+        cardSales,
+        grossProfit,
+        dayExpenses,
+        totalExpenses,
+        dayPurchases,
+        totalPurchases,
+        cashPurchases,
+        totalOutflows,
+        cashOutflows,
+        cashInDrawer,
+        cardTotal,
+        totalDayCashRegister,
+        dailyNetProfit,
+        netMarginPct
+      };
+    }
+
+    function renderDailySheet() {
+      const dateInput = document.getElementById('daily-date-input');
+      if (dateInput) dateInput.value = currentDailyDate;
+
+      const dateLabel = document.getElementById('daily-date-label');
+      if (dateLabel) {
+        const parts = currentDailyDate.split('-');
+        const d = new Date(Number(parts[0]), Number(parts[1]) - 1, Number(parts[2]));
+        const opts = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+        const formatted = d.toLocaleDateString('es-ES', opts);
+        dateLabel.textContent = formatted.charAt(0).toUpperCase() + formatted.slice(1);
+      }
+
+      const badge = document.getElementById('daily-status-badge');
+      if (badge) {
+        if (currentDailyDate === todayISO()) {
+          badge.textContent = '🟢 Día de Hoy (En Vivo)';
+          badge.className = 'px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-500/20 text-emerald-300 border border-emerald-500/30';
+        } else if (currentDailyDate === daysAgoISO(1)) {
+          badge.textContent = '📜 Ayer (Historial)';
+          badge.className = 'px-2 py-0.5 rounded-full text-[10px] font-bold bg-amber-500/20 text-amber-300 border border-amber-500/30';
+        } else {
+          badge.textContent = '🗓️ Historial: ' + currentDailyDate;
+          badge.className = 'px-2 py-0.5 rounded-full text-[10px] font-bold bg-indigo-500/20 text-indigo-300 border border-indigo-500/30';
+        }
+      }
+
+      const initialInput = document.getElementById('daily-initial-cash-input');
+      const savedInit = (state.dailyLogs && state.dailyLogs[currentDailyDate]) 
+        ? state.dailyLogs[currentDailyDate].initialCash 
+        : 0;
+      if (initialInput) initialInput.value = Number(savedInit || 0).toFixed(2);
+
+      updateDailyMetrics();
+      renderDailyMovementsTable();
+    }
+
+    function updateDailyMetrics() {
+      const data = getDailyAggregates(currentDailyDate);
+
+      // KPI 1: Inicio de Caja
+      const kpiInit = document.getElementById('kpi-daily-initial');
+      if (kpiInit) kpiInit.textContent = fmt(data.initialCash);
+
+      // KPI 2: Ventas del Día
+      const kpiSales = document.getElementById('kpi-daily-sales');
+      if (kpiSales) kpiSales.textContent = fmt(data.totalSales);
+      const kpiSalesBreakdown = document.getElementById('kpi-daily-sales-breakdown');
+      if (kpiSalesBreakdown) {
+        kpiSalesBreakdown.textContent = `Ef: ${fmt(data.cashSales)} | Tarj: ${fmt(data.cardSales)} (${data.daySales.length} vtas)`;
+      }
+
+      // KPI 3: Compras & Egresos
+      const kpiOutflows = document.getElementById('kpi-daily-outflows');
+      if (kpiOutflows) kpiOutflows.textContent = '-' + fmt(data.totalOutflows);
+      const kpiOutflowsBreakdown = document.getElementById('kpi-daily-outflows-breakdown');
+      if (kpiOutflowsBreakdown) {
+        kpiOutflowsBreakdown.textContent = `Gastos: ${fmt(data.totalExpenses)} | Compras: ${fmt(data.totalPurchases)}`;
+      }
+
+      // KPI 4: Total Caja del Día (Arqueo Físico y Total)
+      const kpiDrawer = document.getElementById('kpi-daily-cash-drawer');
+      if (kpiDrawer) {
+        kpiDrawer.textContent = fmt(data.cashInDrawer);
+        if (data.cashInDrawer < 0) {
+          kpiDrawer.className = 'text-2xl font-black text-rose-400 mono';
+        } else {
+          kpiDrawer.className = 'text-2xl font-black text-cyan-300 mono';
+        }
+      }
+      const kpiDrawerSub = document.getElementById('kpi-daily-cash-drawer-sub');
+      if (kpiDrawerSub) {
+        kpiDrawerSub.textContent = `Efectivo en gaveta (${fmt(data.cashInDrawer)}) + Tarjeta (${fmt(data.cardTotal)})`;
+      }
+
+      // KPI 5: Utilidad Diaria
+      const kpiProfit = document.getElementById('kpi-daily-profit');
+      if (kpiProfit) {
+        const sign = data.dailyNetProfit >= 0 ? '+' : '';
+        kpiProfit.textContent = sign + fmt(data.dailyNetProfit);
+        kpiProfit.className = data.dailyNetProfit >= 0 
+          ? 'text-2xl font-black text-amber-400 mono' 
+          : 'text-2xl font-black text-rose-400 mono';
+      }
+      const kpiMargin = document.getElementById('kpi-daily-profit-margin');
+      if (kpiMargin) {
+        kpiMargin.textContent = `Margen Neto Real: ${data.netMarginPct}% s/ ventas`;
+      }
+
+      // Sub-bloques de cuadre matemático
+      const subCashTotal = document.getElementById('sub-daily-cash-total');
+      if (subCashTotal) subCashTotal.textContent = fmt(data.cashInDrawer);
+      const subCashInit = document.getElementById('sub-cash-initial');
+      if (subCashInit) subCashInit.textContent = fmt(data.initialCash);
+      const subCashSales = document.getElementById('sub-cash-sales');
+      if (subCashSales) subCashSales.textContent = '+' + fmt(data.cashSales);
+      const subCashExp = document.getElementById('sub-cash-expenses');
+      if (subCashExp) subCashExp.textContent = '-' + fmt(data.totalExpenses);
+      const subCashPur = document.getElementById('sub-cash-purchases');
+      if (subCashPur) subCashPur.textContent = '-' + fmt(data.cashPurchases);
+
+      const subCardTotal = document.getElementById('sub-daily-card-total');
+      if (subCardTotal) subCardTotal.textContent = fmt(data.cardTotal);
+      const subCardSales = document.getElementById('sub-card-sales');
+      if (subCardSales) subCardSales.textContent = fmt(data.cardSales);
+      const subCardCount = document.getElementById('sub-card-count');
+      if (subCardCount) {
+        const cardOps = data.daySales.filter(s => s.method !== 'Efectivo').length;
+        subCardCount.textContent = `${cardOps} comprobantes emitidos`;
+      }
+      const subGrandSales = document.getElementById('sub-grand-sales');
+      if (subGrandSales) subGrandSales.textContent = fmt(data.totalSales);
+
+      const subDailyProfit = document.getElementById('sub-daily-profit-total');
+      if (subDailyProfit) subDailyProfit.textContent = (data.dailyNetProfit >= 0 ? '+' : '') + fmt(data.dailyNetProfit);
+      const subGrossProfit = document.getElementById('sub-gross-profit');
+      if (subGrossProfit) subGrossProfit.textContent = '+' + fmt(data.grossProfit);
+      const subProfitExp = document.getElementById('sub-profit-expenses');
+      if (subProfitExp) subProfitExp.textContent = '-' + fmt(data.totalExpenses);
+      const subNetProfit = document.getElementById('sub-net-profit');
+      if (subNetProfit) subNetProfit.textContent = (data.dailyNetProfit >= 0 ? '+' : '') + fmt(data.dailyNetProfit);
+    }
+
+    function renderDailyMovementsTable() {
+      const data = getDailyAggregates(currentDailyDate);
+      const q = ((document.getElementById('daily-search-filter') || {}).value || '').toLowerCase().trim();
+      const tbody = document.getElementById('daily-movements-tbody');
+      if (!tbody) return;
+
+      const movements = [];
+
+      // 1. Fondo Inicial si existe
+      if (data.initialCash > 0) {
+        movements.push({
+          time: 'Apertura',
+          type: 'INICIO',
+          typeLabel: '💵 Fondo Apertura',
+          badgeClass: 'bg-slate-700/60 text-slate-200 border-slate-600',
+          ref: 'APERTURA-CAJA',
+          party: 'Caja Principal',
+          method: 'Efectivo',
+          inflow: data.initialCash,
+          outflow: 0,
+          profit: 0
+        });
+      }
+
+      // 2. Ventas
+      data.daySales.forEach(s => {
+        const timePart = s.date.includes(' ') ? s.date.split(' ').slice(1).join(' ') : '12:00 PM';
+        movements.push({
+          time: timePart,
+          type: 'VENTA',
+          typeLabel: '🛒 Venta POS',
+          badgeClass: 'bg-emerald-500/20 text-emerald-300 border-emerald-500/30',
+          ref: s.folio,
+          party: s.client || 'Consumidor Final',
+          method: s.method || 'Efectivo',
+          inflow: Number(s.total || 0),
+          outflow: 0,
+          profit: Number(s.profit || 0)
+        });
+      });
+
+      // 3. Gastos
+      data.dayExpenses.forEach(e => {
+        const timePart = e.date.includes(' ') ? e.date.split(' ').slice(1).join(' ') : '12:00 PM';
+        movements.push({
+          time: timePart,
+          type: 'GASTO',
+          typeLabel: '💸 Gasto Operativo',
+          badgeClass: 'bg-rose-500/20 text-rose-300 border-rose-500/30',
+          ref: e.category || 'Gasto',
+          party: e.supplier || e.by || 'Administración',
+          method: 'Efectivo',
+          inflow: 0,
+          outflow: Number(e.amount || 0),
+          profit: -Number(e.amount || 0)
+        });
+      });
+
+      // 4. Compras
+      data.dayPurchases.forEach(p => {
+        const timePart = p.date.includes(' ') ? p.date.split(' ').slice(1).join(' ') : '12:00 PM';
+        movements.push({
+          time: timePart,
+          type: 'COMPRA',
+          typeLabel: '📦 Compra Mercancía',
+          badgeClass: 'bg-cyan-500/20 text-cyan-300 border-cyan-500/30',
+          ref: p.ref || 'Compra',
+          party: p.supplier || 'Proveedor',
+          method: p.condition || 'Contado',
+          inflow: 0,
+          outflow: Number(p.amount || 0),
+          profit: 0
+        });
+      });
+
+      const filtered = movements.filter(m => {
+        if (!q) return true;
+        return (m.ref || '').toLowerCase().includes(q) ||
+               (m.party || '').toLowerCase().includes(q) ||
+               (m.typeLabel || '').toLowerCase().includes(q) ||
+               (m.method || '').toLowerCase().includes(q);
+      });
+
+      const countEl = document.getElementById('daily-table-count');
+      if (countEl) countEl.textContent = `${filtered.length} transacciones registradas`;
+
+      if (filtered.length === 0) {
+        tbody.innerHTML = `
+          <tr>
+            <td colspan="8" class="text-center py-8 text-slate-500">
+              <span class="text-2xl block mb-1">📭</span>
+              No hay movimientos registrados para esta fecha (${currentDailyDate}).<br>
+              <span class="text-[11px] text-slate-400">Puedes ingresar el inicio de caja o consultar otro día en el historial.</span>
+            </td>
+          </tr>
+        `;
+        return;
+      }
+
+      tbody.innerHTML = filtered.map(m => {
+        const inStr = m.inflow > 0 ? `<span class="text-emerald-400 font-bold mono">+${fmt(m.inflow)}</span>` : '<span class="text-slate-600">-</span>';
+        const outStr = m.outflow > 0 ? `<span class="text-rose-400 font-bold mono">-${fmt(m.outflow)}</span>` : '<span class="text-slate-600">-</span>';
+        const profitStr = m.profit !== 0 
+          ? `<span class="${m.profit > 0 ? 'text-amber-400' : 'text-rose-400'} font-bold mono">${m.profit > 0 ? '+' : ''}${fmt(m.profit)}</span>`
+          : '<span class="text-slate-600">$0.00</span>';
+
+        return `
+          <tr class="hover:bg-slate-800/40 transition">
+            <td class="py-3 px-4 font-mono text-slate-300">${m.time}</td>
+            <td class="py-3 px-4">
+              <span class="px-2.5 py-0.5 rounded-full text-[10px] font-bold border ${m.badgeClass}">
+                ${m.typeLabel}
+              </span>
+            </td>
+            <td class="py-3 px-4 font-bold text-white mono">${m.ref}</td>
+            <td class="py-3 px-4 text-slate-300">${m.party}</td>
+            <td class="py-3 px-4">
+              <span class="px-2 py-0.5 rounded-lg text-[10px] font-semibold bg-slate-800 text-slate-300">
+                ${m.method}
+              </span>
+            </td>
+            <td class="py-3 px-4 text-right">${inStr}</td>
+            <td class="py-3 px-4 text-right">${outStr}</td>
+            <td class="py-3 px-4 text-right">${profitStr}</td>
+          </tr>
+        `;
+      }).join('');
+    }
+
+    function exportDailySheetCSV() {
+      const data = getDailyAggregates(currentDailyDate);
+      let csv = `\uFEFFLIBRO DIARIO DE MOVIMIENTOS & ARQUEO DE CAJA - ${state.settings.companyName}\n`;
+      csv += `Fecha Consultado,${currentDailyDate}\n`;
+      csv += `Fondo Inicial de Caja (Apertura),${data.initialCash.toFixed(2)}\n`;
+      csv += `Ventas Totales del Día,${data.totalSales.toFixed(2)}\n`;
+      csv += `Ventas en Efectivo,${data.cashSales.toFixed(2)}\n`;
+      csv += `Ventas con Tarjeta / Digital,${data.cardSales.toFixed(2)}\n`;
+      csv += `Gastos Operativos del Día,${data.totalExpenses.toFixed(2)}\n`;
+      csv += `Compras a Proveedores del Día,${data.totalPurchases.toFixed(2)}\n`;
+      csv += `Total Egresos del Día,${data.totalOutflows.toFixed(2)}\n`;
+      csv += `Total Efectivo en Caja (Arqueo Físico),${data.cashInDrawer.toFixed(2)}\n`;
+      csv += `Total Tarjeta / Bancos,${data.cardTotal.toFixed(2)}\n`;
+      csv += `Resultado Global de Caja,${data.totalDayCashRegister.toFixed(2)}\n`;
+      csv += `Ganancia Bruta de Ventas,${data.grossProfit.toFixed(2)}\n`;
+      csv += `Utilidad Diaria Neta,${data.dailyNetProfit.toFixed(2)}\n`;
+      csv += `Margen Neto Real,${data.netMarginPct}%\n\n`;
+
+      csv += `DETALLE CRONOLÓGICO DE MOVIMIENTOS DEL DÍA\n`;
+      csv += `Hora,Tipo Movimiento,Referencia,Cliente/Proveedor/Responsable,Metodo,Entrada (+),Salida (-),Utilidad ($)\n`;
+
+      if (data.initialCash > 0) {
+        csv += `"Apertura","Fondo Apertura","APERTURA-CAJA","Caja Principal","Efectivo",${data.initialCash.toFixed(2)},0.00,0.00\n`;
+      }
+
+      data.daySales.forEach(s => {
+        const timePart = s.date.includes(' ') ? s.date.split(' ').slice(1).join(' ') : '12:00 PM';
+        csv += `"${timePart}","Venta POS","${s.folio}","${(s.client||'').replace(/"/g, '""')}","${s.method}",${Number(s.total||0).toFixed(2)},0.00,${Number(s.profit||0).toFixed(2)}\n`;
+      });
+
+      data.dayExpenses.forEach(e => {
+        const timePart = e.date.includes(' ') ? e.date.split(' ').slice(1).join(' ') : '12:00 PM';
+        csv += `"${timePart}","Gasto Operativo","${(e.category||'').replace(/"/g, '""')}","${(e.supplier||e.by||'').replace(/"/g, '""')}","Efectivo",0.00,${Number(e.amount||0).toFixed(2)},-${Number(e.amount||0).toFixed(2)}\n`;
+      });
+
+      data.dayPurchases.forEach(p => {
+        const timePart = p.date.includes(' ') ? p.date.split(' ').slice(1).join(' ') : '12:00 PM';
+        csv += `"${timePart}","Compra Mercancia","${(p.ref||'').replace(/"/g, '""')}","${(p.supplier||'').replace(/"/g, '""')}","${p.condition||'Contado'}",0.00,${Number(p.amount||0).toFixed(2)},0.00\n`;
+      });
+
+      downloadBlob(csv, `Diario_Balance_${currentDailyDate}.csv`, 'text/csv;charset=utf-8;');
     }
 
     initApp();
